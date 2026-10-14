@@ -1,0 +1,178 @@
+{
+  "dispute": {
+    "dispute_id": "DSP-0001",
+    "trip_id": "TRP-00431",
+    "filed_by": "rider",
+    "filed_at": "2025-02-11T07:48:00Z",
+    "category": "route_deviation",
+    "claimed_amount": 3.25,
+    "rider_statement": "The driver took a longer route and I was overcharged. The app said 20km, we drove 24.",
+    "driver_statement": "I took the fastest route available.",
+    "priority": "medium"
+  },
+  "trip": {
+    "trip_id": "TRP-00431",
+    "rider_id": "RDR-0007",
+    "driver_id": "DRV-0012",
+    "requested_at": "2025-02-11T07:02:00Z",
+    "started_at": "2025-02-11T07:06:00Z",
+    "ended_at": "2025-02-11T07:47:00Z",
+    "pickup_address": "SFO Terminal 2",
+    "dropoff_address": "Financial District, 101 California St",
+    "status": "completed",
+    "estimated_distance_km": 20.4,
+    "actual_distance_km": 24.0,
+    "estimated_duration_min": 28,
+    "actual_duration_min": 41,
+    "city": "San Francisco",
+    "traffic_conditions": "light"
+  },
+  "route": {
+    "trip_id": "TRP-00431",
+    "optimal_distance_km": 20.4,
+    "actual_distance_km": 24.0,
+    "deviation_km": 3.6,
+    "deviation_pct": 0.176,
+    "duration_delta_min": 13,
+    "traffic_delay_min": 2,
+    "delay_attributable_to_traffic": false,
+    "rider_requested_detour": false,
+    "unexpected_stops": [
+      { "lat": 37.6213, "lng": -122.379, "duration_sec": 180, "at_km": 8.2 }
+    ],
+    "num_stops": 1,
+    "longest_stop_sec": 180,
+    "deviation_justified_by": null,
+    "route_efficiency_score": 0.85
+  },
+  "fare": {
+    "trip_id": "TRP-00431",
+    "base_fare": 2.55,
+    "distance_fare": 21.67,
+    "time_fare": 9.4,
+    "booking_fee": 2.0,
+    "surge_multiplier": 1.0,
+    "surge_amount": 0.0,
+    "tolls": 0.0,
+    "promo_code": null,
+    "promo_discount": 0.0,
+    "total_charged": 35.62,
+    "estimated_fare_at_booking": 32.0,
+    "surge_at_booking": 1.0,
+    "currency": "USD"
+  },
+  "chat": [
+    {
+      "message_id": "MSG-00914",
+      "sender": "rider",
+      "timestamp": "2025-02-11T07:14:22Z",
+      "message": "Why are we going this way? This isn't the fastest route.",
+      "sentiment": -0.42,
+      "contains_threat": false,
+      "contains_agreement": false
+    },
+    {
+      "message_id": "MSG-00915",
+      "sender": "driver",
+      "timestamp": "2025-02-11T07:15:40Z",
+      "message": "Shortcut, trust me. Avoids the lights.",
+      "sentiment": 0.05,
+      "contains_threat": false,
+      "contains_agreement": false
+    },
+    {
+      "message_id": "MSG-00916",
+      "sender": "rider",
+      "timestamp": "2025-02-11T07:16:10Z",
+      "message": "This is adding 4km to my trip.",
+      "sentiment": -0.55,
+      "contains_threat": false,
+      "contains_agreement": false
+    }
+  ],
+  "rider": {
+    "party_id": "RDR-0007",
+    "role": "rider",
+    "name": "Maya Chen",
+    "account_age_days": 1024,
+    "total_trips": 312,
+    "avg_rating": 4.9,
+    "dispute_count_90d": 2,
+    "dispute_win_rate": 0.5,
+    "cancellation_rate": 0.04,
+    "is_flagged_abuse": false
+  },
+  "driver": {
+    "party_id": "DRV-0012",
+    "role": "driver",
+    "name": "Daniel Ortiz",
+    "account_age_days": 1312,
+    "total_trips": 2841,
+    "avg_rating": 4.8,
+    "dispute_count_90d": 1,
+    "dispute_win_rate": 0.6,
+    "cancellation_rate": 0.03,
+    "is_flagged_abuse": false
+  },
+  "no_show": null,
+  "policies": [
+    {
+      "policy_id": "POL-4.3",
+      "category": "route_deviation",
+      "title": "Route Deviation - Refund Eligibility",
+      "rule_text": "If the actual route exceeds the optimal route by more than 15%, and the excess is not attributable to traffic or a rider-requested detour, the rider is refunded the distance-fare proportional to the unjustified deviation.",
+      "conditions": {
+        "deviation_pct_gt": 0.15,
+        "traffic_justified": false,
+        "rider_requested_detour": false
+      },
+      "remedy_type": "partial_refund",
+      "remedy_formula": "distance_fare * (deviation_km / actual_distance_km)",
+      "version": "v2.1"
+    },
+    {
+      "policy_id": "POL-4.7",
+      "category": "route_deviation",
+      "title": "Unscheduled Stops",
+      "rule_text": "An unscheduled stop exceeding 120 seconds that is not rider-requested is treated as unjustified deviation for the purposes of Policy 4.3.",
+      "conditions": { "longest_stop_sec_gt": 120 },
+      "remedy_type": "partial_refund",
+      "remedy_formula": "distance_fare * (deviation_km / actual_distance_km)",
+      "version": "v1.4"
+    }
+  ],
+  "precedents": [
+    {
+      "precedent_id": "PRC-0088",
+      "category": "route_deviation",
+      "fact_summary": "18.1km trip, 3.2km deviation, light traffic, no rider detour request.",
+      "key_facts": { "deviation_pct": 0.177, "traffic_delay_min": 1, "duration_delta_min": 11 },
+      "ruling": "refund_rider",
+      "reasoning": "Deviation exceeded 15% and was not attributable to traffic. Policy 4.3 applies. Distance fare refunded proportionally.",
+      "cited_policy_id": "POL-4.3",
+      "confidence": 0.93,
+      "decided_at": "2024-11-19"
+    },
+    {
+      "precedent_id": "PRC-0102",
+      "category": "route_deviation",
+      "fact_summary": "22.0km trip, 3.9km deviation, heavy traffic fully accounting for delay.",
+      "key_facts": { "deviation_pct": 0.177, "traffic_delay_min": 15, "duration_delta_min": 15 },
+      "ruling": "no_action",
+      "reasoning": "Deviation exceeded 15% but was fully attributable to documented heavy traffic. Policy 4.3 requires the excess be non-traffic-attributable. No refund.",
+      "cited_policy_id": "POL-4.3",
+      "confidence": 0.91,
+      "decided_at": "2025-01-08"
+    }
+  ],
+  "fraud": {
+    "dispute_id": "DSP-0001",
+    "rider_claims_30d": 1,
+    "driver_claims_30d": 0,
+    "rider_repeat_claimer": false,
+    "collusion_score": 0.06,
+    "device_fingerprint_shared": false,
+    "photo_authenticity_score": null,
+    "risk_level": "low"
+  }
+}

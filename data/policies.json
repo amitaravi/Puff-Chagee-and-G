@@ -1,0 +1,293 @@
+[
+  {
+    "category": "route_deviation",
+    "conditions": {
+      "deviation_pct_gt": 0.15,
+      "rider_requested_detour": false,
+      "traffic_justified": false
+    },
+    "policy_id": "POL-4.3",
+    "remedy_formula": "distance_fare * (deviation_km / actual_distance_km)",
+    "remedy_type": "partial_refund",
+    "rule_text": "If the actual route exceeds the optimal route by more than 15%, and the excess is not attributable to traffic or a rider-requested detour, the rider is refunded the distance-fare proportional to the unjustified deviation.",
+    "title": "Route Deviation - Refund Eligibility",
+    "version": "v2.1"
+  },
+  {
+    "category": "route_deviation",
+    "conditions": {
+      "traffic_share_gte": 0.8
+    },
+    "policy_id": "POL-4.4",
+    "remedy_formula": null,
+    "remedy_type": "no_action",
+    "rule_text": "Where the excess duration is wholly or substantially attributable to documented traffic conditions, the deviation is excused and no refund is due under Policy 4.3.",
+    "title": "Traffic-Attributable Deviation",
+    "version": "v1.9"
+  },
+  {
+    "category": "route_deviation",
+    "conditions": {
+      "rider_requested_detour": true
+    },
+    "policy_id": "POL-4.5",
+    "remedy_formula": null,
+    "remedy_type": "no_action",
+    "rule_text": "A detour requested or expressly assented to by the rider is not an unjustified deviation, irrespective of the resulting distance.",
+    "title": "Rider-Requested Detour",
+    "version": "v1.2"
+  },
+  {
+    "category": "route_deviation",
+    "conditions": {
+      "deviation_pct_lt": 0.05
+    },
+    "policy_id": "POL-4.6",
+    "remedy_formula": null,
+    "remedy_type": "no_action",
+    "rule_text": "A deviation of less than 5% does not engage Policy 4.3 and the claim is dismissed without hearing.",
+    "title": "De Minimis Deviation",
+    "version": "v1.0"
+  },
+  {
+    "category": "route_deviation",
+    "conditions": {
+      "longest_stop_sec_gt": 120
+    },
+    "policy_id": "POL-4.7",
+    "remedy_formula": "distance_fare * (deviation_km / actual_distance_km)",
+    "remedy_type": "partial_refund",
+    "rule_text": "An unscheduled stop exceeding 120 seconds that is not rider-requested is treated as unjustified deviation for the purposes of Policy 4.3.",
+    "title": "Unscheduled Stops",
+    "version": "v1.4"
+  },
+  {
+    "category": "no_show",
+    "conditions": {
+      "min_distance_m_gt": 100
+    },
+    "policy_id": "POL-2.1a",
+    "remedy_formula": "no_show_fee_charged",
+    "remedy_type": "full_refund",
+    "rule_text": "Where the driver did not come within 100 metres of the pickup pin, the no-show fee is refunded in full.",
+    "title": "Driver Non-Arrival",
+    "version": "v2.0"
+  },
+  {
+    "category": "no_show",
+    "conditions": {
+      "min_distance_m_lte": 50,
+      "wait_time_min_gte": 5
+    },
+    "policy_id": "POL-2.1b",
+    "remedy_formula": null,
+    "remedy_type": "no_action",
+    "rule_text": "Where the driver came within 50 metres of the pickup pin, waited at least 5 minutes, and rider telemetry shows no movement toward the vehicle, the no-show fee stands.",
+    "title": "Driver Arrival - Fee Stands",
+    "version": "v2.0"
+  },
+  {
+    "category": "no_show",
+    "conditions": {},
+    "policy_id": "POL-2.2",
+    "remedy_formula": null,
+    "remedy_type": "no_action",
+    "rule_text": "Where the facts fall between the Policy 2.1a and 2.1b thresholds, the matter is not determinable on the record and is referred to human review.",
+    "title": "Grey-Band Referral",
+    "version": "v1.1"
+  },
+  {
+    "category": "no_show",
+    "conditions": {
+      "wait_time_min_lte": 2
+    },
+    "policy_id": "POL-2.3",
+    "remedy_formula": "no_show_fee_charged",
+    "remedy_type": "full_refund",
+    "rule_text": "A rider who cancels within 2 minutes of acceptance without moving toward the pickup is not charged a no-show fee.",
+    "title": "Rider Cancellation Window",
+    "version": "v1.3"
+  },
+  {
+    "category": "fare_surge",
+    "conditions": {
+      "surge_consistent": true
+    },
+    "policy_id": "POL-3.1",
+    "remedy_formula": null,
+    "remedy_type": "no_action",
+    "rule_text": "The fare shown at booking is an estimate. Where the applied surge matches the surge disclosed at booking, no refund is due.",
+    "title": "Estimates Are Not Quotes",
+    "version": "v2.2"
+  },
+  {
+    "category": "fare_surge",
+    "conditions": {
+      "surge_exceeds_disclosed": true
+    },
+    "policy_id": "POL-3.2",
+    "remedy_formula": "surge_amount * (1 - (surge_at_booking / surge_multiplier))",
+    "remedy_type": "partial_refund",
+    "rule_text": "Where the surge applied exceeds the surge disclosed at booking, the rider is refunded the difference attributable to the undisclosed portion.",
+    "title": "Undisclosed Surge",
+    "version": "v1.8"
+  },
+  {
+    "category": "fare_surge",
+    "conditions": {
+      "promo_unapplied": true
+    },
+    "policy_id": "POL-3.3",
+    "remedy_formula": null,
+    "remedy_type": "partial_refund",
+    "rule_text": "Where a valid promotion was presented at booking but not applied to the final charge, the rider is refunded the promotional value.",
+    "title": "Promo Code Non-Application",
+    "version": "v1.5"
+  },
+  {
+    "category": "fare_surge",
+    "conditions": {
+      "tolls_unverified": true
+    },
+    "policy_id": "POL-3.4",
+    "remedy_formula": null,
+    "remedy_type": "partial_refund",
+    "rule_text": "Tolls may be charged only where the route actually traversed a tolled segment. Unverified tolls are refunded.",
+    "title": "Toll Verification",
+    "version": "v1.1"
+  },
+  {
+    "category": "damage_cleaning",
+    "conditions": {
+      "photo_authenticity_gte": 0.7
+    },
+    "policy_id": "POL-5.1",
+    "remedy_formula": null,
+    "remedy_type": "compensate_driver",
+    "rule_text": "A cleaning fee is payable to the driver where a verified photograph shows damage or soiling caused during the trip, capped at $25.",
+    "title": "Cleaning Fee - Verified Damage",
+    "version": "v1.6"
+  },
+  {
+    "category": "damage_cleaning",
+    "conditions": {
+      "photo_authenticity_lt": 0.4
+    },
+    "policy_id": "POL-5.2",
+    "remedy_formula": null,
+    "remedy_type": "no_action",
+    "rule_text": "Where the submitted photograph fails authenticity verification, the claim is dismissed.",
+    "title": "Unverified or Fabricated Evidence",
+    "version": "v1.2"
+  },
+  {
+    "category": "damage_cleaning",
+    "conditions": {
+      "reported_after_hours_gt": 24
+    },
+    "policy_id": "POL-5.3",
+    "remedy_formula": null,
+    "remedy_type": "no_action",
+    "rule_text": "Damage reported more than 24 hours after trip end is presumed pre-existing unless the driver produces contemporaneous evidence.",
+    "title": "Prior Damage",
+    "version": "v1.0"
+  },
+  {
+    "category": "general",
+    "conditions": {},
+    "policy_id": "POL-1.1",
+    "remedy_formula": null,
+    "remedy_type": "no_action",
+    "rule_text": "Findings on the merits are made on the balance of probabilities.",
+    "title": "Standard of Proof - Merits",
+    "version": "v1.0"
+  },
+  {
+    "category": "general",
+    "conditions": {},
+    "policy_id": "POL-1.2",
+    "remedy_formula": null,
+    "remedy_type": "no_action",
+    "rule_text": "A finding of bad faith or fraud requires clear and convincing evidence, a materially higher standard than that governing the merits.",
+    "title": "Standard of Proof - Bad Faith",
+    "version": "v1.0"
+  },
+  {
+    "category": "general",
+    "conditions": {},
+    "policy_id": "POL-1.3",
+    "remedy_formula": null,
+    "remedy_type": "no_action",
+    "rule_text": "Advocates must advance only honestly-arguable positions and must concede points the evidence does not support.",
+    "title": "Duty of Candour",
+    "version": "v1.0"
+  },
+  {
+    "category": "general",
+    "conditions": {},
+    "policy_id": "POL-1.4",
+    "remedy_formula": null,
+    "remedy_type": "no_action",
+    "rule_text": "Both parties are served identical evidence. Neither party receives material the other does not.",
+    "title": "Mutual Discovery",
+    "version": "v1.0"
+  },
+  {
+    "category": "general",
+    "conditions": {
+      "confidence_lt": 0.75
+    },
+    "policy_id": "POL-1.5",
+    "remedy_formula": null,
+    "remedy_type": "no_action",
+    "rule_text": "A ruling issued with confidence below 0.75 is referred to appellate review by a human reviewer.",
+    "title": "Confidence Threshold",
+    "version": "v1.0"
+  },
+  {
+    "category": "general",
+    "conditions": {
+      "priority": "critical"
+    },
+    "policy_id": "POL-6.1",
+    "remedy_formula": null,
+    "remedy_type": "no_action",
+    "rule_text": "Disputes touching on safety are referred to a human reviewer irrespective of confidence.",
+    "title": "Safety Escalation",
+    "version": "v1.0"
+  },
+  {
+    "category": "general",
+    "conditions": {
+      "dispute_count_90d_gt": 5
+    },
+    "policy_id": "POL-6.2",
+    "remedy_formula": null,
+    "remedy_type": "no_action",
+    "rule_text": "A party filing more than five disputes in 90 days is subject to enhanced scrutiny.",
+    "title": "Repeat Claimant Review",
+    "version": "v1.1"
+  },
+  {
+    "category": "general",
+    "conditions": {
+      "collusion_score_gte": 0.7
+    },
+    "policy_id": "POL-6.3",
+    "remedy_formula": null,
+    "remedy_type": "no_action",
+    "rule_text": "Where rider and driver telemetry or device signals indicate collusion, the dispute is dismissed and both accounts are referred.",
+    "title": "Collusion",
+    "version": "v1.0"
+  },
+  {
+    "category": "general",
+    "conditions": {},
+    "policy_id": "POL-7.1",
+    "remedy_formula": null,
+    "remedy_type": "no_action",
+    "rule_text": "No award may exceed the amount claimed by the filing party.",
+    "title": "Remedy Cap",
+    "version": "v1.0"
+  }
+]

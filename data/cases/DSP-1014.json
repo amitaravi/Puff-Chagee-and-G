@@ -1,0 +1,200 @@
+{
+  "chat": [
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "Why are we going this way? This isn't the route the app showed.",
+      "message_id": "MSG-00240",
+      "sender": "rider",
+      "sentiment": -0.48,
+      "timestamp": "2025-02-11T07:06:17Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "Shortcut, trust me. Avoids the lights.",
+      "message_id": "MSG-00241",
+      "sender": "driver",
+      "sentiment": 0.08,
+      "timestamp": "2025-02-11T07:07:55Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "This is adding several kilometres to my trip.",
+      "message_id": "MSG-00242",
+      "sender": "rider",
+      "sentiment": -0.47,
+      "timestamp": "2025-02-11T07:08:47Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "Traffic was bad back there.",
+      "message_id": "MSG-00243",
+      "sender": "driver",
+      "sentiment": -0.08,
+      "timestamp": "2025-02-11T07:09:58Z"
+    }
+  ],
+  "dispute": {
+    "category": "route_deviation",
+    "claimed_amount": 18.31,
+    "dispute_id": "DSP-1014",
+    "driver_statement": "I took the route I always take.",
+    "filed_at": "2025-02-11T08:02:00Z",
+    "filed_by": "rider",
+    "priority": "medium",
+    "rider_statement": "The driver took a much longer route than necessary and I was charged for it.",
+    "trip_id": "TRP-1014"
+  },
+  "driver": {
+    "account_age_days": 419,
+    "avg_rating": 3.66,
+    "cancellation_rate": 0.204,
+    "dispute_count_90d": 3,
+    "dispute_win_rate": 0.1,
+    "is_flagged_abuse": false,
+    "name": "Tomoko Sato",
+    "party_id": "DRV-0014",
+    "role": "driver",
+    "total_trips": 2136
+  },
+  "fare": {
+    "base_fare": 2.52,
+    "booking_fee": 2.0,
+    "currency": "USD",
+    "distance_fare": 47.54,
+    "estimated_fare_at_booking": 40.84,
+    "promo_code": "RIDE10",
+    "promo_discount": 4.0,
+    "surge_amount": 0.0,
+    "surge_at_booking": 1.0,
+    "surge_multiplier": 1.0,
+    "time_fare": 13.16,
+    "tolls": 0,
+    "total_charged": 61.22,
+    "trip_id": "TRP-1014"
+  },
+  "fraud": {
+    "collusion_score": 0.2,
+    "device_fingerprint_shared": false,
+    "dispute_id": "DSP-1014",
+    "driver_claims_30d": 3,
+    "photo_authenticity_score": null,
+    "rider_claims_30d": 2,
+    "rider_repeat_claimer": false,
+    "risk_level": "low"
+  },
+  "no_show": null,
+  "policies": [
+    {
+      "category": "route_deviation",
+      "conditions": {
+        "deviation_pct_gt": 0.15,
+        "rider_requested_detour": false,
+        "traffic_justified": false
+      },
+      "policy_id": "POL-4.3",
+      "remedy_formula": "distance_fare * (deviation_km / actual_distance_km)",
+      "remedy_type": "partial_refund",
+      "rule_text": "If the actual route exceeds the optimal route by more than 15%, and the excess is not attributable to traffic or a rider-requested detour, the rider is refunded the distance-fare proportional to the unjustified deviation.",
+      "title": "Route Deviation - Refund Eligibility",
+      "version": "v2.1"
+    },
+    {
+      "category": "route_deviation",
+      "conditions": {
+        "traffic_share_gte": 0.8
+      },
+      "policy_id": "POL-4.4",
+      "remedy_formula": null,
+      "remedy_type": "no_action",
+      "rule_text": "Where the excess duration is wholly or substantially attributable to documented traffic conditions, the deviation is excused and no refund is due under Policy 4.3.",
+      "title": "Traffic-Attributable Deviation",
+      "version": "v1.9"
+    },
+    {
+      "category": "route_deviation",
+      "conditions": {
+        "rider_requested_detour": true
+      },
+      "policy_id": "POL-4.5",
+      "remedy_formula": null,
+      "remedy_type": "no_action",
+      "rule_text": "A detour requested or expressly assented to by the rider is not an unjustified deviation, irrespective of the resulting distance.",
+      "title": "Rider-Requested Detour",
+      "version": "v1.2"
+    },
+    {
+      "category": "route_deviation",
+      "conditions": {
+        "deviation_pct_lt": 0.05
+      },
+      "policy_id": "POL-4.6",
+      "remedy_formula": null,
+      "remedy_type": "no_action",
+      "rule_text": "A deviation of less than 5% does not engage Policy 4.3 and the claim is dismissed without hearing.",
+      "title": "De Minimis Deviation",
+      "version": "v1.0"
+    },
+    {
+      "category": "route_deviation",
+      "conditions": {
+        "longest_stop_sec_gt": 120
+      },
+      "policy_id": "POL-4.7",
+      "remedy_formula": "distance_fare * (deviation_km / actual_distance_km)",
+      "remedy_type": "partial_refund",
+      "rule_text": "An unscheduled stop exceeding 120 seconds that is not rider-requested is treated as unjustified deviation for the purposes of Policy 4.3.",
+      "title": "Unscheduled Stops",
+      "version": "v1.4"
+    }
+  ],
+  "precedents": [],
+  "rider": {
+    "account_age_days": 239,
+    "avg_rating": 4.13,
+    "cancellation_rate": 0.137,
+    "dispute_count_90d": 2,
+    "dispute_win_rate": 0.69,
+    "is_flagged_abuse": false,
+    "name": "Aisha Rahman",
+    "party_id": "RDR-0004",
+    "role": "rider",
+    "total_trips": 99
+  },
+  "route": {
+    "actual_distance_km": 41.34,
+    "delay_attributable_to_traffic": false,
+    "deviation_justified_by": null,
+    "deviation_km": 12.76,
+    "deviation_pct": 0.4463,
+    "duration_delta_min": 20.4,
+    "longest_stop_sec": 0,
+    "num_stops": 0,
+    "optimal_distance_km": 28.58,
+    "rider_requested_detour": false,
+    "route_efficiency_score": 0.691,
+    "traffic_delay_min": 0.9,
+    "trip_id": "TRP-1014",
+    "unexpected_stops": []
+  },
+  "trip": {
+    "actual_distance_km": 41.34,
+    "actual_duration_min": 47.0,
+    "city": "Austin",
+    "driver_id": "DRV-0014",
+    "dropoff_address": "Wrigley Field",
+    "ended_at": "2025-02-11T07:51:00Z",
+    "estimated_distance_km": 28.58,
+    "estimated_duration_min": 26.6,
+    "pickup_address": "Ferry Building",
+    "requested_at": "2025-02-11T07:00:00Z",
+    "rider_id": "RDR-0004",
+    "started_at": "2025-02-11T07:04:00Z",
+    "status": "completed",
+    "traffic_conditions": "light",
+    "trip_id": "TRP-1014"
+  }
+}

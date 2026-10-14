@@ -1,0 +1,169 @@
+{
+  "dispute": {
+    "dispute_id": "DSP-0003",
+    "trip_id": "TRP-00602",
+    "filed_by": "rider",
+    "filed_at": "2025-02-16T22:15:00Z",
+    "category": "no_show",
+    "claimed_amount": 5.0,
+    "rider_statement": "I was standing at the pickup point for five minutes and the driver never arrived, but I still got charged a no-show fee.",
+    "driver_statement": "I was 80 metres away in a one-way street and could not reach the pin. I waited and then cancelled.",
+    "priority": "medium"
+  },
+  "trip": {
+    "trip_id": "TRP-00602",
+    "rider_id": "RDR-0031",
+    "driver_id": "DRV-0021",
+    "requested_at": "2025-02-16T22:02:00Z",
+    "started_at": "2025-02-16T22:02:00Z",
+    "ended_at": "2025-02-16T22:08:00Z",
+    "pickup_address": "Mission St & 5th St (one-way northbound)",
+    "dropoff_address": null,
+    "status": "no_show",
+    "estimated_distance_km": 0.0,
+    "actual_distance_km": 0.0,
+    "estimated_duration_min": 0,
+    "actual_duration_min": 0,
+    "city": "San Francisco",
+    "traffic_conditions": "moderate"
+  },
+  "route": null,
+  "fare": {
+    "trip_id": "TRP-00602",
+    "base_fare": 0.0,
+    "distance_fare": 0.0,
+    "time_fare": 0.0,
+    "booking_fee": 0.0,
+    "surge_multiplier": 1.0,
+    "surge_amount": 0.0,
+    "tolls": 0.0,
+    "promo_code": null,
+    "promo_discount": 0.0,
+    "total_charged": 5.0,
+    "estimated_fare_at_booking": 0.0,
+    "surge_at_booking": 1.0,
+    "currency": "USD"
+  },
+  "chat": [
+    {
+      "message_id": "MSG-01301",
+      "sender": "driver",
+      "timestamp": "2025-02-16T22:04:00Z",
+      "message": "I'm around the corner, one-way street is blocking me. Can you walk to 6th?",
+      "sentiment": 0.0,
+      "contains_threat": false,
+      "contains_agreement": false
+    },
+    {
+      "message_id": "MSG-01302",
+      "sender": "rider",
+      "timestamp": "2025-02-16T22:05:30Z",
+      "message": "I don't see you. I'm exactly at the pin.",
+      "sentiment": -0.3,
+      "contains_threat": false,
+      "contains_agreement": false
+    },
+    {
+      "message_id": "MSG-01303",
+      "sender": "driver",
+      "timestamp": "2025-02-16T22:07:00Z",
+      "message": "Can't get through, cancelling.",
+      "sentiment": -0.15,
+      "contains_threat": false,
+      "contains_agreement": false
+    }
+  ],
+  "rider": {
+    "party_id": "RDR-0031",
+    "role": "rider",
+    "name": "Grace Liu",
+    "account_age_days": 210,
+    "total_trips": 47,
+    "avg_rating": 4.6,
+    "dispute_count_90d": 1,
+    "dispute_win_rate": 1.0,
+    "cancellation_rate": 0.12,
+    "is_flagged_abuse": false
+  },
+  "driver": {
+    "party_id": "DRV-0021",
+    "role": "driver",
+    "name": "Marcus Bell",
+    "account_age_days": 415,
+    "total_trips": 1290,
+    "avg_rating": 4.5,
+    "dispute_count_90d": 2,
+    "dispute_win_rate": 0.5,
+    "cancellation_rate": 0.07,
+    "is_flagged_abuse": false
+  },
+  "no_show": {
+    "driver_min_distance_to_pickup_m": 80.0,
+    "wait_time_min": 4.0,
+    "rider_gps_approaching": false,
+    "no_show_fee_charged": 5.0
+  },
+  "policies": [
+    {
+      "policy_id": "POL-2.1",
+      "category": "no_show",
+      "title": "No-Show Fee - Driver Presence",
+      "rule_text": "Where the driver came within 50 metres of the pickup pin, waited at least 5 minutes, and the rider's GPS shows they were not approaching, the no-show fee stands. Where the driver never came within 100 metres of the pin, the fee is refunded in full.",
+      "conditions": {
+        "driver_within_50m": true,
+        "wait_min_gte": 5,
+        "rider_gps_approaching": false
+      },
+      "remedy_type": "no_action",
+      "remedy_formula": null,
+      "version": "v3.0"
+    },
+    {
+      "policy_id": "POL-2.1b",
+      "category": "no_show",
+      "title": "No-Show Fee - Grey Zone",
+      "rule_text": "Where the driver's minimum distance to the pin was between 50 and 100 metres, or the wait time was between 3 and 5 minutes, the matter is not determinable on the record and must be referred to a human reviewer.",
+      "conditions": {
+        "driver_distance_m_between": [50, 100],
+        "wait_min_between": [3, 5]
+      },
+      "remedy_type": "no_action",
+      "remedy_formula": null,
+      "version": "v1.0"
+    }
+  ],
+  "precedents": [
+    {
+      "precedent_id": "PRC-0201",
+      "category": "no_show",
+      "fact_summary": "Driver 42m from pin, waited 6 min, rider GPS static.",
+      "key_facts": { "driver_min_distance_m": 42, "wait_time_min": 6 },
+      "ruling": "no_action",
+      "reasoning": "All three conditions of Policy 2.1 satisfied. Fee stands.",
+      "cited_policy_id": "POL-2.1",
+      "confidence": 0.94,
+      "decided_at": "2025-01-11"
+    },
+    {
+      "precedent_id": "PRC-0210",
+      "category": "no_show",
+      "fact_summary": "Driver 150m from pin, waited 2 min, cancelled.",
+      "key_facts": { "driver_min_distance_m": 150, "wait_time_min": 2 },
+      "ruling": "refund_rider",
+      "reasoning": "Driver never approached within 100m. Fee refunded in full.",
+      "cited_policy_id": "POL-2.1",
+      "confidence": 0.92,
+      "decided_at": "2025-02-02"
+    }
+  ],
+  "fraud": {
+    "dispute_id": "DSP-0003",
+    "rider_claims_30d": 1,
+    "driver_claims_30d": 2,
+    "rider_repeat_claimer": false,
+    "collusion_score": 0.09,
+    "device_fingerprint_shared": false,
+    "photo_authenticity_score": null,
+    "risk_level": "low"
+  }
+}

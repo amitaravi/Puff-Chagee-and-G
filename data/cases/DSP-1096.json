@@ -1,0 +1,138 @@
+{
+  "chat": [],
+  "dispute": {
+    "category": "no_show",
+    "claimed_amount": 4.0,
+    "dispute_id": "DSP-1096",
+    "driver_statement": "I was at the pickup point and waited.",
+    "filed_at": "2025-02-11T08:02:00Z",
+    "filed_by": "rider",
+    "priority": "medium",
+    "rider_statement": "The driver never showed up but I was still charged a no-show fee.",
+    "trip_id": "TRP-1096"
+  },
+  "driver": {
+    "account_age_days": 80,
+    "avg_rating": 4.63,
+    "cancellation_rate": 0.096,
+    "dispute_count_90d": 2,
+    "dispute_win_rate": 0.65,
+    "is_flagged_abuse": false,
+    "name": "Wei Zhang",
+    "party_id": "DRV-0008",
+    "role": "driver",
+    "total_trips": 1519
+  },
+  "fare": {
+    "base_fare": 0.0,
+    "booking_fee": 0.0,
+    "currency": "USD",
+    "distance_fare": 0.0,
+    "estimated_fare_at_booking": 4.0,
+    "promo_code": null,
+    "promo_discount": 0.0,
+    "surge_amount": 0.0,
+    "surge_at_booking": 1.0,
+    "surge_multiplier": 1.0,
+    "time_fare": 0.0,
+    "tolls": 0.0,
+    "total_charged": 4.0,
+    "trip_id": "TRP-1096"
+  },
+  "fraud": {
+    "collusion_score": 0.08,
+    "device_fingerprint_shared": false,
+    "dispute_id": "DSP-1096",
+    "driver_claims_30d": 2,
+    "photo_authenticity_score": null,
+    "rider_claims_30d": 0,
+    "rider_repeat_claimer": false,
+    "risk_level": "low"
+  },
+  "no_show": {
+    "driver_min_distance_to_pickup_m": 34.0,
+    "no_show_fee_charged": 4.0,
+    "rider_gps_approaching": false,
+    "wait_time_min": 8.0
+  },
+  "policies": [
+    {
+      "category": "no_show",
+      "conditions": {
+        "min_distance_m_gt": 100
+      },
+      "policy_id": "POL-2.1a",
+      "remedy_formula": "no_show_fee_charged",
+      "remedy_type": "full_refund",
+      "rule_text": "Where the driver did not come within 100 metres of the pickup pin, the no-show fee is refunded in full.",
+      "title": "Driver Non-Arrival",
+      "version": "v2.0"
+    },
+    {
+      "category": "no_show",
+      "conditions": {
+        "min_distance_m_lte": 50,
+        "wait_time_min_gte": 5
+      },
+      "policy_id": "POL-2.1b",
+      "remedy_formula": null,
+      "remedy_type": "no_action",
+      "rule_text": "Where the driver came within 50 metres of the pickup pin, waited at least 5 minutes, and rider telemetry shows no movement toward the vehicle, the no-show fee stands.",
+      "title": "Driver Arrival - Fee Stands",
+      "version": "v2.0"
+    },
+    {
+      "category": "no_show",
+      "conditions": {},
+      "policy_id": "POL-2.2",
+      "remedy_formula": null,
+      "remedy_type": "no_action",
+      "rule_text": "Where the facts fall between the Policy 2.1a and 2.1b thresholds, the matter is not determinable on the record and is referred to human review.",
+      "title": "Grey-Band Referral",
+      "version": "v1.1"
+    },
+    {
+      "category": "no_show",
+      "conditions": {
+        "wait_time_min_lte": 2
+      },
+      "policy_id": "POL-2.3",
+      "remedy_formula": "no_show_fee_charged",
+      "remedy_type": "full_refund",
+      "rule_text": "A rider who cancels within 2 minutes of acceptance without moving toward the pickup is not charged a no-show fee.",
+      "title": "Rider Cancellation Window",
+      "version": "v1.3"
+    }
+  ],
+  "precedents": [],
+  "rider": {
+    "account_age_days": 1912,
+    "avg_rating": 4.34,
+    "cancellation_rate": 0.027,
+    "dispute_count_90d": 0,
+    "dispute_win_rate": 0.77,
+    "is_flagged_abuse": false,
+    "name": "Ingrid Larsson",
+    "party_id": "RDR-0034",
+    "role": "rider",
+    "total_trips": 878
+  },
+  "route": null,
+  "trip": {
+    "actual_distance_km": 0.0,
+    "actual_duration_min": 8.0,
+    "city": "Austin",
+    "driver_id": "DRV-0008",
+    "dropoff_address": null,
+    "ended_at": "2025-02-11T07:12:00Z",
+    "estimated_distance_km": 2.79,
+    "estimated_duration_min": 6.1,
+    "pickup_address": "Ferry Building",
+    "requested_at": "2025-02-11T07:00:00Z",
+    "rider_id": "RDR-0034",
+    "started_at": "2025-02-11T07:04:00Z",
+    "status": "no_show",
+    "traffic_conditions": "light",
+    "trip_id": "TRP-1096"
+  }
+}

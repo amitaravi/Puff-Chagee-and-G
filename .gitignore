@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.env.local
+*.egg-info/
+.pytest_cache/
+.DS_Store
+.streamlit/secrets.toml
+# ground truth stays committed; it is NOT loaded by the tool layer (see tests/test_leakage.py)

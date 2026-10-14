@@ -1,0 +1,213 @@
+{
+  "chat": [
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "You're scamming me with this route.",
+      "message_id": "MSG-00510",
+      "sender": "rider",
+      "sentiment": -0.78,
+      "timestamp": "2025-02-11T07:08:14Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "It's the fastest way right now.",
+      "message_id": "MSG-00511",
+      "sender": "driver",
+      "sentiment": -0.26,
+      "timestamp": "2025-02-11T07:09:03Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "I'm reporting this. You'll hear from support.",
+      "message_id": "MSG-00512",
+      "sender": "rider",
+      "sentiment": -0.67,
+      "timestamp": "2025-02-11T07:10:21Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "Report whatever you want.",
+      "message_id": "MSG-00513",
+      "sender": "driver",
+      "sentiment": -0.27,
+      "timestamp": "2025-02-11T07:11:06Z"
+    }
+  ],
+  "dispute": {
+    "category": "route_deviation",
+    "claimed_amount": 12.5,
+    "dispute_id": "DSP-9306",
+    "driver_statement": "Route was within normal variance.",
+    "filed_at": "2025-02-11T08:02:00Z",
+    "filed_by": "rider",
+    "priority": "medium",
+    "rider_statement": "The driver went the wrong way and overcharged me.",
+    "trip_id": "TRP-1041"
+  },
+  "driver": {
+    "account_age_days": 1015,
+    "avg_rating": 4.81,
+    "cancellation_rate": 0.149,
+    "dispute_count_90d": 1,
+    "dispute_win_rate": 0.26,
+    "is_flagged_abuse": false,
+    "name": "Fatima El-Amin",
+    "party_id": "DRV-0010",
+    "role": "driver",
+    "total_trips": 223
+  },
+  "fare": {
+    "base_fare": 2.27,
+    "booking_fee": 2.0,
+    "currency": "USD",
+    "distance_fare": 23.49,
+    "estimated_fare_at_booking": 27.59,
+    "promo_code": "RIDE10",
+    "promo_discount": 2.35,
+    "surge_amount": 0.0,
+    "surge_at_booking": 1.0,
+    "surge_multiplier": 1.0,
+    "time_fare": 9.97,
+    "tolls": 3.5,
+    "total_charged": 38.88,
+    "trip_id": "TRP-1041"
+  },
+  "fraud": {
+    "collusion_score": 0.04,
+    "device_fingerprint_shared": false,
+    "dispute_id": "DSP-1041",
+    "driver_claims_30d": 1,
+    "photo_authenticity_score": null,
+    "rider_claims_30d": 0,
+    "rider_repeat_claimer": false,
+    "risk_level": "low"
+  },
+  "no_show": null,
+  "policies": [
+    {
+      "category": "route_deviation",
+      "conditions": {
+        "deviation_pct_gt": 0.15,
+        "rider_requested_detour": false,
+        "traffic_justified": false
+      },
+      "policy_id": "POL-4.3",
+      "remedy_formula": "distance_fare * (deviation_km / actual_distance_km)",
+      "remedy_type": "partial_refund",
+      "rule_text": "If the actual route exceeds the optimal route by more than 15%, and the excess is not attributable to traffic or a rider-requested detour, the rider is refunded the distance-fare proportional to the unjustified deviation.",
+      "title": "Route Deviation - Refund Eligibility",
+      "version": "v2.1"
+    },
+    {
+      "category": "route_deviation",
+      "conditions": {
+        "traffic_share_gte": 0.8
+      },
+      "policy_id": "POL-4.4",
+      "remedy_formula": null,
+      "remedy_type": "no_action",
+      "rule_text": "Where the excess duration is wholly or substantially attributable to documented traffic conditions, the deviation is excused and no refund is due under Policy 4.3.",
+      "title": "Traffic-Attributable Deviation",
+      "version": "v1.9"
+    },
+    {
+      "category": "route_deviation",
+      "conditions": {
+        "rider_requested_detour": true
+      },
+      "policy_id": "POL-4.5",
+      "remedy_formula": null,
+      "remedy_type": "no_action",
+      "rule_text": "A detour requested or expressly assented to by the rider is not an unjustified deviation, irrespective of the resulting distance.",
+      "title": "Rider-Requested Detour",
+      "version": "v1.2"
+    },
+    {
+      "category": "route_deviation",
+      "conditions": {
+        "deviation_pct_lt": 0.05
+      },
+      "policy_id": "POL-4.6",
+      "remedy_formula": null,
+      "remedy_type": "no_action",
+      "rule_text": "A deviation of less than 5% does not engage Policy 4.3 and the claim is dismissed without hearing.",
+      "title": "De Minimis Deviation",
+      "version": "v1.0"
+    },
+    {
+      "category": "route_deviation",
+      "conditions": {
+        "longest_stop_sec_gt": 120
+      },
+      "policy_id": "POL-4.7",
+      "remedy_formula": "distance_fare * (deviation_km / actual_distance_km)",
+      "remedy_type": "partial_refund",
+      "rule_text": "An unscheduled stop exceeding 120 seconds that is not rider-requested is treated as unjustified deviation for the purposes of Policy 4.3.",
+      "title": "Unscheduled Stops",
+      "version": "v1.4"
+    }
+  ],
+  "precedents": [],
+  "rider": {
+    "account_age_days": 1702,
+    "avg_rating": 4.09,
+    "cancellation_rate": 0.01,
+    "dispute_count_90d": 0,
+    "dispute_win_rate": 0.22,
+    "is_flagged_abuse": false,
+    "name": "Kwame Mensah",
+    "party_id": "RDR-0031",
+    "role": "rider",
+    "total_trips": 3820
+  },
+  "route": {
+    "actual_distance_km": 18.26,
+    "delay_attributable_to_traffic": false,
+    "deviation_justified_by": null,
+    "deviation_km": 1.79,
+    "deviation_pct": 0.1084,
+    "duration_delta_min": 19.8,
+    "longest_stop_sec": 345,
+    "num_stops": 2,
+    "optimal_distance_km": 16.47,
+    "rider_requested_detour": false,
+    "route_efficiency_score": 0.904,
+    "traffic_delay_min": 3.7,
+    "trip_id": "TRP-1041",
+    "unexpected_stops": [
+      {
+        "at_km": 8.77,
+        "duration_sec": 332,
+        "lat": 37.6404,
+        "lng": -122.3923
+      },
+      {
+        "at_km": 12.55,
+        "duration_sec": 345,
+        "lat": 37.6275,
+        "lng": -122.3769
+      }
+    ]
+  },
+  "trip": {
+    "actual_distance_km": 18.21,
+    "actual_duration_min": 35.6,
+    "city": "Chicago",
+    "driver_id": "DRV-0010",
+    "dropoff_address": "Pike Place",
+    "ended_at": "2025-02-11T07:39:00Z",
+    "estimated_distance_km": 16.47,
+    "estimated_duration_min": 15.8,
+    "pickup_address": "Pike Place",
+    "requested_at": "2025-02-11T07:00:00Z",
+    "rider_id": "RDR-0031",
+    "started_at": "2025-02-11T07:04:00Z",
+    "status": "completed",
+    "traffic_conditions": "moderate",
+    "trip_id": "TRP-1041"
+  }
+}

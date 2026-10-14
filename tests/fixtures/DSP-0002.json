@@ -1,0 +1,176 @@
+{
+  "dispute": {
+    "dispute_id": "DSP-0002",
+    "trip_id": "TRP-00518",
+    "filed_by": "rider",
+    "filed_at": "2025-02-14T18:20:00Z",
+    "category": "route_deviation",
+    "claimed_amount": 6.0,
+    "rider_statement": "Driver took a huge detour, the trip was 22% longer than the app estimated. I want the difference back.",
+    "driver_statement": "I-80 was at a complete standstill. I routed around it and that was genuinely the fastest option.",
+    "priority": "medium"
+  },
+  "trip": {
+    "trip_id": "TRP-00518",
+    "rider_id": "RDR-0019",
+    "driver_id": "DRV-0004",
+    "requested_at": "2025-02-14T17:32:00Z",
+    "started_at": "2025-02-14T17:36:00Z",
+    "ended_at": "2025-02-14T18:12:00Z",
+    "pickup_address": "Mission & 16th",
+    "dropoff_address": "Berkeley, Shattuck Ave",
+    "status": "completed",
+    "estimated_distance_km": 18.0,
+    "actual_distance_km": 21.96,
+    "estimated_duration_min": 30,
+    "actual_duration_min": 46,
+    "city": "San Francisco",
+    "traffic_conditions": "heavy"
+  },
+  "route": {
+    "trip_id": "TRP-00518",
+    "optimal_distance_km": 18.0,
+    "actual_distance_km": 21.96,
+    "deviation_km": 3.96,
+    "deviation_pct": 0.22,
+    "duration_delta_min": 16,
+    "traffic_delay_min": 16,
+    "delay_attributable_to_traffic": true,
+    "rider_requested_detour": false,
+    "unexpected_stops": [],
+    "num_stops": 0,
+    "longest_stop_sec": 0,
+    "deviation_justified_by": "traffic",
+    "route_efficiency_score": 0.82
+  },
+  "fare": {
+    "trip_id": "TRP-00518",
+    "base_fare": 2.55,
+    "distance_fare": 19.8,
+    "time_fare": 12.1,
+    "booking_fee": 2.0,
+    "surge_multiplier": 1.2,
+    "surge_amount": 4.2,
+    "tolls": 0.0,
+    "promo_code": null,
+    "promo_discount": 0.0,
+    "total_charged": 40.65,
+    "estimated_fare_at_booking": 36.0,
+    "surge_at_booking": 1.2,
+    "currency": "USD"
+  },
+  "chat": [
+    {
+      "message_id": "MSG-01140",
+      "sender": "driver",
+      "timestamp": "2025-02-14T17:44:00Z",
+      "message": "Heads up - the bridge and I-80 are both stopped. Going around via 580, it's longer on the map but faster in reality.",
+      "sentiment": 0.1,
+      "contains_threat": false,
+      "contains_agreement": false
+    },
+    {
+      "message_id": "MSG-01141",
+      "sender": "rider",
+      "timestamp": "2025-02-14T17:45:30Z",
+      "message": "Fine, whatever gets me there.",
+      "sentiment": 0.2,
+      "contains_threat": false,
+      "contains_agreement": true
+    },
+    {
+      "message_id": "MSG-01142",
+      "sender": "rider",
+      "timestamp": "2025-02-14T18:11:00Z",
+      "message": "OK that worked, thanks.",
+      "sentiment": 0.6,
+      "contains_threat": false,
+      "contains_agreement": true
+    }
+  ],
+  "rider": {
+    "party_id": "RDR-0019",
+    "role": "rider",
+    "name": "Tom Alvarez",
+    "account_age_days": 640,
+    "total_trips": 148,
+    "avg_rating": 4.7,
+    "dispute_count_90d": 3,
+    "dispute_win_rate": 0.33,
+    "cancellation_rate": 0.09,
+    "is_flagged_abuse": false
+  },
+  "driver": {
+    "party_id": "DRV-0004",
+    "role": "driver",
+    "name": "Priya Raman",
+    "account_age_days": 2010,
+    "total_trips": 6120,
+    "avg_rating": 4.9,
+    "dispute_count_90d": 0,
+    "dispute_win_rate": 0.0,
+    "cancellation_rate": 0.01,
+    "is_flagged_abuse": false
+  },
+  "no_show": null,
+  "policies": [
+    {
+      "policy_id": "POL-4.3",
+      "category": "route_deviation",
+      "title": "Route Deviation - Refund Eligibility",
+      "rule_text": "If the actual route exceeds the optimal route by more than 15%, and the excess is not attributable to traffic or a rider-requested detour, the rider is refunded the distance-fare proportional to the unjustified deviation.",
+      "conditions": {
+        "deviation_pct_gt": 0.15,
+        "traffic_justified": false,
+        "rider_requested_detour": false
+      },
+      "remedy_type": "partial_refund",
+      "remedy_formula": "distance_fare * (deviation_km / actual_distance_km)",
+      "version": "v2.1"
+    },
+    {
+      "policy_id": "POL-4.5",
+      "category": "route_deviation",
+      "title": "Rider Consent to Rerouting",
+      "rule_text": "Where the driver informed the rider of a reroute and the rider assented, the deviation is treated as rider-requested and Policy 4.3 does not apply.",
+      "conditions": { "rider_assented": true },
+      "remedy_type": "no_action",
+      "remedy_formula": null,
+      "version": "v1.2"
+    }
+  ],
+  "precedents": [
+    {
+      "precedent_id": "PRC-0102",
+      "category": "route_deviation",
+      "fact_summary": "22.0km trip, 3.9km deviation, heavy traffic fully accounting for delay.",
+      "key_facts": { "deviation_pct": 0.177, "traffic_delay_min": 15, "duration_delta_min": 15 },
+      "ruling": "no_action",
+      "reasoning": "Deviation exceeded 15% but was fully attributable to documented heavy traffic. Policy 4.3 requires the excess be non-traffic-attributable. No refund.",
+      "cited_policy_id": "POL-4.3",
+      "confidence": 0.91,
+      "decided_at": "2025-01-08"
+    },
+    {
+      "precedent_id": "PRC-0117",
+      "category": "route_deviation",
+      "fact_summary": "19km trip, 21% deviation, driver announced reroute in chat and rider replied affirmatively.",
+      "key_facts": { "deviation_pct": 0.21, "rider_assented": true },
+      "ruling": "no_action",
+      "reasoning": "Notwithstanding a deviation above threshold, the rider assented to the reroute after being informed. Policy 4.5 treats this as rider-requested.",
+      "cited_policy_id": "POL-4.5",
+      "confidence": 0.88,
+      "decided_at": "2025-01-29"
+    }
+  ],
+  "fraud": {
+    "dispute_id": "DSP-0002",
+    "rider_claims_30d": 3,
+    "driver_claims_30d": 0,
+    "rider_repeat_claimer": false,
+    "collusion_score": 0.11,
+    "device_fingerprint_shared": false,
+    "photo_authenticity_score": null,
+    "risk_level": "low"
+  }
+}

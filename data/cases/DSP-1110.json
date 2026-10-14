@@ -1,0 +1,171 @@
+{
+  "chat": [
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "The app said $32 and I was charged $48.",
+      "message_id": "MSG-01200",
+      "sender": "rider",
+      "sentiment": -0.68,
+      "timestamp": "2025-02-11T07:12:25Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "Surge is set by the platform, not me.",
+      "message_id": "MSG-01201",
+      "sender": "driver",
+      "sentiment": 0.04,
+      "timestamp": "2025-02-11T07:13:14Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "It didn't show any surge when I booked.",
+      "message_id": "MSG-01202",
+      "sender": "rider",
+      "sentiment": -0.55,
+      "timestamp": "2025-02-11T07:14:08Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": true,
+      "message": "I know where you live and I'll find you.",
+      "message_id": "MSG-01203",
+      "sender": "rider",
+      "sentiment": -0.95,
+      "timestamp": "2025-02-11T07:15:00Z"
+    }
+  ],
+  "dispute": {
+    "category": "fare_surge",
+    "claimed_amount": 2.85,
+    "dispute_id": "DSP-1110",
+    "driver_statement": "Fares and surge are set by the platform.",
+    "filed_at": "2025-02-11T08:02:00Z",
+    "filed_by": "rider",
+    "priority": "medium",
+    "rider_statement": "I was quoted $29.10 and charged $39.77.",
+    "trip_id": "TRP-1110"
+  },
+  "driver": {
+    "account_age_days": 708,
+    "avg_rating": 3.76,
+    "cancellation_rate": 0.212,
+    "dispute_count_90d": 1,
+    "dispute_win_rate": 0.22,
+    "is_flagged_abuse": false,
+    "name": "Ingrid Larsson",
+    "party_id": "DRV-0012",
+    "role": "driver",
+    "total_trips": 276
+  },
+  "fare": {
+    "base_fare": 2.52,
+    "booking_fee": 2.0,
+    "currency": "USD",
+    "distance_fare": 21.75,
+    "estimated_fare_at_booking": 29.1,
+    "promo_code": null,
+    "promo_discount": 0.0,
+    "surge_amount": 10.2,
+    "surge_at_booking": 1.0,
+    "surge_multiplier": 1.37,
+    "time_fare": 3.3,
+    "tolls": 0,
+    "total_charged": 39.77,
+    "trip_id": "TRP-1110"
+  },
+  "fraud": {
+    "collusion_score": 0.16,
+    "device_fingerprint_shared": false,
+    "dispute_id": "DSP-1110",
+    "driver_claims_30d": 1,
+    "photo_authenticity_score": null,
+    "rider_claims_30d": 0,
+    "rider_repeat_claimer": false,
+    "risk_level": "low"
+  },
+  "no_show": null,
+  "policies": [
+    {
+      "category": "fare_surge",
+      "conditions": {
+        "surge_consistent": true
+      },
+      "policy_id": "POL-3.1",
+      "remedy_formula": null,
+      "remedy_type": "no_action",
+      "rule_text": "The fare shown at booking is an estimate. Where the applied surge matches the surge disclosed at booking, no refund is due.",
+      "title": "Estimates Are Not Quotes",
+      "version": "v2.2"
+    },
+    {
+      "category": "fare_surge",
+      "conditions": {
+        "surge_exceeds_disclosed": true
+      },
+      "policy_id": "POL-3.2",
+      "remedy_formula": "surge_amount * (1 - (surge_at_booking / surge_multiplier))",
+      "remedy_type": "partial_refund",
+      "rule_text": "Where the surge applied exceeds the surge disclosed at booking, the rider is refunded the difference attributable to the undisclosed portion.",
+      "title": "Undisclosed Surge",
+      "version": "v1.8"
+    },
+    {
+      "category": "fare_surge",
+      "conditions": {
+        "promo_unapplied": true
+      },
+      "policy_id": "POL-3.3",
+      "remedy_formula": null,
+      "remedy_type": "partial_refund",
+      "rule_text": "Where a valid promotion was presented at booking but not applied to the final charge, the rider is refunded the promotional value.",
+      "title": "Promo Code Non-Application",
+      "version": "v1.5"
+    },
+    {
+      "category": "fare_surge",
+      "conditions": {
+        "tolls_unverified": true
+      },
+      "policy_id": "POL-3.4",
+      "remedy_formula": null,
+      "remedy_type": "partial_refund",
+      "rule_text": "Tolls may be charged only where the route actually traversed a tolled segment. Unverified tolls are refunded.",
+      "title": "Toll Verification",
+      "version": "v1.1"
+    }
+  ],
+  "precedents": [],
+  "rider": {
+    "account_age_days": 1212,
+    "avg_rating": 4.59,
+    "cancellation_rate": 0.172,
+    "dispute_count_90d": 0,
+    "dispute_win_rate": 0.56,
+    "is_flagged_abuse": false,
+    "name": "Aisha Rahman",
+    "party_id": "RDR-0006",
+    "role": "rider",
+    "total_trips": 201
+  },
+  "route": null,
+  "trip": {
+    "actual_distance_km": 16.99,
+    "actual_duration_min": 11.8,
+    "city": "Austin",
+    "driver_id": "DRV-0012",
+    "dropoff_address": "Pike Place",
+    "ended_at": "2025-02-11T07:15:00Z",
+    "estimated_distance_km": 16.58,
+    "estimated_duration_min": 12.0,
+    "pickup_address": "Rainey St",
+    "requested_at": "2025-02-11T07:00:00Z",
+    "rider_id": "RDR-0006",
+    "started_at": "2025-02-11T07:04:00Z",
+    "status": "completed",
+    "traffic_conditions": "heavy",
+    "trip_id": "TRP-1110"
+  }
+}

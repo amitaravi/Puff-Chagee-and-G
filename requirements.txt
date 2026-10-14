@@ -1,0 +1,9 @@
+langgraph>=0.2.0
+langchain-core>=0.3.0
+langchain-openai>=0.2.0
+pydantic>=2.7
+python-dotenv>=1.0
+streamlit>=1.35
+fastapi>=0.110
+uvicorn>=0.29
+pytest>=8.0

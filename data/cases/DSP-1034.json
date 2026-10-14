@@ -1,0 +1,207 @@
+{
+  "chat": [
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "You're scamming me with this route.",
+      "message_id": "MSG-00440",
+      "sender": "rider",
+      "sentiment": -0.82,
+      "timestamp": "2025-02-11T07:08:36Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "It's the fastest way right now.",
+      "message_id": "MSG-00441",
+      "sender": "driver",
+      "sentiment": -0.12,
+      "timestamp": "2025-02-11T07:09:51Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "I'm reporting this. You'll hear from support.",
+      "message_id": "MSG-00442",
+      "sender": "rider",
+      "sentiment": -0.68,
+      "timestamp": "2025-02-11T07:10:08Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "Report whatever you want.",
+      "message_id": "MSG-00443",
+      "sender": "driver",
+      "sentiment": -0.37,
+      "timestamp": "2025-02-11T07:11:05Z"
+    }
+  ],
+  "dispute": {
+    "category": "route_deviation",
+    "claimed_amount": 14.7,
+    "dispute_id": "DSP-1034",
+    "driver_statement": "Heavy traffic; I rerouted to avoid a standstill.",
+    "filed_at": "2025-02-11T08:02:00Z",
+    "filed_by": "rider",
+    "priority": "medium",
+    "rider_statement": "The trip took far longer than quoted and cost more.",
+    "trip_id": "TRP-1034"
+  },
+  "driver": {
+    "account_age_days": 717,
+    "avg_rating": 4.85,
+    "cancellation_rate": 0.059,
+    "dispute_count_90d": 0,
+    "dispute_win_rate": 0.2,
+    "is_flagged_abuse": false,
+    "name": "Rafael Duarte",
+    "party_id": "DRV-0027",
+    "role": "driver",
+    "total_trips": 2669
+  },
+  "fare": {
+    "base_fare": 2.34,
+    "booking_fee": 2.0,
+    "currency": "USD",
+    "distance_fare": 7.93,
+    "estimated_fare_at_booking": 23.22,
+    "promo_code": null,
+    "promo_discount": 0.0,
+    "surge_amount": 4.69,
+    "surge_at_booking": 1.2,
+    "surge_multiplier": 1.2,
+    "time_fare": 13.16,
+    "tolls": 0,
+    "total_charged": 30.12,
+    "trip_id": "TRP-1034"
+  },
+  "fraud": {
+    "collusion_score": 0.1,
+    "device_fingerprint_shared": false,
+    "dispute_id": "DSP-1034",
+    "driver_claims_30d": 0,
+    "photo_authenticity_score": null,
+    "rider_claims_30d": 0,
+    "rider_repeat_claimer": false,
+    "risk_level": "low"
+  },
+  "no_show": null,
+  "policies": [
+    {
+      "category": "route_deviation",
+      "conditions": {
+        "deviation_pct_gt": 0.15,
+        "rider_requested_detour": false,
+        "traffic_justified": false
+      },
+      "policy_id": "POL-4.3",
+      "remedy_formula": "distance_fare * (deviation_km / actual_distance_km)",
+      "remedy_type": "partial_refund",
+      "rule_text": "If the actual route exceeds the optimal route by more than 15%, and the excess is not attributable to traffic or a rider-requested detour, the rider is refunded the distance-fare proportional to the unjustified deviation.",
+      "title": "Route Deviation - Refund Eligibility",
+      "version": "v2.1"
+    },
+    {
+      "category": "route_deviation",
+      "conditions": {
+        "traffic_share_gte": 0.8
+      },
+      "policy_id": "POL-4.4",
+      "remedy_formula": null,
+      "remedy_type": "no_action",
+      "rule_text": "Where the excess duration is wholly or substantially attributable to documented traffic conditions, the deviation is excused and no refund is due under Policy 4.3.",
+      "title": "Traffic-Attributable Deviation",
+      "version": "v1.9"
+    },
+    {
+      "category": "route_deviation",
+      "conditions": {
+        "rider_requested_detour": true
+      },
+      "policy_id": "POL-4.5",
+      "remedy_formula": null,
+      "remedy_type": "no_action",
+      "rule_text": "A detour requested or expressly assented to by the rider is not an unjustified deviation, irrespective of the resulting distance.",
+      "title": "Rider-Requested Detour",
+      "version": "v1.2"
+    },
+    {
+      "category": "route_deviation",
+      "conditions": {
+        "deviation_pct_lt": 0.05
+      },
+      "policy_id": "POL-4.6",
+      "remedy_formula": null,
+      "remedy_type": "no_action",
+      "rule_text": "A deviation of less than 5% does not engage Policy 4.3 and the claim is dismissed without hearing.",
+      "title": "De Minimis Deviation",
+      "version": "v1.0"
+    },
+    {
+      "category": "route_deviation",
+      "conditions": {
+        "longest_stop_sec_gt": 120
+      },
+      "policy_id": "POL-4.7",
+      "remedy_formula": "distance_fare * (deviation_km / actual_distance_km)",
+      "remedy_type": "partial_refund",
+      "rule_text": "An unscheduled stop exceeding 120 seconds that is not rider-requested is treated as unjustified deviation for the purposes of Policy 4.3.",
+      "title": "Unscheduled Stops",
+      "version": "v1.4"
+    }
+  ],
+  "precedents": [],
+  "rider": {
+    "account_age_days": 1402,
+    "avg_rating": 4.58,
+    "cancellation_rate": 0.046,
+    "dispute_count_90d": 0,
+    "dispute_win_rate": 0.53,
+    "is_flagged_abuse": false,
+    "name": "Grace Okonkwo",
+    "party_id": "RDR-0008",
+    "role": "rider",
+    "total_trips": 278
+  },
+  "route": {
+    "actual_distance_km": 7.08,
+    "delay_attributable_to_traffic": true,
+    "deviation_justified_by": "traffic",
+    "deviation_km": 1.15,
+    "deviation_pct": 0.1932,
+    "duration_delta_min": 17.1,
+    "longest_stop_sec": 166,
+    "num_stops": 1,
+    "optimal_distance_km": 5.93,
+    "rider_requested_detour": false,
+    "route_efficiency_score": 0.838,
+    "traffic_delay_min": 16.6,
+    "trip_id": "TRP-1034",
+    "unexpected_stops": [
+      {
+        "at_km": 2.14,
+        "duration_sec": 166,
+        "lat": 37.797,
+        "lng": -122.3416
+      }
+    ]
+  },
+  "trip": {
+    "actual_distance_km": 7.08,
+    "actual_duration_min": 47.0,
+    "city": "San Francisco",
+    "driver_id": "DRV-0027",
+    "dropoff_address": "Rainey St",
+    "ended_at": "2025-02-11T07:51:00Z",
+    "estimated_distance_km": 5.93,
+    "estimated_duration_min": 29.9,
+    "pickup_address": "Rainey St",
+    "requested_at": "2025-02-11T07:00:00Z",
+    "rider_id": "RDR-0008",
+    "started_at": "2025-02-11T07:04:00Z",
+    "status": "completed",
+    "traffic_conditions": "heavy",
+    "trip_id": "TRP-1034"
+  }
+}

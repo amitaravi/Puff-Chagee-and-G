@@ -1,0 +1,184 @@
+{
+  "chat": [
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "Where are you? I've been waiting.",
+      "message_id": "MSG-01040",
+      "sender": "rider",
+      "sentiment": -0.45,
+      "timestamp": "2025-02-11T07:06:06Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "I'm at the pin, I don't see you.",
+      "message_id": "MSG-01041",
+      "sender": "driver",
+      "sentiment": -0.14,
+      "timestamp": "2025-02-11T07:07:50Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "I'm standing right here at the entrance.",
+      "message_id": "MSG-01042",
+      "sender": "rider",
+      "sentiment": -0.41,
+      "timestamp": "2025-02-11T07:08:41Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "This is the address the app gave me.",
+      "message_id": "MSG-01043",
+      "sender": "driver",
+      "sentiment": -0.2,
+      "timestamp": "2025-02-11T07:09:14Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": true,
+      "message": "You'll regret this, I'll make sure you're deactivated.",
+      "message_id": "MSG-01044",
+      "sender": "rider",
+      "sentiment": -0.95,
+      "timestamp": "2025-02-11T07:10:00Z"
+    }
+  ],
+  "dispute": {
+    "category": "no_show",
+    "claimed_amount": 5.0,
+    "dispute_id": "DSP-1094",
+    "driver_statement": "I was at the pickup point and waited.",
+    "filed_at": "2025-02-11T08:02:00Z",
+    "filed_by": "rider",
+    "priority": "medium",
+    "rider_statement": "The driver never showed up but I was still charged a no-show fee.",
+    "trip_id": "TRP-1094"
+  },
+  "driver": {
+    "account_age_days": 571,
+    "avg_rating": 4.85,
+    "cancellation_rate": 0.069,
+    "dispute_count_90d": 9,
+    "dispute_win_rate": 0.21,
+    "is_flagged_abuse": false,
+    "name": "Dmitri Volkov",
+    "party_id": "DRV-0001",
+    "role": "driver",
+    "total_trips": 995
+  },
+  "fare": {
+    "base_fare": 0.0,
+    "booking_fee": 0.0,
+    "currency": "USD",
+    "distance_fare": 0.0,
+    "estimated_fare_at_booking": 5.0,
+    "promo_code": null,
+    "promo_discount": 0.0,
+    "surge_amount": 0.0,
+    "surge_at_booking": 1.0,
+    "surge_multiplier": 1.0,
+    "time_fare": 0.0,
+    "tolls": 0.0,
+    "total_charged": 5.0,
+    "trip_id": "TRP-1094"
+  },
+  "fraud": {
+    "collusion_score": 0.25,
+    "device_fingerprint_shared": false,
+    "dispute_id": "DSP-1094",
+    "driver_claims_30d": 9,
+    "photo_authenticity_score": null,
+    "rider_claims_30d": 1,
+    "rider_repeat_claimer": false,
+    "risk_level": "medium"
+  },
+  "no_show": {
+    "driver_min_distance_to_pickup_m": 21.1,
+    "no_show_fee_charged": 5.0,
+    "rider_gps_approaching": false,
+    "wait_time_min": 12.3
+  },
+  "policies": [
+    {
+      "category": "no_show",
+      "conditions": {
+        "min_distance_m_gt": 100
+      },
+      "policy_id": "POL-2.1a",
+      "remedy_formula": "no_show_fee_charged",
+      "remedy_type": "full_refund",
+      "rule_text": "Where the driver did not come within 100 metres of the pickup pin, the no-show fee is refunded in full.",
+      "title": "Driver Non-Arrival",
+      "version": "v2.0"
+    },
+    {
+      "category": "no_show",
+      "conditions": {
+        "min_distance_m_lte": 50,
+        "wait_time_min_gte": 5
+      },
+      "policy_id": "POL-2.1b",
+      "remedy_formula": null,
+      "remedy_type": "no_action",
+      "rule_text": "Where the driver came within 50 metres of the pickup pin, waited at least 5 minutes, and rider telemetry shows no movement toward the vehicle, the no-show fee stands.",
+      "title": "Driver Arrival - Fee Stands",
+      "version": "v2.0"
+    },
+    {
+      "category": "no_show",
+      "conditions": {},
+      "policy_id": "POL-2.2",
+      "remedy_formula": null,
+      "remedy_type": "no_action",
+      "rule_text": "Where the facts fall between the Policy 2.1a and 2.1b thresholds, the matter is not determinable on the record and is referred to human review.",
+      "title": "Grey-Band Referral",
+      "version": "v1.1"
+    },
+    {
+      "category": "no_show",
+      "conditions": {
+        "wait_time_min_lte": 2
+      },
+      "policy_id": "POL-2.3",
+      "remedy_formula": "no_show_fee_charged",
+      "remedy_type": "full_refund",
+      "rule_text": "A rider who cancels within 2 minutes of acceptance without moving toward the pickup is not charged a no-show fee.",
+      "title": "Rider Cancellation Window",
+      "version": "v1.3"
+    }
+  ],
+  "precedents": [],
+  "rider": {
+    "account_age_days": 81,
+    "avg_rating": 3.99,
+    "cancellation_rate": 0.032,
+    "dispute_count_90d": 1,
+    "dispute_win_rate": 0.2,
+    "is_flagged_abuse": false,
+    "name": "Priya Raman",
+    "party_id": "RDR-0000",
+    "role": "rider",
+    "total_trips": 764
+  },
+  "route": null,
+  "trip": {
+    "actual_distance_km": 0.0,
+    "actual_duration_min": 12.3,
+    "city": "New York",
+    "driver_id": "DRV-0001",
+    "dropoff_address": null,
+    "ended_at": "2025-02-11T07:16:00Z",
+    "estimated_distance_km": 16.15,
+    "estimated_duration_min": 35.5,
+    "pickup_address": "Ferry Building",
+    "requested_at": "2025-02-11T07:00:00Z",
+    "rider_id": "RDR-0000",
+    "started_at": "2025-02-11T07:04:00Z",
+    "status": "no_show",
+    "traffic_conditions": "light",
+    "trip_id": "TRP-1094"
+  }
+}
