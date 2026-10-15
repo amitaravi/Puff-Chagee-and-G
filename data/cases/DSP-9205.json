@@ -4,37 +4,37 @@
       "contains_agreement": false,
       "contains_threat": false,
       "message": "Where are you? I've been waiting.",
-      "message_id": "MSG-00840",
+      "message_id": "MSG-00940",
       "sender": "rider",
-      "sentiment": -0.57,
-      "timestamp": "2025-02-11T07:02:17Z"
+      "sentiment": -0.56,
+      "timestamp": "2025-02-11T07:12:50Z"
     },
     {
       "contains_agreement": false,
       "contains_threat": false,
       "message": "I'm at the pin, I don't see you.",
-      "message_id": "MSG-00841",
+      "message_id": "MSG-00941",
       "sender": "driver",
-      "sentiment": -0.2,
-      "timestamp": "2025-02-11T07:03:05Z"
+      "sentiment": -0.27,
+      "timestamp": "2025-02-11T07:13:00Z"
     },
     {
       "contains_agreement": false,
       "contains_threat": false,
       "message": "I'm standing right here at the entrance.",
-      "message_id": "MSG-00842",
+      "message_id": "MSG-00942",
       "sender": "rider",
       "sentiment": -0.37,
-      "timestamp": "2025-02-11T07:04:13Z"
+      "timestamp": "2025-02-11T07:14:49Z"
     },
     {
       "contains_agreement": false,
       "contains_threat": false,
       "message": "This is the address the app gave me.",
-      "message_id": "MSG-00843",
+      "message_id": "MSG-00943",
       "sender": "driver",
-      "sentiment": -0.14,
-      "timestamp": "2025-02-11T07:05:09Z"
+      "sentiment": -0.2,
+      "timestamp": "2025-02-11T07:15:08Z"
     }
   ],
   "dispute": {
@@ -46,19 +46,19 @@
     "filed_by": "driver",
     "priority": "medium",
     "rider_statement": "I was at the pickup point and waited.",
-    "trip_id": "TRP-1074"
+    "trip_id": "TRP-1084"
   },
   "driver": {
-    "account_age_days": 1068,
-    "avg_rating": 4.53,
-    "cancellation_rate": 0.072,
-    "dispute_count_90d": 2,
-    "dispute_win_rate": 0.38,
+    "account_age_days": 1598,
+    "avg_rating": 4.28,
+    "cancellation_rate": 0.026,
+    "dispute_count_90d": 1,
+    "dispute_win_rate": 0.29,
     "is_flagged_abuse": false,
     "name": "Rafael Duarte",
-    "party_id": "DRV-0016",
+    "party_id": "DRV-0026",
     "role": "driver",
-    "total_trips": 2583
+    "total_trips": 4320
   },
   "fare": {
     "base_fare": 0.0,
@@ -74,23 +74,23 @@
     "time_fare": 0.0,
     "tolls": 0.0,
     "total_charged": 6.5,
-    "trip_id": "TRP-1074"
+    "trip_id": "TRP-1084"
   },
   "fraud": {
-    "collusion_score": 0.21,
+    "collusion_score": 0.23,
     "device_fingerprint_shared": false,
-    "dispute_id": "DSP-1074",
-    "driver_claims_30d": 2,
+    "dispute_id": "DSP-1084",
+    "driver_claims_30d": 1,
     "photo_authenticity_score": null,
-    "rider_claims_30d": 5,
+    "rider_claims_30d": 1,
     "rider_repeat_claimer": false,
     "risk_level": "low"
   },
   "no_show": {
-    "driver_min_distance_to_pickup_m": 332.8,
+    "driver_min_distance_to_pickup_m": 49.6,
     "no_show_fee_charged": 6.5,
     "rider_gps_approaching": false,
-    "wait_time_min": 9.4
+    "wait_time_min": 5.3
   },
   "policies": [
     {
@@ -143,33 +143,33 @@
   ],
   "precedents": [],
   "rider": {
-    "account_age_days": 1082,
-    "avg_rating": 3.99,
-    "cancellation_rate": 0.038,
-    "dispute_count_90d": 5,
-    "dispute_win_rate": 0.25,
+    "account_age_days": 1604,
+    "avg_rating": 4.08,
+    "cancellation_rate": 0.105,
+    "dispute_count_90d": 1,
+    "dispute_win_rate": 0.4,
     "is_flagged_abuse": false,
-    "name": "Priya Raman",
-    "party_id": "RDR-0025",
+    "name": "Hannah Weiss",
+    "party_id": "RDR-0016",
     "role": "rider",
-    "total_trips": 248
+    "total_trips": 661
   },
   "route": null,
   "trip": {
     "actual_distance_km": 0.0,
-    "actual_duration_min": 9.4,
-    "city": "Seattle",
-    "driver_id": "DRV-0016",
+    "actual_duration_min": 5.3,
+    "city": "San Francisco",
+    "driver_id": "DRV-0026",
     "dropoff_address": null,
-    "ended_at": "2025-02-11T07:13:00Z",
-    "estimated_distance_km": 13.23,
-    "estimated_duration_min": 29.1,
-    "pickup_address": "Mission & 16th",
+    "ended_at": "2025-02-11T07:09:00Z",
+    "estimated_distance_km": 15.67,
+    "estimated_duration_min": 34.5,
+    "pickup_address": "Union Square",
     "requested_at": "2025-02-11T07:00:00Z",
-    "rider_id": "RDR-0025",
+    "rider_id": "RDR-0016",
     "started_at": "2025-02-11T07:04:00Z",
     "status": "no_show",
     "traffic_conditions": "light",
-    "trip_id": "TRP-1074"
+    "trip_id": "TRP-1084"
   }
 }

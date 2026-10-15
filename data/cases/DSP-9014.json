@@ -3,173 +3,160 @@
     {
       "contains_agreement": false,
       "contains_threat": false,
-      "message": "Where are you? I've been waiting.",
-      "message_id": "MSG-00760",
+      "message": "The app said $32 and I was charged $48.",
+      "message_id": "MSG-01170",
       "sender": "rider",
-      "sentiment": -0.47,
-      "timestamp": "2025-02-11T07:10:08Z"
+      "sentiment": -0.64,
+      "timestamp": "2025-02-11T07:03:22Z"
     },
     {
       "contains_agreement": false,
       "contains_threat": false,
-      "message": "I'm at the pin, I don't see you.",
-      "message_id": "MSG-00761",
+      "message": "Surge is set by the platform, not me.",
+      "message_id": "MSG-01171",
       "sender": "driver",
-      "sentiment": -0.24,
-      "timestamp": "2025-02-11T07:11:08Z"
+      "sentiment": -0.03,
+      "timestamp": "2025-02-11T07:04:55Z"
     },
     {
       "contains_agreement": false,
       "contains_threat": false,
-      "message": "I'm standing right here at the entrance.",
-      "message_id": "MSG-00762",
+      "message": "It didn't show any surge when I booked.",
+      "message_id": "MSG-01172",
       "sender": "rider",
-      "sentiment": -0.48,
-      "timestamp": "2025-02-11T07:12:45Z"
-    },
-    {
-      "contains_agreement": false,
-      "contains_threat": false,
-      "message": "This is the address the app gave me.",
-      "message_id": "MSG-00763",
-      "sender": "driver",
-      "sentiment": -0.11,
-      "timestamp": "2025-02-11T07:13:15Z"
+      "sentiment": -0.44,
+      "timestamp": "2025-02-11T07:05:50Z"
     }
   ],
   "dispute": {
-    "category": "no_show",
-    "claimed_amount": 4.0,
+    "category": "fare_surge",
+    "claimed_amount": 0.5,
     "dispute_id": "DSP-9014",
-    "driver_statement": "I was at the pickup point and waited.",
+    "driver_statement": "Fares and surge are set by the platform.",
     "filed_at": "2025-02-11T08:02:00Z",
     "filed_by": "rider",
     "priority": "medium",
-    "rider_statement": "The driver never showed up but I was still charged a no-show fee.",
-    "trip_id": "TRP-1066"
+    "rider_statement": "I was quoted $54.99 and charged $52.92.",
+    "trip_id": "TRP-1107"
   },
   "driver": {
-    "account_age_days": 652,
-    "avg_rating": 3.89,
-    "cancellation_rate": 0.103,
+    "account_age_days": 1068,
+    "avg_rating": 4.53,
+    "cancellation_rate": 0.072,
     "dispute_count_90d": 2,
-    "dispute_win_rate": 0.43,
+    "dispute_win_rate": 0.38,
     "is_flagged_abuse": false,
-    "name": "Daniel Ortiz",
-    "party_id": "DRV-0018",
+    "name": "Rafael Duarte",
+    "party_id": "DRV-0016",
     "role": "driver",
-    "total_trips": 2400
+    "total_trips": 2583
   },
   "fare": {
-    "base_fare": 0.0,
-    "booking_fee": 0.0,
+    "base_fare": 3.02,
+    "booking_fee": 2.0,
     "currency": "USD",
-    "distance_fare": 0.0,
-    "estimated_fare_at_booking": 4.0,
+    "distance_fare": 14.35,
+    "estimated_fare_at_booking": 54.99,
     "promo_code": null,
     "promo_discount": 0.0,
-    "surge_amount": 0.0,
-    "surge_at_booking": 1.0,
-    "surge_multiplier": 1.0,
-    "time_fare": 0.0,
-    "tolls": 0.0,
-    "total_charged": 4.0,
-    "trip_id": "TRP-1066"
+    "surge_amount": 25.46,
+    "surge_at_booking": 2.0,
+    "surge_multiplier": 2.0,
+    "time_fare": 8.09,
+    "tolls": 0,
+    "total_charged": 52.92,
+    "trip_id": "TRP-1107"
   },
   "fraud": {
-    "collusion_score": 0.14,
+    "collusion_score": 0.12,
     "device_fingerprint_shared": false,
-    "dispute_id": "DSP-1066",
+    "dispute_id": "DSP-1107",
     "driver_claims_30d": 2,
     "photo_authenticity_score": null,
-    "rider_claims_30d": 0,
+    "rider_claims_30d": 1,
     "rider_repeat_claimer": false,
     "risk_level": "low"
   },
-  "no_show": {
-    "driver_min_distance_to_pickup_m": 317.5,
-    "no_show_fee_charged": 4.0,
-    "rider_gps_approaching": false,
-    "wait_time_min": 10.7
-  },
+  "no_show": null,
   "policies": [
     {
-      "category": "no_show",
+      "category": "fare_surge",
       "conditions": {
-        "min_distance_m_gt": 100
+        "surge_consistent": true
       },
-      "policy_id": "POL-2.1a",
-      "remedy_formula": "no_show_fee_charged",
-      "remedy_type": "full_refund",
-      "rule_text": "Where the driver did not come within 100 metres of the pickup pin, the no-show fee is refunded in full.",
-      "title": "Driver Non-Arrival",
-      "version": "v2.0"
-    },
-    {
-      "category": "no_show",
-      "conditions": {
-        "min_distance_m_lte": 50,
-        "wait_time_min_gte": 5
-      },
-      "policy_id": "POL-2.1b",
+      "policy_id": "POL-3.1",
       "remedy_formula": null,
       "remedy_type": "no_action",
-      "rule_text": "Where the driver came within 50 metres of the pickup pin, waited at least 5 minutes, and rider telemetry shows no movement toward the vehicle, the no-show fee stands.",
-      "title": "Driver Arrival - Fee Stands",
-      "version": "v2.0"
+      "rule_text": "The fare shown at booking is an estimate. Where the applied surge matches the surge disclosed at booking, no refund is due.",
+      "title": "Estimates Are Not Quotes",
+      "version": "v2.2"
     },
     {
-      "category": "no_show",
-      "conditions": {},
-      "policy_id": "POL-2.2",
+      "category": "fare_surge",
+      "conditions": {
+        "surge_exceeds_disclosed": true
+      },
+      "policy_id": "POL-3.2",
+      "remedy_formula": "surge_amount * (1 - (surge_at_booking / surge_multiplier))",
+      "remedy_type": "partial_refund",
+      "rule_text": "Where the surge applied exceeds the surge disclosed at booking, the rider is refunded the difference attributable to the undisclosed portion.",
+      "title": "Undisclosed Surge",
+      "version": "v1.8"
+    },
+    {
+      "category": "fare_surge",
+      "conditions": {
+        "promo_unapplied": true
+      },
+      "policy_id": "POL-3.3",
       "remedy_formula": null,
-      "remedy_type": "no_action",
-      "rule_text": "Where the facts fall between the Policy 2.1a and 2.1b thresholds, the matter is not determinable on the record and is referred to human review.",
-      "title": "Grey-Band Referral",
+      "remedy_type": "partial_refund",
+      "rule_text": "Where a valid promotion was presented at booking but not applied to the final charge, the rider is refunded the promotional value.",
+      "title": "Promo Code Non-Application",
+      "version": "v1.5"
+    },
+    {
+      "category": "fare_surge",
+      "conditions": {
+        "tolls_unverified": true
+      },
+      "policy_id": "POL-3.4",
+      "remedy_formula": null,
+      "remedy_type": "partial_refund",
+      "rule_text": "Tolls may be charged only where the route actually traversed a tolled segment. Unverified tolls are refunded.",
+      "title": "Toll Verification",
       "version": "v1.1"
-    },
-    {
-      "category": "no_show",
-      "conditions": {
-        "wait_time_min_lte": 2
-      },
-      "policy_id": "POL-2.3",
-      "remedy_formula": "no_show_fee_charged",
-      "remedy_type": "full_refund",
-      "rule_text": "A rider who cancels within 2 minutes of acceptance without moving toward the pickup is not charged a no-show fee.",
-      "title": "Rider Cancellation Window",
-      "version": "v1.3"
     }
   ],
   "precedents": [],
   "rider": {
-    "account_age_days": 437,
-    "avg_rating": 4.12,
-    "cancellation_rate": 0.174,
-    "dispute_count_90d": 0,
-    "dispute_win_rate": 0.48,
+    "account_age_days": 896,
+    "avg_rating": 4.9,
+    "cancellation_rate": 0.094,
+    "dispute_count_90d": 1,
+    "dispute_win_rate": 0.6,
     "is_flagged_abuse": false,
     "name": "Tomoko Sato",
-    "party_id": "RDR-0018",
+    "party_id": "RDR-0022",
     "role": "rider",
-    "total_trips": 161
+    "total_trips": 221
   },
   "route": null,
   "trip": {
-    "actual_distance_km": 0.0,
-    "actual_duration_min": 10.7,
-    "city": "San Francisco",
-    "driver_id": "DRV-0018",
-    "dropoff_address": null,
-    "ended_at": "2025-02-11T07:14:00Z",
-    "estimated_distance_km": 4.17,
-    "estimated_duration_min": 9.2,
-    "pickup_address": "Pike Place",
+    "actual_distance_km": 12.06,
+    "actual_duration_min": 28.9,
+    "city": "Chicago",
+    "driver_id": "DRV-0016",
+    "dropoff_address": "SFO Terminal 2",
+    "ended_at": "2025-02-11T07:32:00Z",
+    "estimated_distance_km": 11.9,
+    "estimated_duration_min": 29.7,
+    "pickup_address": "Ferry Building",
     "requested_at": "2025-02-11T07:00:00Z",
-    "rider_id": "RDR-0018",
+    "rider_id": "RDR-0022",
     "started_at": "2025-02-11T07:04:00Z",
-    "status": "no_show",
+    "status": "completed",
     "traffic_conditions": "light",
-    "trip_id": "TRP-1066"
+    "trip_id": "TRP-1107"
   }
 }

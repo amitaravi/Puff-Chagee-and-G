@@ -3,88 +3,88 @@
     {
       "contains_agreement": false,
       "contains_threat": false,
-      "message": "Why are we going this way? This isn't the route the app showed.",
-      "message_id": "MSG-00140",
+      "message": "You're scamming me with this route.",
+      "message_id": "MSG-00600",
       "sender": "rider",
-      "sentiment": -0.44,
-      "timestamp": "2025-02-11T07:03:05Z"
+      "sentiment": -0.84,
+      "timestamp": "2025-02-11T07:09:53Z"
     },
     {
       "contains_agreement": false,
       "contains_threat": false,
-      "message": "Shortcut, trust me. Avoids the lights.",
-      "message_id": "MSG-00141",
+      "message": "It's the fastest way right now.",
+      "message_id": "MSG-00601",
       "sender": "driver",
-      "sentiment": 0.05,
-      "timestamp": "2025-02-11T07:04:26Z"
+      "sentiment": -0.18,
+      "timestamp": "2025-02-11T07:10:35Z"
     },
     {
       "contains_agreement": false,
       "contains_threat": false,
-      "message": "This is adding several kilometres to my trip.",
-      "message_id": "MSG-00142",
+      "message": "I'm reporting this. You'll hear from support.",
+      "message_id": "MSG-00602",
       "sender": "rider",
-      "sentiment": -0.59,
-      "timestamp": "2025-02-11T07:05:48Z"
+      "sentiment": -0.73,
+      "timestamp": "2025-02-11T07:11:43Z"
     },
     {
       "contains_agreement": false,
       "contains_threat": false,
-      "message": "Traffic was bad back there.",
-      "message_id": "MSG-00143",
+      "message": "Report whatever you want.",
+      "message_id": "MSG-00603",
       "sender": "driver",
-      "sentiment": -0.08,
-      "timestamp": "2025-02-11T07:06:30Z"
+      "sentiment": -0.25,
+      "timestamp": "2025-02-11T07:12:48Z"
     }
   ],
   "dispute": {
     "category": "route_deviation",
-    "claimed_amount": 7.7,
+    "claimed_amount": 2.26,
     "dispute_id": "DSP-9302",
-    "driver_statement": "I took the route I always take.",
+    "driver_statement": "I followed the app's route exactly.",
     "filed_at": "2025-02-11T08:02:00Z",
     "filed_by": "rider",
     "priority": "medium",
-    "rider_statement": "The driver took a much longer route than necessary and I was charged for it.",
-    "trip_id": "TRP-1004"
+    "rider_statement": "The driver took a longer route and I was overcharged.",
+    "trip_id": "TRP-1050"
   },
   "driver": {
-    "account_age_days": 1055,
-    "avg_rating": 3.85,
-    "cancellation_rate": 0.023,
-    "dispute_count_90d": 9,
-    "dispute_win_rate": 0.43,
+    "account_age_days": 896,
+    "avg_rating": 4.9,
+    "cancellation_rate": 0.018,
+    "dispute_count_90d": 0,
+    "dispute_win_rate": 0.37,
     "is_flagged_abuse": false,
-    "name": "Hannah Weiss",
-    "party_id": "DRV-0028",
+    "name": "Tomoko Sato",
+    "party_id": "DRV-0009",
     "role": "driver",
-    "total_trips": 785
+    "total_trips": 221
   },
   "fare": {
-    "base_fare": 2.45,
+    "base_fare": 2.4,
     "booking_fee": 2.0,
     "currency": "USD",
-    "distance_fare": 24.0,
-    "estimated_fare_at_booking": 26.69,
+    "distance_fare": 13.19,
+    "estimated_fare_at_booking": 26.91,
     "promo_code": null,
     "promo_discount": 0.0,
     "surge_amount": 0.0,
     "surge_at_booking": 1.0,
     "surge_multiplier": 1.0,
-    "time_fare": 9.58,
-    "tolls": 6.25,
-    "total_charged": 44.28,
-    "trip_id": "TRP-1004"
+    "time_fare": 12.01,
+    "tolls": 0,
+    "total_charged": 29.6,
+    "trip_id": "TRP-1050"
   },
   "fraud": {
-    "collusion_score": 0.06,
+    "collusion_score": 0.04,
     "device_fingerprint_shared": false,
-    "dispute_id": "DSP-1004",
-    "driver_claims_30d": 9,
+    "dispute_id": "DSP-1050",
+    "driver_claims_30d": 0,
     "photo_authenticity_score": null,
-    "rider_claims_30d": 0,
+    "rider_claims_30d": 1,
     "rider_repeat_claimer": false,
-    "risk_level": "medium"
+    "risk_level": "low"
   },
   "no_show": null,
   "policies": [
@@ -153,48 +153,55 @@
   ],
   "precedents": [],
   "rider": {
-    "account_age_days": 161,
-    "avg_rating": 4.17,
-    "cancellation_rate": 0.073,
-    "dispute_count_90d": 0,
-    "dispute_win_rate": 0.71,
+    "account_age_days": 576,
+    "avg_rating": 4.7,
+    "cancellation_rate": 0.094,
+    "dispute_count_90d": 1,
+    "dispute_win_rate": 0.6,
     "is_flagged_abuse": false,
     "name": "Kwame Mensah",
-    "party_id": "RDR-0017",
+    "party_id": "RDR-0022",
     "role": "rider",
-    "total_trips": 3448
+    "total_trips": 1354
   },
   "route": {
-    "actual_distance_km": 21.68,
+    "actual_distance_km": 11.17,
     "delay_attributable_to_traffic": false,
     "deviation_justified_by": null,
-    "deviation_km": 5.96,
-    "deviation_pct": 0.3793,
-    "duration_delta_min": 17.1,
-    "longest_stop_sec": 0,
-    "num_stops": 0,
-    "optimal_distance_km": 15.72,
+    "deviation_km": 0.37,
+    "deviation_pct": 0.0345,
+    "duration_delta_min": 8.4,
+    "longest_stop_sec": 123,
+    "num_stops": 1,
+    "optimal_distance_km": 10.8,
     "rider_requested_detour": false,
-    "route_efficiency_score": 0.727,
-    "traffic_delay_min": 1.7,
-    "trip_id": "TRP-1004",
-    "unexpected_stops": []
+    "route_efficiency_score": 0.975,
+    "traffic_delay_min": 1.0,
+    "trip_id": "TRP-1050",
+    "unexpected_stops": [
+      {
+        "at_km": 9.49,
+        "duration_sec": 123,
+        "lat": 37.7158,
+        "lng": -122.4165
+      }
+    ]
   },
   "trip": {
-    "actual_distance_km": 21.62,
-    "actual_duration_min": 34.2,
+    "actual_distance_km": 11.08,
+    "actual_duration_min": 42.9,
     "city": "Austin",
-    "driver_id": "DRV-0028",
+    "driver_id": "DRV-0009",
     "dropoff_address": "Rainey St",
-    "ended_at": "2025-02-11T07:38:00Z",
-    "estimated_distance_km": 15.72,
-    "estimated_duration_min": 17.1,
+    "ended_at": "2025-02-11T07:46:00Z",
+    "estimated_distance_km": 10.8,
+    "estimated_duration_min": 34.5,
     "pickup_address": "Ferry Building",
     "requested_at": "2025-02-11T07:00:00Z",
-    "rider_id": "RDR-0017",
+    "rider_id": "RDR-0022",
     "started_at": "2025-02-11T07:04:00Z",
     "status": "completed",
     "traffic_conditions": "light",
-    "trip_id": "TRP-1004"
+    "trip_id": "TRP-1050"
   }
 }

@@ -4,46 +4,37 @@
       "contains_agreement": false,
       "contains_threat": false,
       "message": "Where are you? I've been waiting.",
-      "message_id": "MSG-01040",
+      "message_id": "MSG-00790",
       "sender": "rider",
-      "sentiment": -0.45,
-      "timestamp": "2025-02-11T07:06:06Z"
+      "sentiment": -0.52,
+      "timestamp": "2025-02-11T07:04:05Z"
     },
     {
       "contains_agreement": false,
       "contains_threat": false,
       "message": "I'm at the pin, I don't see you.",
-      "message_id": "MSG-01041",
+      "message_id": "MSG-00791",
       "sender": "driver",
-      "sentiment": -0.14,
-      "timestamp": "2025-02-11T07:07:50Z"
+      "sentiment": -0.18,
+      "timestamp": "2025-02-11T07:05:57Z"
     },
     {
       "contains_agreement": false,
       "contains_threat": false,
       "message": "I'm standing right here at the entrance.",
-      "message_id": "MSG-01042",
+      "message_id": "MSG-00792",
       "sender": "rider",
-      "sentiment": -0.41,
-      "timestamp": "2025-02-11T07:08:41Z"
+      "sentiment": -0.47,
+      "timestamp": "2025-02-11T07:06:03Z"
     },
     {
       "contains_agreement": false,
       "contains_threat": false,
       "message": "This is the address the app gave me.",
-      "message_id": "MSG-01043",
+      "message_id": "MSG-00793",
       "sender": "driver",
-      "sentiment": -0.2,
-      "timestamp": "2025-02-11T07:09:14Z"
-    },
-    {
-      "contains_agreement": false,
-      "contains_threat": true,
-      "message": "You'll regret this, I'll make sure you're deactivated.",
-      "message_id": "MSG-01044",
-      "sender": "rider",
-      "sentiment": -0.95,
-      "timestamp": "2025-02-11T07:10:00Z"
+      "sentiment": -0.11,
+      "timestamp": "2025-02-11T07:07:19Z"
     }
   ],
   "dispute": {
@@ -55,19 +46,19 @@
     "filed_by": "driver",
     "priority": "medium",
     "rider_statement": "I was at the pickup point and waited.",
-    "trip_id": "TRP-1094"
+    "trip_id": "TRP-1069"
   },
   "driver": {
-    "account_age_days": 571,
-    "avg_rating": 4.85,
-    "cancellation_rate": 0.069,
-    "dispute_count_90d": 9,
-    "dispute_win_rate": 0.21,
+    "account_age_days": 1870,
+    "avg_rating": 3.89,
+    "cancellation_rate": 0.084,
+    "dispute_count_90d": 1,
+    "dispute_win_rate": 0.57,
     "is_flagged_abuse": false,
-    "name": "Dmitri Volkov",
-    "party_id": "DRV-0001",
+    "name": "Daniel Ortiz",
+    "party_id": "DRV-0006",
     "role": "driver",
-    "total_trips": 995
+    "total_trips": 2981
   },
   "fare": {
     "base_fare": 0.0,
@@ -83,23 +74,23 @@
     "time_fare": 0.0,
     "tolls": 0.0,
     "total_charged": 5.0,
-    "trip_id": "TRP-1094"
+    "trip_id": "TRP-1069"
   },
   "fraud": {
-    "collusion_score": 0.25,
+    "collusion_score": 0.02,
     "device_fingerprint_shared": false,
-    "dispute_id": "DSP-1094",
-    "driver_claims_30d": 9,
+    "dispute_id": "DSP-1069",
+    "driver_claims_30d": 1,
     "photo_authenticity_score": null,
-    "rider_claims_30d": 1,
+    "rider_claims_30d": 0,
     "rider_repeat_claimer": false,
-    "risk_level": "medium"
+    "risk_level": "low"
   },
   "no_show": {
-    "driver_min_distance_to_pickup_m": 21.1,
+    "driver_min_distance_to_pickup_m": 896.6,
     "no_show_fee_charged": 5.0,
     "rider_gps_approaching": false,
-    "wait_time_min": 12.3
+    "wait_time_min": 11.2
   },
   "policies": [
     {
@@ -152,33 +143,33 @@
   ],
   "precedents": [],
   "rider": {
-    "account_age_days": 81,
-    "avg_rating": 3.99,
-    "cancellation_rate": 0.032,
-    "dispute_count_90d": 1,
-    "dispute_win_rate": 0.2,
+    "account_age_days": 755,
+    "avg_rating": 4.18,
+    "cancellation_rate": 0.217,
+    "dispute_count_90d": 0,
+    "dispute_win_rate": 0.57,
     "is_flagged_abuse": false,
-    "name": "Priya Raman",
-    "party_id": "RDR-0000",
+    "name": "Wei Zhang",
+    "party_id": "RDR-0027",
     "role": "rider",
-    "total_trips": 764
+    "total_trips": 438
   },
   "route": null,
   "trip": {
     "actual_distance_km": 0.0,
-    "actual_duration_min": 12.3,
-    "city": "New York",
-    "driver_id": "DRV-0001",
+    "actual_duration_min": 11.2,
+    "city": "San Francisco",
+    "driver_id": "DRV-0006",
     "dropoff_address": null,
-    "ended_at": "2025-02-11T07:16:00Z",
-    "estimated_distance_km": 16.15,
-    "estimated_duration_min": 35.5,
-    "pickup_address": "Ferry Building",
+    "ended_at": "2025-02-11T07:15:00Z",
+    "estimated_distance_km": 4.54,
+    "estimated_duration_min": 10.0,
+    "pickup_address": "Wrigley Field",
     "requested_at": "2025-02-11T07:00:00Z",
-    "rider_id": "RDR-0000",
+    "rider_id": "RDR-0027",
     "started_at": "2025-02-11T07:04:00Z",
     "status": "no_show",
     "traffic_conditions": "light",
-    "trip_id": "TRP-1094"
+    "trip_id": "TRP-1069"
   }
 }

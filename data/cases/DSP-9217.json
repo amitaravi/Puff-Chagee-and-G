@@ -1,34 +1,71 @@
 {
-  "chat": [],
+  "chat": [
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "Where are you? I've been waiting.",
+      "message_id": "MSG-00800",
+      "sender": "rider",
+      "sentiment": -0.56,
+      "timestamp": "2025-02-11T07:06:44Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "I'm at the pin, I don't see you.",
+      "message_id": "MSG-00801",
+      "sender": "driver",
+      "sentiment": -0.24,
+      "timestamp": "2025-02-11T07:07:04Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "I'm standing right here at the entrance.",
+      "message_id": "MSG-00802",
+      "sender": "rider",
+      "sentiment": -0.41,
+      "timestamp": "2025-02-11T07:08:05Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "This is the address the app gave me.",
+      "message_id": "MSG-00803",
+      "sender": "driver",
+      "sentiment": -0.21,
+      "timestamp": "2025-02-11T07:09:06Z"
+    }
+  ],
   "dispute": {
     "category": "no_show",
-    "claimed_amount": 5.0,
+    "claimed_amount": 6.5,
     "dispute_id": "DSP-9217",
     "driver_statement": "The driver never showed up but I was still charged a no-show fee.",
     "filed_at": "2025-02-11T08:02:00Z",
     "filed_by": "driver",
     "priority": "medium",
     "rider_statement": "I was at the pickup point and waited.",
-    "trip_id": "TRP-1078"
+    "trip_id": "TRP-1070"
   },
   "driver": {
-    "account_age_days": 652,
-    "avg_rating": 3.89,
-    "cancellation_rate": 0.103,
+    "account_age_days": 775,
+    "avg_rating": 3.7,
+    "cancellation_rate": 0.149,
     "dispute_count_90d": 2,
-    "dispute_win_rate": 0.43,
+    "dispute_win_rate": 0.54,
     "is_flagged_abuse": false,
-    "name": "Daniel Ortiz",
-    "party_id": "DRV-0018",
+    "name": "Kwame Mensah",
+    "party_id": "DRV-0015",
     "role": "driver",
-    "total_trips": 2400
+    "total_trips": 3583
   },
   "fare": {
     "base_fare": 0.0,
     "booking_fee": 0.0,
     "currency": "USD",
     "distance_fare": 0.0,
-    "estimated_fare_at_booking": 5.0,
+    "estimated_fare_at_booking": 6.5,
     "promo_code": null,
     "promo_discount": 0.0,
     "surge_amount": 0.0,
@@ -36,24 +73,24 @@
     "surge_multiplier": 1.0,
     "time_fare": 0.0,
     "tolls": 0.0,
-    "total_charged": 5.0,
-    "trip_id": "TRP-1078"
+    "total_charged": 6.5,
+    "trip_id": "TRP-1070"
   },
   "fraud": {
-    "collusion_score": 0.07,
+    "collusion_score": 0.1,
     "device_fingerprint_shared": false,
-    "dispute_id": "DSP-1078",
+    "dispute_id": "DSP-1070",
     "driver_claims_30d": 2,
     "photo_authenticity_score": null,
-    "rider_claims_30d": 2,
+    "rider_claims_30d": 0,
     "rider_repeat_claimer": false,
     "risk_level": "low"
   },
   "no_show": {
-    "driver_min_distance_to_pickup_m": 401.4,
-    "no_show_fee_charged": 5.0,
+    "driver_min_distance_to_pickup_m": 167.0,
+    "no_show_fee_charged": 6.5,
     "rider_gps_approaching": false,
-    "wait_time_min": 7.5
+    "wait_time_min": 8.3
   },
   "policies": [
     {
@@ -106,33 +143,33 @@
   ],
   "precedents": [],
   "rider": {
-    "account_age_days": 239,
-    "avg_rating": 4.13,
-    "cancellation_rate": 0.137,
-    "dispute_count_90d": 2,
-    "dispute_win_rate": 0.69,
-    "is_flagged_abuse": false,
-    "name": "Aisha Rahman",
-    "party_id": "RDR-0004",
+    "account_age_days": 771,
+    "avg_rating": 5.0,
+    "cancellation_rate": 0.029,
+    "dispute_count_90d": 0,
+    "dispute_win_rate": 0.46,
+    "is_flagged_abuse": true,
+    "name": "Wei Zhang",
+    "party_id": "RDR-0013",
     "role": "rider",
-    "total_trips": 99
+    "total_trips": 229
   },
   "route": null,
   "trip": {
     "actual_distance_km": 0.0,
-    "actual_duration_min": 7.5,
-    "city": "New York",
-    "driver_id": "DRV-0018",
+    "actual_duration_min": 8.3,
+    "city": "San Francisco",
+    "driver_id": "DRV-0015",
     "dropoff_address": null,
-    "ended_at": "2025-02-11T07:11:00Z",
-    "estimated_distance_km": 5.57,
-    "estimated_duration_min": 12.3,
-    "pickup_address": "101 California St",
+    "ended_at": "2025-02-11T07:12:00Z",
+    "estimated_distance_km": 2.15,
+    "estimated_duration_min": 4.7,
+    "pickup_address": "Rainey St",
     "requested_at": "2025-02-11T07:00:00Z",
-    "rider_id": "RDR-0004",
+    "rider_id": "RDR-0013",
     "started_at": "2025-02-11T07:04:00Z",
     "status": "no_show",
     "traffic_conditions": "light",
-    "trip_id": "TRP-1078"
+    "trip_id": "TRP-1070"
   }
 }

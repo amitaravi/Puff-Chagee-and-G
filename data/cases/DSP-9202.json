@@ -1,34 +1,80 @@
 {
-  "chat": [],
+  "chat": [
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "Where are you? I've been waiting.",
+      "message_id": "MSG-00980",
+      "sender": "rider",
+      "sentiment": -0.43,
+      "timestamp": "2025-02-11T07:07:22Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "I'm at the pin, I don't see you.",
+      "message_id": "MSG-00981",
+      "sender": "driver",
+      "sentiment": -0.23,
+      "timestamp": "2025-02-11T07:08:32Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "I'm standing right here at the entrance.",
+      "message_id": "MSG-00982",
+      "sender": "rider",
+      "sentiment": -0.5,
+      "timestamp": "2025-02-11T07:09:17Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "This is the address the app gave me.",
+      "message_id": "MSG-00983",
+      "sender": "driver",
+      "sentiment": -0.13,
+      "timestamp": "2025-02-11T07:10:20Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": true,
+      "message": "I know where you live and I'll find you.",
+      "message_id": "MSG-00984",
+      "sender": "driver",
+      "sentiment": -0.95,
+      "timestamp": "2025-02-11T07:11:00Z"
+    }
+  ],
   "dispute": {
     "category": "no_show",
-    "claimed_amount": 6.5,
+    "claimed_amount": 4.0,
     "dispute_id": "DSP-9202",
     "driver_statement": "The driver never showed up but I was still charged a no-show fee.",
     "filed_at": "2025-02-11T08:02:00Z",
     "filed_by": "driver",
     "priority": "medium",
     "rider_statement": "I was at the pickup point and waited.",
-    "trip_id": "TRP-1086"
+    "trip_id": "TRP-1088"
   },
   "driver": {
-    "account_age_days": 571,
-    "avg_rating": 4.85,
-    "cancellation_rate": 0.069,
-    "dispute_count_90d": 9,
-    "dispute_win_rate": 0.21,
+    "account_age_days": 1301,
+    "avg_rating": 4.9,
+    "cancellation_rate": 0.215,
+    "dispute_count_90d": 1,
+    "dispute_win_rate": 0.71,
     "is_flagged_abuse": false,
-    "name": "Dmitri Volkov",
-    "party_id": "DRV-0001",
+    "name": "Wei Zhang",
+    "party_id": "DRV-0007",
     "role": "driver",
-    "total_trips": 995
+    "total_trips": 1316
   },
   "fare": {
     "base_fare": 0.0,
     "booking_fee": 0.0,
     "currency": "USD",
     "distance_fare": 0.0,
-    "estimated_fare_at_booking": 6.5,
+    "estimated_fare_at_booking": 4.0,
     "promo_code": null,
     "promo_discount": 0.0,
     "surge_amount": 0.0,
@@ -36,24 +82,24 @@
     "surge_multiplier": 1.0,
     "time_fare": 0.0,
     "tolls": 0.0,
-    "total_charged": 6.5,
-    "trip_id": "TRP-1086"
+    "total_charged": 4.0,
+    "trip_id": "TRP-1088"
   },
   "fraud": {
-    "collusion_score": 0.05,
+    "collusion_score": 0.12,
     "device_fingerprint_shared": false,
-    "dispute_id": "DSP-1086",
-    "driver_claims_30d": 9,
+    "dispute_id": "DSP-1088",
+    "driver_claims_30d": 1,
     "photo_authenticity_score": null,
     "rider_claims_30d": 0,
     "rider_repeat_claimer": false,
-    "risk_level": "medium"
+    "risk_level": "low"
   },
   "no_show": {
-    "driver_min_distance_to_pickup_m": 10.9,
-    "no_show_fee_charged": 6.5,
+    "driver_min_distance_to_pickup_m": 32.6,
+    "no_show_fee_charged": 4.0,
     "rider_gps_approaching": false,
-    "wait_time_min": 10.7
+    "wait_time_min": 13.0
   },
   "policies": [
     {
@@ -106,33 +152,33 @@
   ],
   "precedents": [],
   "rider": {
-    "account_age_days": 405,
-    "avg_rating": 4.25,
-    "cancellation_rate": 0.191,
+    "account_age_days": 149,
+    "avg_rating": 4.63,
+    "cancellation_rate": 0.022,
     "dispute_count_90d": 0,
-    "dispute_win_rate": 0.41,
+    "dispute_win_rate": 0.62,
     "is_flagged_abuse": false,
-    "name": "Wei Zhang",
-    "party_id": "RDR-0029",
+    "name": "Grace Okonkwo",
+    "party_id": "RDR-0033",
     "role": "rider",
-    "total_trips": 290
+    "total_trips": 598
   },
   "route": null,
   "trip": {
     "actual_distance_km": 0.0,
-    "actual_duration_min": 10.7,
+    "actual_duration_min": 13.0,
     "city": "New York",
-    "driver_id": "DRV-0001",
+    "driver_id": "DRV-0007",
     "dropoff_address": null,
-    "ended_at": "2025-02-11T07:14:00Z",
-    "estimated_distance_km": 9.94,
-    "estimated_duration_min": 21.9,
-    "pickup_address": "Pike Place",
+    "ended_at": "2025-02-11T07:17:00Z",
+    "estimated_distance_km": 17.83,
+    "estimated_duration_min": 39.2,
+    "pickup_address": "Rainey St",
     "requested_at": "2025-02-11T07:00:00Z",
-    "rider_id": "RDR-0029",
+    "rider_id": "RDR-0033",
     "started_at": "2025-02-11T07:04:00Z",
     "status": "no_show",
     "traffic_conditions": "light",
-    "trip_id": "TRP-1086"
+    "trip_id": "TRP-1088"
   }
 }
