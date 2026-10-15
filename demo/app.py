@@ -883,8 +883,9 @@ def render_advocate(brief: CaseBrief, side: str) -> None:
 
 def render_confidence_arithmetic(verdict: Verdict, threshold: float) -> None:
     st.subheader("Confidence Arithmetic")
-    factors = verdict.confidence_factors or {}
-    base = factors.get("self_report", verdict.confidence)
+    factors = verdict.confidence_factors or []
+    fmap = {f.factor: f.delta for f in factors}
+    base = fmap.get("self_report", verdict.confidence)
 
     col1, col2, col3 = st.columns([3, 2, 2])
     with col1:
@@ -909,8 +910,8 @@ def render_confidence_arithmetic(verdict: Verdict, threshold: float) -> None:
             ("advocates_converge", ""),
             ("uncited_claims_struck", ""),
         ]:
-            if key in factors:
-                val = factors[key]
+            if key in fmap:
+                val = fmap[key]
                 st.write(f"{val:+.2f}" if isinstance(val, (int, float)) else str(val))
             else:
                 st.caption("not triggered")
@@ -926,8 +927,8 @@ def render_confidence_arithmetic(verdict: Verdict, threshold: float) -> None:
             ("advocates_converge", ""),
             ("uncited_claims_struck", ""),
         ]:
-            if key in factors and isinstance(factors[key], (int, float)):
-                running = max(0.0, min(1.0, running + factors[key]))
+            if key in fmap and isinstance(fmap[key], (int, float)):
+                running = max(0.0, min(1.0, running + fmap[key]))
                 st.write(f"{running:.2f}")
             else:
                 st.write(f"{running:.2f}")
@@ -1245,7 +1246,7 @@ with tab_live:
         st.session_state[SS_CASE] = case
         st.session_state[SS_CFG] = cfg
         st.session_state[SS_IDX] = 0
-        st.session_state[SS_PLAYING] = True
+        st.session_state[SS_PLAYING] = False
         st.session_state["final_state"] = running_state
         st.session_state["run_case"] = case
         st.session_state["run_cfg"] = cfg

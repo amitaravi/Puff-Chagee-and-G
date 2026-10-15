@@ -12,12 +12,14 @@ from __future__ import annotations
 from langchain_core.messages import HumanMessage, SystemMessage
 
 from ..core import config
-from ..core.llm import get_llm
+from ..core.llm import get_llm, model_ready
+from langchain_openai.chat_models.base import OpenAIInvalidRequestError, OpenAIRateLimitError
 from ..core.state import (
     CaseBrief,
     CaseState,
     Claim,
     ClaimAssessment,
+    ConfidenceFactor,
     Verdict,
     log,
 )
@@ -34,6 +36,7 @@ from .prompts import (
     render_trip,
     stub_verdict,
 )
+from .rule_based import deterministic_verdict
 
 # deterministic confidence adjustments — tunable, and you can show the arithmetic live
 ADJUSTMENTS = {
@@ -64,14 +67,15 @@ def finalize_confidence(state: CaseState, verdict: Verdict) -> Verdict:
     """Blend self-reported confidence with deterministic factors. Clamped to [0, 1]."""
     pack = state["pack"]
     base = float(verdict.confidence or 0.5)
-    factors: dict[str, float] = {"self_report": round(base, 3)}
+    factors: list[ConfidenceFactor] = [ConfidenceFactor(factor="self_report", delta=round(base, 3))]
     total = base
 
     def apply(key: str, condition: bool) -> None:
         nonlocal total
         if condition:
-            total += ADJUSTMENTS[key]
-            factors[key] = ADJUSTMENTS[key]
+            delta = ADJUSTMENTS[key]
+            total += delta
+            factors.append(ConfidenceFactor(factor=key, delta=delta))
 
     apply("missing_key_evidence", _missing_key_evidence(state))
     apply("precedent_conflict", _precedent_conflict(pack, verdict))
@@ -221,13 +225,18 @@ def _judge_user(state: CaseState, include_rebuttal: bool) -> str:
 def _call_judge(state: CaseState, include_rebuttal: bool) -> Verdict:
     if config.is_stub():
         return stub_verdict()
+    if not model_ready():
+        return deterministic_verdict(state["pack"])
     llm = get_llm("judge").with_structured_output(Verdict, method="function_calling")
-    return llm.invoke(
-        [
-            SystemMessage(content=JUDGE_SYSTEM),
-            HumanMessage(content=_judge_user(state, include_rebuttal)),
-        ]
-    )
+    try:
+        return llm.invoke(
+            [
+                SystemMessage(content=JUDGE_SYSTEM),
+                HumanMessage(content=_judge_user(state, include_rebuttal)),
+            ]
+        )
+    except (OpenAIInvalidRequestError, OpenAIRateLimitError):
+        return deterministic_verdict(state["pack"])
 
 
 def provisional_verdict(state: CaseState) -> dict:
@@ -266,9 +275,14 @@ def single_agent(state: CaseState) -> dict:
     )
     if config.is_stub():
         verdict = stub_verdict()
+    elif not model_ready():
+        verdict = deterministic_verdict(pack)
     else:
         llm = get_llm("judge").with_structured_output(Verdict, method="function_calling")
-        verdict = llm.invoke([SystemMessage(content=SINGLE_AGENT_SYSTEM), HumanMessage(content=user)])
+        try:
+            verdict = llm.invoke([SystemMessage(content=SINGLE_AGENT_SYSTEM), HumanMessage(content=user)])
+        except (OpenAIInvalidRequestError, OpenAIRateLimitError):
+            verdict = deterministic_verdict(pack)
     verdict, v_errors = _sanitize_verdict(state, verdict)
     verdict = finalize_confidence(state, verdict)
     return {

@@ -14,7 +14,11 @@ settlement conference, pleadings, rebuttal, judgment, appellate review.
 ```bash
 python3.11 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env      # add OPENAI_API_KEY
+cp .env.example .env      # set OPENAI_API_KEY OR GROQ_API_KEY
+
+# if using Groq, also set:
+# OPENAI_BASE_URL=https://api.groq.com/openai/v1
+# and ARBITRA_MODEL_* to Groq-supported model names
 
 python scripts/generate_dataset.py       # 240 cases -> data/   (no API key needed)
 python -m src.eval.validate_data         # contract check on data/
@@ -33,7 +37,12 @@ streamlit run demo/app.py                                   # UI demo
 
 `--stub` runs the whole pipeline with placeholder verdicts. **Make that work first** —
 it proves the graph compiles and state flows before you write a single real prompt.
-Stub scores are meaningless by design; it is a plumbing test, not an accuracy test.
+
+If no `OPENAI_API_KEY` is set and `--stub` is NOT enabled, Arbitra now falls back to a
+deterministic rule-based reasoning path (policy-engine backed) so the full tribunal,
+API and eval stack still run end-to-end.
+
+Stub scores are meaningless by design; they are a plumbing test, not an accuracy test.
 
 ### API endpoints
 
