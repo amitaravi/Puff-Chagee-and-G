@@ -625,7 +625,7 @@ def render_verdict_banner(state: CaseState) -> None:
 
 
 def _generate_case_analysis(state: CaseState) -> str:
-    """Ask the LLM to explain the tribunal's verdict in plain English."""
+    """Ask the LLM to explain the tribunal's verdict as a structured narrative."""
     from langchain_core.messages import HumanMessage, SystemMessage
     from src.core.llm import get_llm
 
@@ -637,7 +637,7 @@ def _generate_case_analysis(state: CaseState) -> str:
     d = pack.dispute
     _, rlabel = RULING_COLORS.get(v.ruling, ("gray", v.ruling))
 
-    # Build a compact summary of the case for the LLM
+    # Build the full case context for the LLM
     case_summary = (
         f"Case {d.dispute_id} — {d.category.replace('_', ' ')} dispute.\n"
         f"Filed by: {d.filed_by}. Claimed: ${d.claimed_amount:.2f}.\n"
@@ -651,19 +651,21 @@ def _generate_case_analysis(state: CaseState) -> str:
             f"\nRoute: optimal {r.optimal_distance_km}km, actual {r.actual_distance_km}km, "
             f"deviation {r.deviation_pct:.1%}. Traffic delay: {r.traffic_delay_min}min. "
             f"Rider detour: {r.rider_requested_detour}. Justified by: {r.deviation_justified_by}.\n"
+            f"Unscheduled stops: {r.num_stops}, longest {r.longest_stop_sec}s.\n"
         )
     if pack.no_show:
         n = pack.no_show
         case_summary += (
             f"\nNo-show: driver {n.driver_min_distance_to_pickup_m:.0f}m from pin, "
-            f"waited {n.wait_time_min:.0f}min, fee ${n.no_show_fee_charged:.2f}.\n"
+            f"waited {n.wait_time_min:.0f}min, rider GPS approaching: {n.rider_gps_approaching}, "
+            f"fee ${n.no_show_fee_charged:.2f}.\n"
         )
     if pack.fare:
         f = pack.fare
         case_summary += (
             f"\nFare: quoted ${f.estimated_fare_at_booking:.2f}, charged ${f.total_charged:.2f}. "
             f"Surge: {f.surge_multiplier:.1f}x (booking: {f.surge_at_booking:.1f}x). "
-            f"Tolls: ${f.tolls:.2f}. Promo: {f.promo_code or 'none'}.\n"
+            f"Tolls: ${f.tolls:.2f}. Promo: {f.promo_code or 'none'} (discount: ${f.promo_discount:.2f}).\n"
         )
     if pack.fraud:
         fr = pack.fraud
@@ -672,47 +674,109 @@ def _generate_case_analysis(state: CaseState) -> str:
             f"shared_device={fr.device_fingerprint_shared}, "
             f"photo_auth={fr.photo_authenticity_score}.\n"
         )
+    if pack.chat:
+        case_summary += "\nChat log:\n"
+        for msg in pack.chat:
+            case_summary += f"  [{msg.sender}] {msg.message}\n"
 
-    # Advocate briefs
+    # Advocate briefs — full detail
     rider_brief = state.get("rider_brief")
     driver_brief = state.get("driver_brief")
     if rider_brief:
-        case_summary += f"\nRider's theory: {rider_brief.theory}\n"
-        case_summary += f"Rider seeks: {rider_brief.requested_remedy} (${rider_brief.requested_amount:.2f})\n"
+        case_summary += f"\n--- RIDER ADVOCATE ---\n"
+        case_summary += f"Theory: {rider_brief.theory}\n"
+        for c in rider_brief.claims:
+            refs = ", ".join(c.evidence_refs + c.policy_refs) or "uncited"
+            case_summary += f"  Claim: {c.text} [{refs}]\n"
+        for c in rider_brief.concessions:
+            case_summary += f"  Concedes: {c.text}\n"
+        case_summary += f"Seeks: {rider_brief.requested_remedy} (${rider_brief.requested_amount:.2f})\n"
+        if rider_brief.rebuttal:
+            case_summary += f"Rebuttal: {rider_brief.rebuttal}\n"
     if driver_brief:
-        case_summary += f"\nDriver's theory: {driver_brief.theory}\n"
-        case_summary += f"Driver seeks: {driver_brief.requested_remedy} (${driver_brief.requested_amount:.2f})\n"
+        case_summary += f"\n--- DRIVER ADVOCATE ---\n"
+        case_summary += f"Theory: {driver_brief.theory}\n"
+        for c in driver_brief.claims:
+            refs = ", ".join(c.evidence_refs + c.policy_refs) or "uncited"
+            case_summary += f"  Claim: {c.text} [{refs}]\n"
+        for c in driver_brief.concessions:
+            case_summary += f"  Concedes: {c.text}\n"
+        case_summary += f"Seeks: {driver_brief.requested_remedy} (${driver_brief.requested_amount:.2f})\n"
+        if driver_brief.rebuttal:
+            case_summary += f"Rebuttal: {driver_brief.rebuttal}\n"
 
-    # Verdict details
+    # Verdict — full detail including claim assessments
     case_summary += (
         f"\n--- VERDICT ---\n"
         f"Ruling: {rlabel}. Amount: ${v.amount:.2f}. Confidence: {v.confidence:.2f}.\n"
         f"Cited policy: {v.cited_policy_id or 'none'}.\n"
-        f"Should escalate: {v.should_escalate}.\n"
     )
+    if v.provisional_ruling:
+        _, prov_label = RULING_COLORS.get(v.provisional_ruling, ("gray", v.provisional_ruling))
+        case_summary += f"Provisional ruling: {prov_label} at {v.provisional_confidence:.2f}.\n"
     if v.findings_of_fact:
         case_summary += "Findings of fact:\n"
         for f in v.findings_of_fact:
-            case_summary += f"  - {f.text}\n"
+            refs = ", ".join(f.evidence_refs + f.policy_refs) or "uncited"
+            case_summary += f"  - {f.text} [{refs}]\n"
     if v.conclusions_of_law:
         case_summary += "Conclusions of law:\n"
         for c in v.conclusions_of_law:
             case_summary += f"  - {c}\n"
     if v.remedy_rationale:
         case_summary += f"Remedy rationale: {v.remedy_rationale}\n"
+    if v.claim_assessments:
+        case_summary += "\nClaim assessments (judge's inner monologue):\n"
+        for a in v.claim_assessments:
+            case_summary += f"  [{a.side.upper()}] {a.verdict.upper()}: \"{a.claim_text}\"\n"
+            case_summary += f"    Reasoning: {a.reasoning}\n"
+            if a.evidence_checked:
+                case_summary += f"    Checked: {', '.join(a.evidence_checked)}\n"
 
     system = SystemMessage(content=(
-        "You are a legal analyst explaining a ride-hailing dispute tribunal's verdict "
-        "in plain English. Write a clear, engaging analysis that:\n"
-        "1. Restates what the dispute was about (2-3 sentences)\n"
-        "2. Explains the key evidence that drove the decision\n"
-        "3. Explains WHY the tribunal ruled the way it did — connect the evidence to the policy\n"
-        "4. Notes any complicating factors (fraud signals, conflicting evidence, edge cases)\n"
-        "5. Comments on whether the confidence level seems appropriate\n\n"
-        "Write in a conversational but professional tone. Use markdown formatting. "
-        "Keep it to 3-5 paragraphs. Do NOT use headers."
+        "You are the judge who just ruled on this dispute. Now explain your decision "
+        "to both parties as a clear, compelling narrative. Write as if you are speaking "
+        "directly to them.\n\n"
+        "Use EXACTLY these markdown headers, in this order:\n\n"
+        "## The Dispute\n"
+        "What happened, in 2-3 sentences. Set the scene.\n\n"
+        "## The Evidence\n"
+        "Walk through the key facts from the record that mattered. Cite specific "
+        "figures (deviation %, distances, surge multipliers, etc). Explain what each "
+        "piece of evidence tells you.\n\n"
+        "## What Each Side Argued\n"
+        "Summarize each advocate's theory and their strongest claims. Be fair to both "
+        "sides — acknowledge the strongest point each made.\n\n"
+        "## My Reasoning\n"
+        "This is the most important section — take your time with it. Write a thorough, "
+        "flowing narrative (aim for 3-5 paragraphs) that walks the reader through your "
+        "entire decision process:\n\n"
+        "1. Start with your initial impression — what did the evidence suggest at first glance?\n"
+        "2. Go through the RIDER's case. What did they argue? Which of their claims made "
+        "sense to you and why? Which claims didn't hold up — were they contradicted by "
+        "evidence, unsupported by policy, or just implausible? Quote or paraphrase their "
+        "specific words when it matters.\n"
+        "3. Do the same for the DRIVER's case. Be equally thorough. What was their strongest "
+        "point? Where did their argument break down?\n"
+        "4. If there was a rebuttal, explain whether it moved you. Did it change your "
+        "provisional ruling or just reinforce it? Why?\n"
+        "5. Bring it together — explain how the policy provisions (cite them by ID) map "
+        "onto the facts, and why that led you to the ruling you reached.\n\n"
+        "Throughout, write as a human judge thinking out loud. Use phrases like 'I found "
+        "the rider's claim that... unconvincing because...' or 'The driver's point about... "
+        "gave me pause, but ultimately...' Show your work. Don't just state conclusions — "
+        "show the reader how you got there.\n\n"
+        "## The Verdict\n"
+        "State the ruling, amount, and confidence. Explain why the confidence is what "
+        "it is — what makes you sure, what still nags at you. If there were complicating "
+        "factors (fraud signals, ambiguous evidence, timing issues), address them here.\n\n"
+        "Write in first person as the judge. Be specific to THIS case — reference the "
+        "actual numbers, actual claims, actual policy provisions. Do not be generic. "
+        "Keep The Dispute, The Evidence, What Each Side Argued, and The Verdict to 2-4 "
+        "sentences each. But My Reasoning should be the longest section by far — 3-5 "
+        "paragraphs, thorough and detailed. Be direct and human."
     ))
-    human = HumanMessage(content=f"Here is the case file and verdict:\n\n{case_summary}")
+    human = HumanMessage(content=f"Here is the complete case file, advocate briefs, and your verdict:\n\n{case_summary}")
 
     try:
         llm = get_llm("judge")
@@ -1029,9 +1093,9 @@ if not ids:
     st.error("No cases found. Run: python scripts/generate_dataset.py")
     st.stop()
 
-# Complex cases are the hand-crafted ones (DSP-2000 through DSP-2004)
-COMPLEX_IDS = [i for i in ids if 2000 <= int(i.split("-")[1]) <= 2004]
-SIMPLE_IDS = [i for i in ids if not (2000 <= int(i.split("-")[1]) <= 2004)]
+# Complex cases are the hand-crafted ones (DSP-2000 through DSP-2009)
+COMPLEX_IDS = [i for i in ids if 2000 <= int(i.split("-")[1]) <= 2009]
+SIMPLE_IDS = [i for i in ids if not (2000 <= int(i.split("-")[1]) <= 2009)]
 
 # Find the case the system REFUSES to judge
 refuse_case = None
@@ -1333,21 +1397,18 @@ with tab_analysis:
 
     v = fs.get("verdict")
     pack = fs.get("pack")
-    rider_brief: CaseBrief | None = fs.get("rider_brief")
-    driver_brief: CaseBrief | None = fs.get("driver_brief")
 
     if not v or not pack:
         st.error("Pipeline failed — no verdict to analyze.")
         st.stop()
 
     _, rlabel = RULING_COLORS.get(v.ruling, ("gray", v.ruling))
-    d = pack.dispute
 
-    # ---- Verdict summary card ----
+    # ---- Verdict header card ----
     st.markdown(
         f'<div style="background:linear-gradient(135deg,#1a1a2e,#16213e);color:white;'
         f'padding:20px;border-radius:12px;text-align:center;margin-bottom:20px;">'
-        f'<div style="font-size:0.8rem;color:#aaa;letter-spacing:2px;margin-bottom:6px;">VERDICT</div>'
+        f'<div style="font-size:0.8rem;color:#aaa;letter-spacing:2px;margin-bottom:6px;">FINAL RULING</div>'
         f'<div style="font-size:1.8rem;font-weight:800;margin-bottom:6px;">{rlabel}</div>'
         f'<div style="font-size:1.1rem;color:#ffc107;font-weight:600;">${v.amount:.2f}</div>'
         f'<div style="font-size:0.85rem;color:#ccc;margin-top:6px;">'
@@ -1357,304 +1418,80 @@ with tab_analysis:
         unsafe_allow_html=True,
     )
 
-    # ---- Key evidence metrics (the numbers that drove the decision) ----
-    st.markdown("#### Key Evidence")
-    if d.category == "route_deviation" and pack.route:
-        r = pack.route
-        c1, c2, c3, c4 = st.columns(4)
-        c1.metric("Route Deviation", f"{r.deviation_pct:.1%}",
-                   delta="above threshold" if r.deviation_pct > 0.15 else "within tolerance",
-                   delta_color="inverse" if r.deviation_pct > 0.15 else "normal")
-        c2.metric("Extra Distance", f"{r.deviation_km:.2f} km")
-        c3.metric("Traffic Delay", f"{r.traffic_delay_min:.1f} min")
-        c4.metric("Rider Detour?", "Yes" if r.rider_requested_detour else "No")
-    elif d.category == "no_show" and pack.no_show:
-        n = pack.no_show
-        c1, c2, c3 = st.columns(3)
-        c1.metric("Driver Distance to Pin", f"{n.driver_min_distance_to_pickup_m:.0f} m",
-                   delta="refund trigger" if n.driver_min_distance_to_pickup_m > 100 else "within range",
-                   delta_color="inverse" if n.driver_min_distance_to_pickup_m > 100 else "normal")
-        c2.metric("Wait Time", f"{n.wait_time_min:.0f} min")
-        c3.metric("No-Show Fee", f"${n.no_show_fee_charged:.2f}")
-    elif d.category == "fare_surge" and pack.fare:
-        f = pack.fare
-        c1, c2, c3, c4 = st.columns(4)
-        c1.metric("Quoted at Booking", f"${f.estimated_fare_at_booking:.2f}")
-        c2.metric("Actually Charged", f"${f.total_charged:.2f}",
-                   delta=f"+{(f.total_charged / f.estimated_fare_at_booking - 1):.0%}" if f.estimated_fare_at_booking > 0 else "")
-        c3.metric("Surge Multiplier", f"{f.surge_multiplier:.1f}x",
-                   delta="changed" if f.surge_multiplier != f.surge_at_booking else "stable")
-        c4.metric("Surge at Booking", f"{f.surge_at_booking:.1f}x")
-    elif d.category == "damage_cleaning":
-        c1, c2 = st.columns(2)
-        c1.metric("Claimed Amount", f"${d.claimed_amount:.2f}")
-        if pack.fraud and pack.fraud.photo_authenticity_score is not None:
-            c2.metric("Photo Authenticity", f"{pack.fraud.photo_authenticity_score:.2f}",
-                       delta="flagged" if pack.fraud.photo_authenticity_score < 0.5 else "verified",
-                       delta_color="inverse" if pack.fraud.photo_authenticity_score < 0.5 else "normal")
-        else:
-            c2.metric("Filed By", d.filed_by.title())
-
-    # ---- Advocate face-off: two columns ----
-    st.markdown("---")
-    st.markdown("#### Advocate Face-Off")
-
-    rider_name = pack.rider.name
-    driver_name = pack.driver.name
-
-    col_r, col_d = st.columns(2)
-
-    def _render_brief_card(col, brief: CaseBrief | None, side_name: str, party_name: str, accent: str, icon: str):
-        with col:
-            st.markdown(
-                f'<div style="background:{accent};color:white;padding:8px 14px;'
-                f'border-radius:8px 8px 0 0;font-weight:700;">'
-                f'{icon} {side_name}s Counsel — {party_name}</div>',
-                unsafe_allow_html=True,
-            )
-            if not brief:
-                st.markdown(
-                    '<div style="border:1px solid #333;border-top:none;padding:14px;'
-                    'border-radius:0 0 8px 8px;color:#888;">No brief filed.</div>',
-                    unsafe_allow_html=True,
-                )
-                return
-            # Theory
-            st.markdown(
-                f'<div style="border:1px solid #333;border-top:none;padding:14px;'
-                f'border-radius:0 0 8px 8px;">'
-                f'<div style="font-style:italic;color:#ccc;margin-bottom:10px;">'
-                f'&ldquo;{brief.theory}&rdquo;</div>',
-                unsafe_allow_html=True,
-            )
-            # Claims with evidence tags
-            if brief.claims:
-                st.markdown(f"**{len(brief.claims)} claim(s):**")
-                for i, c in enumerate(brief.claims, 1):
-                    st.markdown(f"{i}. {c.text}")
-                    tags = []
-                    for ref in c.evidence_refs:
-                        tags.append(f"`{ref}`")
-                    for ref in c.policy_refs:
-                        tags.append(f"`{ref}`")
-                    if tags:
-                        st.markdown(f"   &nbsp; Evidence: {' '.join(tags)}")
-                    else:
-                        st.markdown("   &nbsp; *Uncited*")
-            # Concessions
-            if brief.concessions:
-                st.markdown(f"**Concedes ({len(brief.concessions)}):**")
-                for c in brief.concessions:
-                    st.markdown(f"- ~~{c.text}~~")
-            # Requested remedy
-            st.markdown("")
-            st.markdown(
-                f'<div style="background:#1a1a2e;padding:8px 12px;border-radius:6px;'
-                f'font-size:0.9rem;">'
-                f'<span style="color:#aaa;">Seeks:</span> '
-                f'<span style="font-weight:600;">{brief.requested_remedy}</span> '
-                f'<span style="color:#ffc107;">${brief.requested_amount:.2f}</span>'
-                f'</div>',
-                unsafe_allow_html=True,
-            )
-            # Rebuttal
-            if brief.rebuttal:
-                st.markdown(f"*Rebuttal:* {brief.rebuttal}")
-            st.markdown("</div>", unsafe_allow_html=True)
-
-    _render_brief_card(col_r, rider_brief, "Rider", rider_name, "#007bff", "&#128100;")
-    _render_brief_card(col_d, driver_brief, "Driver", driver_name, "#fd7e14", "&#128663;")
-
-    # ---- Judge's inner monologue — per-claim assessments ----
-    st.markdown("---")
-    st.markdown("#### Judge's Inner Monologue")
-
-    assessments = v.claim_assessments
-    if not assessments:
-        st.caption("No per-claim assessments recorded for this configuration.")
-    else:
-        rider_assessments = [a for a in assessments if a.side == "rider"]
-        driver_assessments = [a for a in assessments if a.side == "driver"]
-
-        # Badge styling
-        BADGE = {
-            "accepted":   ("#28a745", "ACCEPTED"),
-            "rejected":   ("#dc3545", "REJECTED"),
-            "questioned": ("#ffc107", "QUESTIONED"),
-            "struck":     ("#6c757d", "STRUCK"),
-        }
-
-        def _render_assessment_card(a: ClaimAssessment, accent: str):
-            color, label = BADGE.get(a.verdict, ("#6c757d", a.verdict.upper()))
-            st.markdown(
-                f'<div style="border:1px solid #333;border-left:4px solid {color};'
-                f'padding:10px 14px;margin-bottom:10px;border-radius:0 6px 6px 0;">'
-                f'<span style="background:{color};color:white;padding:2px 8px;'
-                f'border-radius:3px;font-size:0.7rem;font-weight:700;letter-spacing:1px;">'
-                f'{label}</span>'
-                f'<div style="margin-top:8px;color:#ddd;font-size:0.9rem;">'
-                f'&ldquo;{a.claim_text}&rdquo;</div>'
-                f'<div style="margin-top:6px;color:#aaa;font-size:0.85rem;">'
-                f'<em>Judge:</em> {a.reasoning}</div>',
-                unsafe_allow_html=True,
-            )
-            if a.evidence_checked:
-                refs = " ".join(f"`{r}`" for r in a.evidence_checked)
-                st.markdown(f"  &nbsp; Checked: {refs}")
-            st.markdown("</div>", unsafe_allow_html=True)
-
-        col_ma_r, col_ma_d = st.columns(2)
-
-        with col_ma_r:
-            st.markdown(
-                f'<div style="color:#007bff;font-weight:600;margin-bottom:8px;">'
-                f'On the Rider&rsquo;s case ({len(rider_assessments)})</div>',
-                unsafe_allow_html=True,
-            )
-            if rider_assessments:
-                for a in rider_assessments:
-                    _render_assessment_card(a, "#007bff")
-            else:
-                st.markdown("*No rider claims assessed.*")
-
-        with col_ma_d:
-            st.markdown(
-                f'<div style="color:#fd7e14;font-weight:600;margin-bottom:8px;">'
-                f'On the Driver&rsquo;s case ({len(driver_assessments)})</div>',
-                unsafe_allow_html=True,
-            )
-            if driver_assessments:
-                for a in driver_assessments:
-                    _render_assessment_card(a, "#fd7e14")
-            else:
-                st.markdown("*No driver claims assessed.*")
-
-        # Rebuttal assessment
-        if v.provisional_ruling and v.provisional_confidence is not None:
-            moved = v.provisional_ruling != v.ruling
-            conf_delta = v.confidence - v.provisional_confidence
-            st.markdown("")
-            if moved:
-                st.markdown(
-                    f'<div style="background:#1a1a2e;color:white;padding:12px 16px;'
-                    f'border-radius:8px;border-left:4px solid #ffc107;">'
-                    f'<b>Rebuttal moved the court.</b> The provisional ruling '
-                    f'({RULING_COLORS.get(v.provisional_ruling, ("gray", v.provisional_ruling))[1]}) '
-                    f'changed to <b>{rlabel}</b>. '
-                    f'Confidence shifted {conf_delta:+.1%}.'
-                    f'</div>',
-                    unsafe_allow_html=True,
-                )
-            else:
-                st.markdown(
-                    f'<div style="background:#1a1a2e;color:white;padding:12px 16px;'
-                    f'border-radius:8px;border-left:4px solid #6c757d;">'
-                    f'<b>Rebuttal did not move the court.</b> The ruling held at '
-                    f'<b>{rlabel}</b>. Confidence shifted {conf_delta:+.1%}.'
-                    f'</div>',
-                    unsafe_allow_html=True,
-                )
-
-    # ---- Claim resolution: how the judge ruled on each side's claims ----
-    st.markdown("---")
-    st.markdown("#### How the Judge Ruled")
-
-    if v.findings_of_fact:
-        findings_rider = []
-        findings_driver = []
-        findings_neutral = []
-
-        rider_claim_texts = {c.text for c in rider_brief.claims} if rider_brief else set()
-        driver_claim_texts = {c.text for c in driver_brief.claims} if driver_brief else set()
-
-        for f in v.findings_of_fact:
-            if f.text in rider_claim_texts or any(
-                kw in f.text.lower() for kw in ("rider", "passenger", "pickup")
-            ):
-                findings_rider.append(f)
-            elif f.text in driver_claim_texts or any(
-                kw in f.text.lower() for kw in ("driver", "route", "surge", "traffic")
-            ):
-                findings_driver.append(f)
-            else:
-                findings_neutral.append(f)
-
-        col_fr, col_fd = st.columns(2)
-        with col_fr:
-            st.markdown(
-                f'<div style="color:#007bff;font-weight:600;margin-bottom:6px;">'
-                f'Rider-side findings ({len(findings_rider)})</div>',
-                unsafe_allow_html=True,
-            )
-            for f in findings_rider:
-                refs = " ".join(f"`{r}`" for r in (f.evidence_refs + f.policy_refs)) or "*uncited*"
-                st.markdown(f"- {f.text}")
-                st.markdown(f"  &nbsp; {refs}")
-            if not findings_rider:
-                st.markdown("*None*")
-
-        with col_fd:
-            st.markdown(
-                f'<div style="color:#fd7e14;font-weight:600;margin-bottom:6px;">'
-                f'Driver-side findings ({len(findings_driver)})</div>',
-                unsafe_allow_html=True,
-            )
-            for f in findings_driver:
-                refs = " ".join(f"`{r}`" for r in (f.evidence_refs + f.policy_refs)) or "*uncited*"
-                st.markdown(f"- {f.text}")
-                st.markdown(f"  &nbsp; {refs}")
-            if not findings_driver:
-                st.markdown("*None*")
-
-        if findings_neutral:
-            st.markdown(f"**Neutral findings ({len(findings_neutral)}):**")
-            for f in findings_neutral:
-                refs = " ".join(f"`{r}`" for r in (f.evidence_refs + f.policy_refs)) or "*uncited*"
-                st.markdown(f"- {f.text}  {refs}")
-
-    if v.conclusions_of_law:
-        st.markdown("**Conclusions of Law:**")
-        for i, c in enumerate(v.conclusions_of_law, 1):
-            st.markdown(f"{i}. {c}")
-
-    if v.remedy_rationale:
-        st.info(f"**Remedy rationale:** {v.remedy_rationale}")
-
-    # ---- Provisional vs Final (did the debate move the needle?) ----
-    if v.provisional_ruling and v.provisional_confidence is not None:
-        st.markdown("---")
-        st.markdown("#### Did the Debate Move the Needle?")
-        _, prov_label = RULING_COLORS.get(v.provisional_ruling, ("gray", v.provisional_ruling))
-        moved = v.provisional_ruling != v.ruling
-        conf_delta = v.confidence - v.provisional_confidence
-
-        c1, c2, c3 = st.columns(3)
-        c1.metric("Provisional Ruling", prov_label)
-        c2.metric("Final Ruling", rlabel,
-                   delta="changed" if moved else "unchanged",
-                   delta_color="inverse" if moved else "normal")
-        c3.metric("Confidence Shift", f"{conf_delta:+.1%}",
-                   delta="debate helped" if conf_delta > 0 else ("debate hurt" if conf_delta < 0 else "no change"))
-
-    # ---- Escalation status ----
-    if v.should_escalate:
-        st.error("**Escalated to human appellate review**")
-        if v.escalation_reason:
-            st.caption(v.escalation_reason)
-    else:
-        st.success(f"Ruling stands — confidence {v.confidence:.0%} clears the {CONFIDENCE_THRESHOLD:.0%} threshold.")
-
-    # ---- LLM deep-dive (supplement, not the main content) ----
-    st.markdown("---")
+    # ---- LLM-generated case analysis (cached) ----
     analysis_key = f"analysis_{case}_{cfg}"
-    if analysis_key in st.session_state:
-        st.markdown("#### AI Analysis")
-        st.markdown(st.session_state[analysis_key])
+
+    if analysis_key not in st.session_state:
+        with st.spinner("The judge is writing the analysis..."):
+            st.session_state[analysis_key] = _generate_case_analysis(fs)
+
+    analysis_md = st.session_state[analysis_key]
+
+    # Parse the markdown by ## headers and render each section as a card
+    SECTION_STYLES = {
+        "The Dispute":          ("#8ecae6", "&#9878;"),       # gavel
+        "The Evidence":         ("#00b894", "&#128202;"),     # chart
+        "What Each Side Argued":("#fdcb6e", "&#9878;"),       # scales
+        "My Reasoning":         ("#a29bfe", "&#129504;"),     # brain
+        "The Verdict":          ("#ffc107", "&#9881;&#65039;"), # gear
+    }
+
+    sections = []
+    current_header = None
+    current_body = []
+
+    for line in analysis_md.split("\n"):
+        if line.strip().startswith("## "):
+            if current_header is not None:
+                sections.append((current_header, "\n".join(current_body).strip()))
+            current_header = line.strip()[3:].strip()
+            current_body = []
+        else:
+            if current_header is not None:
+                current_body.append(line)
+
+    if current_header is not None:
+        sections.append((current_header, "\n".join(current_body).strip()))
+
+    if not sections:
+        # Fallback: just render the raw markdown
+        st.markdown(analysis_md)
     else:
-        with st.expander("Get an AI deep-dive explanation"):
-            st.caption("Generates a plain-English narrative tying the evidence to the verdict.")
-            if st.button("Explain the Verdict", type="primary"):
-                with st.spinner("Analyzing the case..."):
-                    analysis = _generate_case_analysis(fs)
-                    st.session_state[analysis_key] = analysis
-                st.rerun()
+        for title, body in sections:
+            accent, icon = SECTION_STYLES.get(title, ("#ffc107", "&#9878;"))
+            st.markdown(
+                f'<div style="background:#1a1a2e;border-left:4px solid {accent};'
+                f'border-radius:0 12px 12px 0;padding:16px 20px;margin-bottom:16px;">'
+                f'<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">'
+                f'<span style="font-size:1.3rem;">{icon}</span>'
+                f'<span style="font-size:1.05rem;font-weight:700;color:{accent};'
+                f'letter-spacing:0.5px;">{title}</span>'
+                f'</div>'
+                f'<div style="color:#ccc;line-height:1.6;font-size:0.95rem;">',
+                unsafe_allow_html=True,
+            )
+            st.markdown(body)
+            st.markdown("</div></div>", unsafe_allow_html=True)
+
+    # ---- Claim assessment summary (data supplement) ----
+    if v.claim_assessments:
+        with st.expander("Judge's Claim Assessments (raw data)"):
+            for a in v.claim_assessments:
+                badge_color = {
+                    "accepted": "#28a745",
+                    "rejected": "#dc3545",
+                    "questioned": "#ffc107",
+                    "struck": "#6c757d",
+                }.get(a.verdict, "#6c757d")
+                st.markdown(
+                    f'<div style="background:#0d1117;border-radius:8px;padding:12px 16px;'
+                    f'margin-bottom:10px;border-left:3px solid {badge_color};">'
+                    f'<span style="background:{badge_color};color:white;padding:2px 8px;'
+                    f'border-radius:3px;font-size:0.7rem;font-weight:700;'
+                    f'letter-spacing:1px;">{a.verdict.upper()}</span> '
+                    f'<span style="color:#8ecae6;font-size:0.8rem;">{a.side.upper()}</span><br>'
+                    f'<span style="color:#ddd;">{a.claim_text}</span><br>'
+                    f'<span style="color:#aaa;font-size:0.85rem;">{a.reasoning}</span>'
+                    f'</div>',
+                    unsafe_allow_html=True,
+                )
