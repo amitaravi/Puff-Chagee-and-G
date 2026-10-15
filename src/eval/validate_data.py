@@ -118,11 +118,12 @@ def main(argv=None) -> int:
         if did in gt:
             truth = apply_policy(pack)
             for key in ("correct_ruling", "should_escalate"):
-                if gt[did].get(key) != getattr(truth, {
-                    "correct_ruling": "ruling", "should_escalate": "should_escalate"}[key]):
+                truth_attr = {"correct_ruling": "ruling", "should_escalate": "should_escalate"}[key]
+                truth_val = getattr(truth, truth_attr)
+                if gt[did].get(key) != truth_val:
                     failures.append(
                         f"{did}: stored label {key}={gt[did].get(key)!r} but "
-                        f"apply_policy() now says {getattr(truth, key)!r} — regenerate")
+                        f"apply_policy() now says {truth_val!r} — regenerate")
 
     # ---- policy formulas must be machine-checkable
     for pid, pol in pol_by_id.items():

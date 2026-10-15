@@ -166,7 +166,14 @@ def recompute_amount(pack: EvidencePack, verdict: Verdict) -> float | None:
 
     This catches bad arithmetic AND wrong-policy-applied-to-right-facts, without
     needing a label: the policy text is part of the case file.
+
+    Important: recomputation only applies when the ruling grants money. A policy may
+    include a formula for the *eligible* award but still be cited in a no-action outcome
+    because an exception clause applied. In that case the expected amount is 0.
     """
+    if verdict.ruling in {"no_action", "dismissed"}:
+        return 0.0
+
     if not verdict.cited_policy_id:
         return None
     pol = _policy_by_id(pack, verdict.cited_policy_id)

@@ -219,6 +219,11 @@ class CaseBrief(BaseModel):
 # ============================================================================
 
 
+class ConfidenceFactor(BaseModel):
+    factor: str
+    delta: float
+
+
 class Verdict(BaseModel):
     ruling: Literal["refund_rider", "refund_driver", "no_action", "dismissed"]
     amount: float = 0.0
@@ -229,7 +234,7 @@ class Verdict(BaseModel):
     remedy_rationale: str = ""
 
     confidence: float = 0.0
-    confidence_factors: dict[str, float] = Field(default_factory=dict)
+    confidence_factors: list[ConfidenceFactor] = Field(default_factory=list)
 
     # provisional_* powers the rebuttal flip-rate test. Do not remove.
     provisional_ruling: Optional[str] = None

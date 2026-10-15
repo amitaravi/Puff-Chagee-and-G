@@ -1,0 +1,181 @@
+{
+  "summary": {
+    "config": "C",
+    "split": "dev",
+    "n": 3,
+    "check_rates": {
+      "direction": [
+        3,
+        3
+      ],
+      "amount": [
+        3,
+        3
+      ],
+      "policy": [
+        2,
+        3
+      ],
+      "escalation": [
+        3,
+        3
+      ],
+      "calibration": [
+        1,
+        3
+      ],
+      "grounding": [
+        3,
+        3
+      ],
+      "recomputation": [
+        2,
+        2
+      ]
+    },
+    "autonomy_rate": 1.0,
+    "accuracy_non_escalated": 1.0,
+    "n_non_escalated": 3,
+    "escalation_accuracy": 1.0,
+    "calibration_gap": 0.12000000000000004,
+    "flip_rate": 0.0,
+    "n_flip_scored": 2,
+    "latency_p50": 58.479,
+    "latency_p95": 85.194,
+    "errors": {
+      "E5": 1
+    },
+    "probes": {},
+    "stability": {},
+    "failures": [
+      {
+        "dispute_id": "DSP-1002",
+        "category": "route_deviation",
+        "predicted": "refund_rider",
+        "truth": "refund_rider",
+        "confidence": 1.0,
+        "failed": "policy"
+      },
+      {
+        "dispute_id": "DSP-1004",
+        "category": "route_deviation",
+        "predicted": "refund_rider",
+        "truth": "refund_rider",
+        "confidence": 0.82,
+        "failed": "calibration"
+      },
+      {
+        "dispute_id": "DSP-1005",
+        "category": "route_deviation",
+        "predicted": "refund_rider",
+        "truth": "refund_rider",
+        "confidence": 0.82,
+        "failed": "calibration"
+      }
+    ]
+  },
+  "results": [
+    {
+      "dispute_id": "DSP-1002",
+      "config": "C",
+      "category": "route_deviation",
+      "filed_by": "rider",
+      "predicted_ruling": "refund_rider",
+      "predicted_amount": 0.81,
+      "predicted_policy": null,
+      "confidence": 1.0,
+      "escalated": false,
+      "provisional_ruling": null,
+      "truth_ruling": "refund_rider",
+      "truth_amount": 1.16,
+      "truth_policy": "POL-4.3",
+      "truth_band": "high",
+      "truth_escalate": false,
+      "truth_rationale": "Deviation 15.6% exceeds the 15% threshold. Traffic accounts for 2 of 22 excess minutes and no rider detour was requested. POL-4.3: 8.58 * (0.96 / 7.09) = 1.16.",
+      "checks": {
+        "escalation": true,
+        "direction": true,
+        "amount": true,
+        "policy": false,
+        "calibration": true,
+        "grounding": true,
+        "recomputation": null
+      },
+      "notes": {
+        "predicted_band": "high",
+        "numeric_mismatch": "1 precise number(s) not found in the record",
+        "recomputation": "cited policy has no machine-checkable formula"
+      },
+      "latency_s": 0.123,
+      "error": null
+    },
+    {
+      "dispute_id": "DSP-1004",
+      "config": "C",
+      "category": "route_deviation",
+      "filed_by": "rider",
+      "predicted_ruling": "refund_rider",
+      "predicted_amount": 6.55,
+      "predicted_policy": "POL-4.3",
+      "confidence": 0.82,
+      "escalated": false,
+      "provisional_ruling": "refund_rider",
+      "truth_ruling": "refund_rider",
+      "truth_amount": 6.55,
+      "truth_policy": "POL-4.3",
+      "truth_band": "high",
+      "truth_escalate": false,
+      "truth_rationale": "Deviation 37.5% exceeds the 15% threshold. Traffic accounts for 2 of 17 excess minutes and no rider detour was requested. POL-4.3: 24.0 * (5.90 / 21.62) = 6.55.",
+      "checks": {
+        "escalation": true,
+        "direction": true,
+        "amount": true,
+        "policy": true,
+        "calibration": false,
+        "grounding": true,
+        "recomputation": true
+      },
+      "notes": {
+        "predicted_band": "medium",
+        "numeric_mismatch": "1 precise number(s) not found in the record",
+        "recomputed": "6.55 vs awarded 6.55"
+      },
+      "latency_s": 85.194,
+      "error": null
+    },
+    {
+      "dispute_id": "DSP-1005",
+      "config": "C",
+      "category": "route_deviation",
+      "filed_by": "rider",
+      "predicted_ruling": "refund_rider",
+      "predicted_amount": 6.03,
+      "predicted_policy": "POL-4.3",
+      "confidence": 0.82,
+      "escalated": false,
+      "provisional_ruling": "refund_rider",
+      "truth_ruling": "refund_rider",
+      "truth_amount": 6.03,
+      "truth_policy": "POL-4.3",
+      "truth_band": "high",
+      "truth_escalate": false,
+      "truth_rationale": "Deviation 29.2% exceeds the 15% threshold. Traffic accounts for 2 of 14 excess minutes and no rider detour was requested. POL-4.3: 26.68 * (5.58 / 24.70) = 6.03.",
+      "checks": {
+        "escalation": true,
+        "direction": true,
+        "amount": true,
+        "policy": true,
+        "calibration": false,
+        "grounding": true,
+        "recomputation": true
+      },
+      "notes": {
+        "predicted_band": "medium",
+        "numeric_mismatch": "1 precise number(s) not found in the record",
+        "recomputed": "6.03 vs awarded 6.03"
+      },
+      "latency_s": 58.479,
+      "error": null
+    }
+  ]
+}

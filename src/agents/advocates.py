@@ -12,7 +12,8 @@ from concurrent.futures import ThreadPoolExecutor
 from langchain_core.messages import HumanMessage, SystemMessage
 
 from ..core import config
-from ..core.llm import get_llm
+from ..core.llm import get_llm, model_ready
+from langchain_openai.chat_models.base import OpenAIInvalidRequestError, OpenAIRateLimitError
 from ..core.state import (
     CaseBrief,
     CaseState,
@@ -31,6 +32,7 @@ from .prompts import (
     render_trip,
     stub_brief,
 )
+from .rule_based import deterministic_brief, deterministic_rebuttal
 
 ROLE = {
     "rider": "counsel for the rider (claimant)",
@@ -147,9 +149,16 @@ def run_advocate(state: CaseState, side: str) -> tuple[CaseBrief, int, int]:
 
     if config.is_stub():
         brief = stub_brief(side)
+    elif not model_ready() or config.flags_for(state["config"]).use_advocates is False:
+        brief = deterministic_brief(pack, side)
     else:
         llm = get_llm("advocate").with_structured_output(CaseBrief)
-        brief: CaseBrief = llm.invoke([SystemMessage(content=system), HumanMessage(content=user)])
+        try:
+            brief: CaseBrief = llm.invoke([SystemMessage(content=system), HumanMessage(content=user)])
+        except (OpenAIInvalidRequestError, OpenAIRateLimitError):
+            # Common provider failures: structured-output truncation and OTPM throttling.
+            # Fall back to deterministic brief instead of failing the whole case.
+            brief = deterministic_brief(pack, side)
 
     brief, uncited, badref = _sanitize_brief(brief, pack, side)
     return brief, uncited, badref
@@ -170,9 +179,14 @@ def run_rebuttal(state: CaseState, side: str) -> CaseBrief:
 
     if config.is_stub():
         reply = "[STUB] placeholder rebuttal."
+    elif not model_ready():
+        reply = deterministic_rebuttal(side, yours, theirs)
     else:
         llm = get_llm("advocate")
-        reply = llm.invoke([SystemMessage(content=system), HumanMessage(content=user)]).content
+        try:
+            reply = llm.invoke([SystemMessage(content=system), HumanMessage(content=user)]).content
+        except OpenAIRateLimitError:
+            reply = deterministic_rebuttal(side, yours, theirs)
 
     yours.rebuttal = str(reply)
     return yours
