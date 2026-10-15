@@ -1,0 +1,180 @@
+{
+  "chat": [
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "First ride! The app said $22 and I had a WELCOME10 promo for $4 off. Why am I being charged $55?",
+      "message_id": "MSG-02071",
+      "sender": "rider",
+      "sentiment": -0.7,
+      "timestamp": "2025-02-11T23:50:00Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "Surge is 3.5x right now. LAX at midnight on a Friday, it's always like this. I don't set the prices.",
+      "message_id": "MSG-02072",
+      "sender": "driver",
+      "sentiment": 0.0,
+      "timestamp": "2025-02-11T23:50:30Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "But it said 1.0x when I booked 3 minutes ago! And my WELCOME10 promo wasn't applied. And there's a $3.50 toll \u2014 we didn't go through any toll.",
+      "message_id": "MSG-02073",
+      "sender": "rider",
+      "sentiment": -0.8,
+      "timestamp": "2025-02-11T23:51:00Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "The surge changes in real time, that's how it works. Promo codes and tolls are handled by the system, not me. Take it up with support.",
+      "message_id": "MSG-02074",
+      "sender": "driver",
+      "sentiment": -0.1,
+      "timestamp": "2025-02-11T23:51:30Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "This is my first ride ever and I'm being charged more than double what I was quoted. Three things are wrong: surge, promo, and toll. I want a refund for all three.",
+      "message_id": "MSG-02075",
+      "sender": "rider",
+      "sentiment": -0.9,
+      "timestamp": "2025-02-11T23:52:00Z"
+    }
+  ],
+  "dispute": {
+    "category": "fare_surge",
+    "claimed_amount": 29.16,
+    "dispute_id": "DSP-2007",
+    "driver_statement": "Surge pricing is dynamic and set by the platform. At midnight on a Friday at LAX, surge goes up fast. I don't control it. I also don't handle promo codes or tolls \u2014 those are system-level. The rider should contact support. I just drove the route the app gave me.",
+    "filed_at": "2025-02-12T00:10:00Z",
+    "filed_by": "rider",
+    "priority": "medium",
+    "rider_statement": "This was my first ride. I was quoted $22 at booking with 1.0x surge. By the time the trip started 3 minutes later, surge jumped to 3.5x with no disclosure. My WELCOME10 promo code for $4 was never applied. And there's a $3.50 toll on a route from LAX to Santa Monica that has no toll roads. Three separate billing errors on my first ride. The total charge of $55 is more than double the $22 I was quoted.",
+    "trip_id": "TRP-2007"
+  },
+  "driver": {
+    "account_age_days": 500,
+    "avg_rating": 4.4,
+    "cancellation_rate": 0.04,
+    "dispute_count_90d": 3,
+    "dispute_win_rate": 0.4,
+    "is_flagged_abuse": false,
+    "name": "Lisa Park",
+    "party_id": "DRV-9008",
+    "role": "driver",
+    "total_trips": 1900
+  },
+  "fare": {
+    "base_fare": 2.84,
+    "booking_fee": 2.0,
+    "currency": "USD",
+    "distance_fare": 5.09,
+    "estimated_fare_at_booking": 13.25,
+    "promo_code": "WELCOME10",
+    "promo_discount": 0.0,
+    "surge_amount": 30.32,
+    "surge_at_booking": 1.0,
+    "surge_multiplier": 3.5,
+    "time_fare": 4.2,
+    "tolls": 3.5,
+    "total_charged": 47.95,
+    "trip_id": "TRP-2007"
+  },
+  "fraud": {
+    "collusion_score": 0.01,
+    "device_fingerprint_shared": false,
+    "dispute_id": "DSP-2007",
+    "driver_claims_30d": 3,
+    "photo_authenticity_score": null,
+    "rider_claims_30d": 0,
+    "rider_repeat_claimer": false,
+    "risk_level": "low"
+  },
+  "no_show": null,
+  "policies": [
+    {
+      "category": "fare_surge",
+      "conditions": {
+        "surge_consistent": true
+      },
+      "policy_id": "POL-3.1",
+      "remedy_formula": null,
+      "remedy_type": "no_action",
+      "rule_text": "The fare shown at booking is an estimate. Where the applied surge matches the surge disclosed at booking, no refund is due.",
+      "title": "Estimates Are Not Quotes",
+      "version": "v2.2"
+    },
+    {
+      "category": "fare_surge",
+      "conditions": {
+        "surge_exceeds_disclosed": true
+      },
+      "policy_id": "POL-3.2",
+      "remedy_formula": "surge_amount * (1 - (surge_at_booking / surge_multiplier))",
+      "remedy_type": "partial_refund",
+      "rule_text": "Where the surge applied exceeds the surge disclosed at booking, the rider is refunded the difference attributable to the undisclosed portion.",
+      "title": "Undisclosed Surge",
+      "version": "v1.8"
+    },
+    {
+      "category": "fare_surge",
+      "conditions": {
+        "promo_unapplied": true
+      },
+      "policy_id": "POL-3.3",
+      "remedy_formula": null,
+      "remedy_type": "partial_refund",
+      "rule_text": "Where a valid promotion was presented at booking but not applied to the final charge, the rider is refunded the promotional value.",
+      "title": "Promo Code Non-Application",
+      "version": "v1.5"
+    },
+    {
+      "category": "fare_surge",
+      "conditions": {
+        "tolls_unverified": true
+      },
+      "policy_id": "POL-3.4",
+      "remedy_formula": null,
+      "remedy_type": "partial_refund",
+      "rule_text": "Tolls may be charged only where the route actually traversed a tolled segment. Unverified tolls are refunded.",
+      "title": "Toll Verification",
+      "version": "v1.1"
+    }
+  ],
+  "precedents": [],
+  "rider": {
+    "account_age_days": 30,
+    "avg_rating": 5.0,
+    "cancellation_rate": 0.0,
+    "dispute_count_90d": 0,
+    "dispute_win_rate": 0.0,
+    "is_flagged_abuse": false,
+    "name": "Amir Hosseini",
+    "party_id": "RDR-9008",
+    "role": "rider",
+    "total_trips": 4
+  },
+  "route": null,
+  "trip": {
+    "actual_distance_km": 4.28,
+    "actual_duration_min": 15.0,
+    "city": "Los Angeles",
+    "driver_id": "DRV-9008",
+    "dropoff_address": "Santa Monica Pier",
+    "ended_at": "2025-02-11T07:19:00Z",
+    "estimated_distance_km": 4.2,
+    "estimated_duration_min": 14.0,
+    "pickup_address": "LAX Terminal 5",
+    "requested_at": "2025-02-11T07:00:00Z",
+    "rider_id": "RDR-9008",
+    "started_at": "2025-02-11T07:04:00Z",
+    "status": "completed",
+    "traffic_conditions": "moderate",
+    "trip_id": "TRP-2007"
+  }
+}

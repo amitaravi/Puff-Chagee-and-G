@@ -1,0 +1,186 @@
+{
+  "chat": [
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "Is it OK if I bring my coffee? It's in a sealed travel cup.",
+      "message_id": "MSG-02081",
+      "sender": "rider",
+      "sentiment": 0.3,
+      "timestamp": "2025-02-11T07:05:00Z"
+    },
+    {
+      "contains_agreement": true,
+      "contains_threat": false,
+      "message": "Yeah no problem, as long as it's sealed.",
+      "message_id": "MSG-02082",
+      "sender": "driver",
+      "sentiment": 0.2,
+      "timestamp": "2025-02-11T07:05:30Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "It's one of those Yeti tumblers, never spills. Thanks!",
+      "message_id": "MSG-02083",
+      "sender": "rider",
+      "sentiment": 0.4,
+      "timestamp": "2025-02-11T07:06:00Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "Thanks for the ride. Have a good one!",
+      "message_id": "MSG-02084",
+      "sender": "driver",
+      "sentiment": 0.5,
+      "timestamp": "2025-02-11T07:17:00Z"
+    },
+    {
+      "contains_agreement": true,
+      "contains_threat": false,
+      "message": "Thank you! Five stars to you.",
+      "message_id": "MSG-02085",
+      "sender": "rider",
+      "sentiment": 0.8,
+      "timestamp": "2025-02-11T07:17:30Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "Hi Charlotte, I found a coffee spill on the back seat when I was cleaning tonight. The photo shows it clearly. I believe it happened during our ride. I've filed a cleaning claim for $35.",
+      "message_id": "MSG-02086",
+      "sender": "driver",
+      "sentiment": -0.3,
+      "timestamp": "2025-02-12T01:00:00Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "That wasn't me. My coffee was in a sealed Yeti tumbler \u2014 I told you that. I never opened it in the car. You did 4 rides after mine. The spill was from one of those riders. I'm disputing this.",
+      "message_id": "MSG-02087",
+      "sender": "rider",
+      "sentiment": -0.6,
+      "timestamp": "2025-02-12T01:15:00Z"
+    }
+  ],
+  "dispute": {
+    "category": "damage_cleaning",
+    "claimed_amount": 35.0,
+    "dispute_id": "DSP-2008",
+    "driver_statement": "The rider admitted carrying coffee in the chat. She said it was a 'sealed Yeti tumbler' but the spill pattern matches an open cup, not a sealed one. The photo is genuine \u2014 0.91 authenticity score. I found it when I cleaned the car that night. I filed within 18 hours, well under the 24-hour threshold. I did do more rides after hers, but I check the car between rides and didn't notice it until the deep clean at night. The spill was under the seat, not visible from the front. The $35 covers professional detailing.",
+    "filed_at": "2025-02-12T01:00:00Z",
+    "filed_by": "driver",
+    "priority": "medium",
+    "rider_statement": "The driver is blaming me for a coffee spill I didn't cause. I brought a sealed Yeti tumbler \u2014 the driver even acknowledged it was sealed. I never opened it during the ride. The driver did 4 more rides after mine before finding the spill 18 hours later. The photo might be real but the damage wasn't from me. The driver has filed 5 cleaning claims in 90 days \u2014 that's a pattern. This is a shakedown.",
+    "trip_id": "TRP-2008"
+  },
+  "driver": {
+    "account_age_days": 1300,
+    "avg_rating": 4.3,
+    "cancellation_rate": 0.01,
+    "dispute_count_90d": 5,
+    "dispute_win_rate": 0.6,
+    "is_flagged_abuse": false,
+    "name": "Victor Mendoza",
+    "party_id": "DRV-9009",
+    "role": "driver",
+    "total_trips": 4100
+  },
+  "fare": {
+    "base_fare": 2.6,
+    "booking_fee": 2.0,
+    "currency": "USD",
+    "distance_fare": 4.37,
+    "estimated_fare_at_booking": 12.05,
+    "promo_code": null,
+    "promo_discount": 0.0,
+    "surge_amount": 0.0,
+    "surge_at_booking": 1.0,
+    "surge_multiplier": 1.0,
+    "time_fare": 3.36,
+    "tolls": 0,
+    "total_charged": 12.33,
+    "trip_id": "TRP-2008"
+  },
+  "fraud": {
+    "collusion_score": 0.02,
+    "device_fingerprint_shared": false,
+    "dispute_id": "DSP-2008",
+    "driver_claims_30d": 5,
+    "photo_authenticity_score": 0.91,
+    "rider_claims_30d": 1,
+    "rider_repeat_claimer": false,
+    "risk_level": "medium"
+  },
+  "no_show": null,
+  "policies": [
+    {
+      "category": "damage_cleaning",
+      "conditions": {
+        "photo_authenticity_gte": 0.7
+      },
+      "policy_id": "POL-5.1",
+      "remedy_formula": null,
+      "remedy_type": "compensate_driver",
+      "rule_text": "A cleaning fee is payable to the driver where a verified photograph shows damage or soiling caused during the trip, capped at $25.",
+      "title": "Cleaning Fee - Verified Damage",
+      "version": "v1.6"
+    },
+    {
+      "category": "damage_cleaning",
+      "conditions": {
+        "photo_authenticity_lt": 0.4
+      },
+      "policy_id": "POL-5.2",
+      "remedy_formula": null,
+      "remedy_type": "no_action",
+      "rule_text": "Where the submitted photograph fails authenticity verification, the claim is dismissed.",
+      "title": "Unverified or Fabricated Evidence",
+      "version": "v1.2"
+    },
+    {
+      "category": "damage_cleaning",
+      "conditions": {
+        "reported_after_hours_gt": 24
+      },
+      "policy_id": "POL-5.3",
+      "remedy_formula": null,
+      "remedy_type": "no_action",
+      "rule_text": "Damage reported more than 24 hours after trip end is presumed pre-existing unless the driver produces contemporaneous evidence.",
+      "title": "Prior Damage",
+      "version": "v1.0"
+    }
+  ],
+  "precedents": [],
+  "rider": {
+    "account_age_days": 800,
+    "avg_rating": 4.7,
+    "cancellation_rate": 0.03,
+    "dispute_count_90d": 1,
+    "dispute_win_rate": 0.0,
+    "is_flagged_abuse": false,
+    "name": "Charlotte Dubois",
+    "party_id": "RDR-9009",
+    "role": "rider",
+    "total_trips": 280
+  },
+  "route": null,
+  "trip": {
+    "actual_distance_km": 3.8,
+    "actual_duration_min": 12.0,
+    "city": "Seattle",
+    "driver_id": "DRV-9009",
+    "dropoff_address": "Mission & 16th",
+    "ended_at": "2025-02-11T07:16:00Z",
+    "estimated_distance_km": 3.8,
+    "estimated_duration_min": 11.0,
+    "pickup_address": "Ferry Building",
+    "requested_at": "2025-02-11T07:00:00Z",
+    "rider_id": "RDR-9009",
+    "started_at": "2025-02-11T07:04:00Z",
+    "status": "completed",
+    "traffic_conditions": "light",
+    "trip_id": "TRP-2008"
+  }
+}

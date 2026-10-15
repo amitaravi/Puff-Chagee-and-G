@@ -1120,10 +1120,436 @@ def build_creative_cases(b: Builder, rng: random.Random) -> list[str]:
     }
     ids.append(b._commit(pack))
 
+    # ================================================================
+    # Case 6: DSP-2005 — "The Detour, the Drop-Off, and the Dead Phone"
+    # Category: no_show (hybrid with route elements)
+    # Driver 65m from pin (grey zone), rider GPS approaching but phone
+    # died at 6:30 mark, driver left at 7:00. Tests POL-2.2 grey-band.
+    # ================================================================
+    did, trip_id, msg = "DSP-2005", "TRP-2005", 2050
+    rider = {
+        "party_id": "RDR-9006", "role": "rider", "name": "Tom Hendricks",
+        "account_age_days": 700, "total_trips": 210, "avg_rating": 4.5,
+        "dispute_count_90d": 2, "dispute_win_rate": 0.50,
+        "cancellation_rate": 0.05, "is_flagged_abuse": False,
+    }
+    driver = {
+        "party_id": "DRV-9006", "role": "driver", "name": "Nadia Petrova",
+        "account_age_days": 950, "total_trips": 2800, "avg_rating": 4.8,
+        "dispute_count_90d": 1, "dispute_win_rate": 0.70,
+        "cancellation_rate": 0.03, "is_flagged_abuse": False,
+    }
+    dist = 65.0
+    wait = 7.0
+    fee = 8.50
+    optimal = 5.5
+    trip = b._trip(trip_id, rider, driver, optimal, 0.0, 13.0,
+                  wait, "no_show", "moderate")
+    trip["pickup_address"] = "Castro Theatre, San Francisco"
+    fare = {
+        "trip_id": trip_id, "base_fare": 0.0, "distance_fare": 0.0, "time_fare": 0.0,
+        "booking_fee": 0.0, "surge_multiplier": 1.0, "surge_amount": 0.0, "tolls": 0.0,
+        "promo_code": None, "promo_discount": 0.0, "total_charged": fee,
+        "estimated_fare_at_booking": fee, "surge_at_booking": 1.0, "currency": "USD",
+    }
+    no_show = {
+        "driver_min_distance_to_pickup_m": dist,
+        "wait_time_min": wait,
+        "rider_gps_approaching": True,   # GPS was moving toward pin until phone died
+        "no_show_fee_charged": fee,
+    }
+    chat = [
+        {"message_id": "MSG-02051", "sender": "driver", "timestamp": "2025-02-11T07:04:00Z",
+         "message": "I'm at Castro Theatre, near the box office. Where are you?", "sentiment": 0.0,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02052", "sender": "rider", "timestamp": "2025-02-11T07:04:30Z",
+         "message": "Coming from the coffee shop on Market, 2 min away. Walking fast.", "sentiment": 0.1,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02053", "sender": "driver", "timestamp": "2025-02-11T07:06:00Z",
+         "message": "I see you on the map, you're moving. I'm at the pin but there's construction, I'm parked 65m away on 18th St.", "sentiment": 0.0,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02054", "sender": "rider", "timestamp": "2025-02-11T07:06:30Z",
+         "message": "OK coming to 18th. My phone is about to die, if I go silent I'm almost there.", "sentiment": 0.0,
+         "contains_threat": False, "contains_agreement": True},
+        {"message_id": "MSG-02055", "sender": "driver", "timestamp": "2025-02-11T07:08:00Z",
+         "message": "Still don't see you. Are you coming?", "sentiment": -0.1,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02056", "sender": "driver", "timestamp": "2025-02-11T07:10:00Z",
+         "message": "I've waited 7 minutes. Your GPS stopped updating at 7:06. I have to go, another pickup queued. Fee stands.", "sentiment": -0.3,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02057", "sender": "rider", "timestamp": "2025-02-11T07:12:00Z",
+         "message": "I was at 18th and Castro! I arrived right as you pulled away. My phone died so I couldn't message. You left one minute after I got there. I saw your taillights.", "sentiment": -0.7,
+         "contains_threat": False, "contains_agreement": False},
+    ]
+    pack = {
+        "dispute": {
+            "dispute_id": did, "trip_id": trip_id, "filed_by": "rider",
+            "filed_at": "2025-02-11T08:15:00Z", "category": "no_show",
+            "claimed_amount": fee,
+            "rider_statement": "I was walking toward the driver from the coffee shop. My GPS was updating and he could see me approaching. My phone died at 7:06 — I told him it was about to die. I arrived at 18th and Castro at 7:11 and saw him driving away. He was parked 65m from the pin because of construction. The 65m is his issue, not mine. I was there within the window. The fee is unjustified.",
+            "driver_statement": "I arrived at the pin location at 7:04. Construction forced me to park on 18th Street, 65m away. The rider said she was coming from a coffee shop. Her GPS was approaching until 7:06 when it stopped updating — phone died. I waited until 7:11 (7 minutes). I had another pickup queued. The rider's GPS was approaching but it died before she arrived, so I couldn't confirm she was actually close. The 65m distance puts this in the grey zone, but I waited the full window.",
+            "priority": "medium",
+        },
+        "trip": trip, "fare": fare, "rider": rider, "driver": driver,
+        "route": None, "no_show": no_show, "chat": chat,
+        "policies": [BY_ID[p] for p in INLINE["no_show"]],
+        "precedents": [],
+        "fraud": {
+            "dispute_id": did, "rider_claims_30d": 2, "driver_claims_30d": 1,
+            "rider_repeat_claimer": False, "collusion_score": 0.03,
+            "device_fingerprint_shared": False, "photo_authenticity_score": None,
+            "risk_level": "low",
+        },
+    }
+    ids.append(b._commit(pack))
+
+    # ================================================================
+    # Case 7: DSP-2006 — "The Long Way Home Through Three Storms"
+    # Category: route_deviation
+    # 19% deviation, 2 unscheduled stops (150s and 90s), traffic 70% of delay,
+    # rider_requested_detour=False, deviation_justified_by=None.
+    # Tests POL-4.3 (deviation > 15%), POL-4.4 (traffic share), POL-4.7 (stops > 120s)
+    # simultaneously — three policies collide.
+    # ================================================================
+    did, trip_id, msg = "DSP-2006", "TRP-2006", 2060
+    rider = {
+        "party_id": "RDR-9007", "role": "rider", "name": "Sofia Albrecht",
+        "account_age_days": 400, "total_trips": 155, "avg_rating": 4.3,
+        "dispute_count_90d": 4, "dispute_win_rate": 0.25,
+        "cancellation_rate": 0.07, "is_flagged_abuse": False,
+    }
+    driver = {
+        "party_id": "DRV-9007", "role": "driver", "name": "Robert Chen",
+        "account_age_days": 1100, "total_trips": 3400, "avg_rating": 4.7,
+        "dispute_count_90d": 2, "dispute_win_rate": 0.85,
+        "cancellation_rate": 0.02, "is_flagged_abuse": False,
+    }
+    optimal = 10.5
+    pct = 0.19
+    actual = round(optimal * (1 + pct), 2)
+    deviation_km = round(actual - optimal, 2)
+    traffic_delay = 7.0
+    duration_delta = 10.0
+    est_min = 24.0
+    act_min = round(est_min + duration_delta, 1)
+    trip = b._trip(trip_id, rider, driver, optimal, actual, est_min, act_min, "completed", "heavy")
+    fare = make_fare(rng, trip, optimal, actual, 1.0, 1.0, False)
+    refund_est = round(fare["distance_fare"] * (deviation_km / actual), 2)
+    claimed = round(refund_est * 1.2, 2)
+    route = {
+        "trip_id": trip_id, "optimal_distance_km": optimal, "actual_distance_km": actual,
+        "deviation_km": deviation_km, "deviation_pct": pct,
+        "duration_delta_min": duration_delta, "traffic_delay_min": traffic_delay,
+        "delay_attributable_to_traffic": True,
+        "rider_requested_detour": False,
+        "unexpected_stops": [
+            {"lat": 37.7849, "lng": -122.4094, "duration_sec": 150, "at_km": 3.2},
+            {"lat": 37.7649, "lng": -122.4294, "duration_sec": 90, "at_km": 6.8},
+        ],
+        "num_stops": 2, "longest_stop_sec": 150,
+        "deviation_justified_by": None,
+        "route_efficiency_score": round(optimal / actual, 3),
+    }
+    chat = [
+        {"message_id": "MSG-02061", "sender": "rider", "timestamp": "2025-02-11T07:10:00Z",
+         "message": "Why are we stopping here? This isn't the route.", "sentiment": -0.3,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02062", "sender": "driver", "timestamp": "2025-02-11T07:10:15Z",
+         "message": "Just need to check something quickly. Give me two minutes.", "sentiment": -0.1,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02063", "sender": "rider", "timestamp": "2025-02-11T07:13:00Z",
+         "message": "That was almost 3 minutes. Can we go now? I'm going to be late.", "sentiment": -0.5,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02064", "sender": "driver", "timestamp": "2025-02-11T07:13:10Z",
+         "message": "Yes, going now. Traffic is really bad on the normal route, I'm taking a bypass.", "sentiment": 0.0,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02065", "sender": "rider", "timestamp": "2025-02-11T07:18:00Z",
+         "message": "Are we stopping AGAIN? Why?", "sentiment": -0.6,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02066", "sender": "driver", "timestamp": "2025-02-11T07:18:30Z",
+         "message": "Just a quick drop-off for my other gig, 90 seconds max.", "sentiment": -0.2,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02067", "sender": "rider", "timestamp": "2025-02-11T07:20:00Z",
+         "message": "You're doing another gig during MY ride? And the traffic isn't even that bad — Waze shows clear roads on the direct route.", "sentiment": -0.7,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02068", "sender": "driver", "timestamp": "2025-02-11T07:20:30Z",
+         "message": "Waze doesn't know about the accident on Van Ness. The traffic delay is real, 7 minutes of the extra 10 are traffic. The stops were brief, I admit that was wrong.", "sentiment": -0.3,
+         "contains_threat": False, "contains_agreement": False},
+    ]
+    pack = {
+        "dispute": {
+            "dispute_id": did, "trip_id": trip_id, "filed_by": "rider",
+            "filed_at": "2025-02-11T08:30:00Z", "category": "route_deviation",
+            "claimed_amount": claimed,
+            "rider_statement": "The driver deviated 19% from the optimal route, made TWO unscheduled stops (150 seconds and 90 seconds) to do another gig, and took a longer route claiming traffic. The traffic data shows 7 of 10 extra minutes were traffic-related, but the driver also admitted making personal stops during my ride. The 150-second stop violates the 120-second threshold in POL-4.7. The deviation exceeds 15% per POL-4.3. Even if traffic justifies part of the route, the stops are entirely the driver's fault.",
+            "driver_statement": "I took a bypass because of an accident on Van Ness that Waze didn't show yet. 7 of the 10 extra minutes were genuine traffic delay — that's 70% of the deviation. I did make two brief stops, I admit that was wrong and I shouldn't have. The first was 150 seconds, the second 90. But the route deviation itself was mostly justified by traffic. The stops were a mistake but they contributed maybe 4 minutes, not the full deviation. I've done 3400 trips, this is my first complaint about stops.",
+            "priority": "medium",
+        },
+        "trip": trip, "fare": fare, "rider": rider, "driver": driver,
+        "route": route, "no_show": None, "chat": chat,
+        "policies": [BY_ID[p] for p in INLINE["route_deviation"]],
+        "precedents": [],
+        "fraud": {
+            "dispute_id": did, "rider_claims_30d": 4, "driver_claims_30d": 2,
+            "rider_repeat_claimer": False, "collusion_score": 0.02,
+            "device_fingerprint_shared": False, "photo_authenticity_score": None,
+            "risk_level": "low",
+        },
+    }
+    ids.append(b._commit(pack))
+
+    # ================================================================
+    # Case 8: DSP-2007 — "The Midnight Promo and the Triple Surge"
+    # Category: fare_surge
+    # Surge 1.0x -> 3.5x, promo WELCOME10 presented but not applied,
+    # toll $3.50 on a route with no toll, AND the surge changed between
+    # booking and trip start. Tests POL-3.2 (undisclosed surge),
+    # POL-3.3 (promo), POL-3.4 (toll) — three violations in one fare.
+    # ================================================================
+    did, trip_id, msg = "DSP-2007", "TRP-2007", 2070
+    rider = {
+        "party_id": "RDR-9008", "role": "rider", "name": "Amir Hosseini",
+        "account_age_days": 30, "total_trips": 4, "avg_rating": 5.0,
+        "dispute_count_90d": 0, "dispute_win_rate": 0.0,
+        "cancellation_rate": 0.0, "is_flagged_abuse": False,
+    }
+    driver = {
+        "party_id": "DRV-9008", "role": "driver", "name": "Lisa Park",
+        "account_age_days": 500, "total_trips": 1900, "avg_rating": 4.4,
+        "dispute_count_90d": 3, "dispute_win_rate": 0.40,
+        "cancellation_rate": 0.04, "is_flagged_abuse": False,
+    }
+    optimal = 4.2
+    pct = 0.02
+    actual = round(optimal * (1 + pct), 2)
+    est_min = 14.0
+    act_min = 15.0
+    surge_at_booking = 1.0
+    surge = 3.5
+    trip = b._trip(trip_id, rider, driver, optimal, actual, est_min, act_min,
+                  "completed", "moderate")
+    trip["city"] = "Los Angeles"
+    trip["pickup_address"] = "LAX Terminal 5"
+    trip["dropoff_address"] = "Santa Monica Pier"
+    fare = make_fare(rng, trip, optimal, actual, surge, surge_at_booking, True)
+    fare["tolls"] = 3.50
+    fare["promo_code"] = "WELCOME10"
+    fare["promo_discount"] = 0.0  # promo NOT applied despite being presented
+    fare["total_charged"] = round(fare["base_fare"] + fare["distance_fare"] + fare["time_fare"]
+                                  + fare["booking_fee"] + fare["surge_amount"] + fare["tolls"]
+                                  - fare["promo_discount"], 2)
+    # Promo should have been $4.00 (10% of distance, capped at 4)
+    promo_value = 4.00
+    surge_excess = round(fare["surge_amount"] * (1 - surge_at_booking / surge), 2)
+    phantom_toll = 3.50
+    claimed = round(surge_excess + promo_value + phantom_toll, 2)
+    chat = [
+        {"message_id": "MSG-02071", "sender": "rider", "timestamp": "2025-02-11T23:50:00Z",
+         "message": "First ride! The app said $22 and I had a WELCOME10 promo for $4 off. Why am I being charged $55?", "sentiment": -0.7,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02072", "sender": "driver", "timestamp": "2025-02-11T23:50:30Z",
+         "message": "Surge is 3.5x right now. LAX at midnight on a Friday, it's always like this. I don't set the prices.", "sentiment": 0.0,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02073", "sender": "rider", "timestamp": "2025-02-11T23:51:00Z",
+         "message": "But it said 1.0x when I booked 3 minutes ago! And my WELCOME10 promo wasn't applied. And there's a $3.50 toll — we didn't go through any toll.", "sentiment": -0.8,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02074", "sender": "driver", "timestamp": "2025-02-11T23:51:30Z",
+         "message": "The surge changes in real time, that's how it works. Promo codes and tolls are handled by the system, not me. Take it up with support.", "sentiment": -0.1,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02075", "sender": "rider", "timestamp": "2025-02-11T23:52:00Z",
+         "message": "This is my first ride ever and I'm being charged more than double what I was quoted. Three things are wrong: surge, promo, and toll. I want a refund for all three.", "sentiment": -0.9,
+         "contains_threat": False, "contains_agreement": False},
+    ]
+    pack = {
+        "dispute": {
+            "dispute_id": did, "trip_id": trip_id, "filed_by": "rider",
+            "filed_at": "2025-02-12T00:10:00Z", "category": "fare_surge",
+            "claimed_amount": claimed,
+            "rider_statement": "This was my first ride. I was quoted $22 at booking with 1.0x surge. By the time the trip started 3 minutes later, surge jumped to 3.5x with no disclosure. My WELCOME10 promo code for $4 was never applied. And there's a $3.50 toll on a route from LAX to Santa Monica that has no toll roads. Three separate billing errors on my first ride. The total charge of $55 is more than double the $22 I was quoted.",
+            "driver_statement": "Surge pricing is dynamic and set by the platform. At midnight on a Friday at LAX, surge goes up fast. I don't control it. I also don't handle promo codes or tolls — those are system-level. The rider should contact support. I just drove the route the app gave me.",
+            "priority": "medium",
+        },
+        "trip": trip, "fare": fare, "rider": rider, "driver": driver,
+        "route": None, "no_show": None, "chat": chat,
+        "policies": [BY_ID[p] for p in INLINE["fare_surge"]],
+        "precedents": [],
+        "fraud": {
+            "dispute_id": did, "rider_claims_30d": 0, "driver_claims_30d": 3,
+            "rider_repeat_claimer": False, "collusion_score": 0.01,
+            "device_fingerprint_shared": False, "photo_authenticity_score": None,
+            "risk_level": "low",
+        },
+    }
+    ids.append(b._commit(pack))
+
+    # ================================================================
+    # Case 9: DSP-2008 — "The Coffee, the Photo, and the Confession"
+    # Category: damage_cleaning
+    # Rider admitted carrying coffee in chat, photo authentic (0.91),
+    # filed 18 hours after trip (within 24hr window). But rider says
+    # coffee was in a sealed cup and spill was from a different rider.
+    # Tests POL-5.1 (verified damage) vs POL-5.3 (prior damage) boundary.
+    # ================================================================
+    did, trip_id, msg = "DSP-2008", "TRP-2008", 2080
+    rider = {
+        "party_id": "RDR-9009", "role": "rider", "name": "Charlotte Dubois",
+        "account_age_days": 800, "total_trips": 280, "avg_rating": 4.7,
+        "dispute_count_90d": 1, "dispute_win_rate": 0.0,
+        "cancellation_rate": 0.03, "is_flagged_abuse": False,
+    }
+    driver = {
+        "party_id": "DRV-9009", "role": "driver", "name": "Victor Mendoza",
+        "account_age_days": 1300, "total_trips": 4100, "avg_rating": 4.3,
+        "dispute_count_90d": 5, "dispute_win_rate": 0.60,
+        "cancellation_rate": 0.01, "is_flagged_abuse": False,
+    }
+    optimal = 3.8
+    actual = 3.8
+    est_min = 11.0
+    act_min = 12.0
+    trip = b._trip(trip_id, rider, driver, optimal, actual, est_min, act_min,
+                  "completed", "light")
+    fare = make_fare(rng, trip, optimal, actual, 1.0, 1.0, False)
+    claimed = 35.00
+    chat = [
+        {"message_id": "MSG-02081", "sender": "rider", "timestamp": "2025-02-11T07:05:00Z",
+         "message": "Is it OK if I bring my coffee? It's in a sealed travel cup.", "sentiment": 0.3,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02082", "sender": "driver", "timestamp": "2025-02-11T07:05:30Z",
+         "message": "Yeah no problem, as long as it's sealed.", "sentiment": 0.2,
+         "contains_threat": False, "contains_agreement": True},
+        {"message_id": "MSG-02083", "sender": "rider", "timestamp": "2025-02-11T07:06:00Z",
+         "message": "It's one of those Yeti tumblers, never spills. Thanks!", "sentiment": 0.4,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02084", "sender": "driver", "timestamp": "2025-02-11T07:17:00Z",
+         "message": "Thanks for the ride. Have a good one!", "sentiment": 0.5,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02085", "sender": "rider", "timestamp": "2025-02-11T07:17:30Z",
+         "message": "Thank you! Five stars to you.", "sentiment": 0.8,
+         "contains_threat": False, "contains_agreement": True},
+        {"message_id": "MSG-02086", "sender": "driver", "timestamp": "2025-02-12T01:00:00Z",
+         "message": "Hi Charlotte, I found a coffee spill on the back seat when I was cleaning tonight. The photo shows it clearly. I believe it happened during our ride. I've filed a cleaning claim for $35.", "sentiment": -0.3,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02087", "sender": "rider", "timestamp": "2025-02-12T01:15:00Z",
+         "message": "That wasn't me. My coffee was in a sealed Yeti tumbler — I told you that. I never opened it in the car. You did 4 rides after mine. The spill was from one of those riders. I'm disputing this.", "sentiment": -0.6,
+         "contains_threat": False, "contains_agreement": False},
+    ]
+    pack = {
+        "dispute": {
+            "dispute_id": did, "trip_id": trip_id, "filed_by": "driver",
+            "filed_at": "2025-02-12T01:00:00Z",  # ~18 hours after trip end
+            "category": "damage_cleaning",
+            "claimed_amount": claimed,
+            "rider_statement": "The driver is blaming me for a coffee spill I didn't cause. I brought a sealed Yeti tumbler — the driver even acknowledged it was sealed. I never opened it during the ride. The driver did 4 more rides after mine before finding the spill 18 hours later. The photo might be real but the damage wasn't from me. The driver has filed 5 cleaning claims in 90 days — that's a pattern. This is a shakedown.",
+            "driver_statement": "The rider admitted carrying coffee in the chat. She said it was a 'sealed Yeti tumbler' but the spill pattern matches an open cup, not a sealed one. The photo is genuine — 0.91 authenticity score. I found it when I cleaned the car that night. I filed within 18 hours, well under the 24-hour threshold. I did do more rides after hers, but I check the car between rides and didn't notice it until the deep clean at night. The spill was under the seat, not visible from the front. The $35 covers professional detailing.",
+            "priority": "medium",
+        },
+        "trip": trip, "fare": fare, "rider": rider, "driver": driver,
+        "route": None, "no_show": None, "chat": chat,
+        "policies": [BY_ID[p] for p in INLINE["damage_cleaning"]],
+        "precedents": [],
+        "fraud": {
+            "dispute_id": did, "rider_claims_30d": 1, "driver_claims_30d": 5,
+            "rider_repeat_claimer": False, "collusion_score": 0.02,
+            "device_fingerprint_shared": False, "photo_authenticity_score": 0.91,
+            "risk_level": "medium",
+        },
+    }
+    ids.append(b._commit(pack))
+
+    # ================================================================
+    # Case 10: DSP-2009 — "The He Said, She Said, and the Missing GPS"
+    # Category: route_deviation
+    # 24% deviation, rider claims they asked for detour in verbal conversation
+    # (not in chat), chat shows ambiguous "do whatever is best", traffic delay
+    # is 3 min out of 12 min delta (25% share), no unscheduled stops.
+    # Tests POL-4.5 (rider-requested detour — does verbal consent count?),
+    # POL-4.4 (traffic share only 25%, below 40% threshold), POL-4.3 (> 15%).
+    # ================================================================
+    did, trip_id, msg = "DSP-2009", "TRP-2009", 2090
+    rider = {
+        "party_id": "RDR-9010", "role": "rider", "name": "Kwame Mensah",
+        "account_age_days": 600, "total_trips": 175, "avg_rating": 4.1,
+        "dispute_count_90d": 5, "dispute_win_rate": 0.60,
+        "cancellation_rate": 0.09, "is_flagged_abuse": False,
+    }
+    driver = {
+        "party_id": "DRV-9010", "role": "driver", "name": "Yuki Tanaka",
+        "account_age_days": 850, "total_trips": 2600, "avg_rating": 4.5,
+        "dispute_count_90d": 2, "dispute_win_rate": 0.75,
+        "cancellation_rate": 0.04, "is_flagged_abuse": False,
+    }
+    optimal = 9.0
+    pct = 0.24
+    actual = round(optimal * (1 + pct), 2)
+    deviation_km = round(actual - optimal, 2)
+    traffic_delay = 3.0
+    duration_delta = 12.0
+    est_min = 21.0
+    act_min = round(est_min + duration_delta, 1)
+    trip = b._trip(trip_id, rider, driver, optimal, actual, est_min, act_min, "completed", "moderate")
+    fare = make_fare(rng, trip, optimal, actual, 1.0, 1.0, False)
+    refund_est = round(fare["distance_fare"] * (deviation_km / actual), 2)
+    claimed = round(refund_est * 1.15, 2)
+    route = {
+        "trip_id": trip_id, "optimal_distance_km": optimal, "actual_distance_km": actual,
+        "deviation_km": deviation_km, "deviation_pct": pct,
+        "duration_delta_min": duration_delta, "traffic_delay_min": traffic_delay,
+        "delay_attributable_to_traffic": False,  # only 3 of 12 min
+        "rider_requested_detour": False,  # not in writing
+        "unexpected_stops": [], "num_stops": 0, "longest_stop_sec": 0,
+        "deviation_justified_by": None,
+        "route_efficiency_score": round(optimal / actual, 3),
+    }
+    chat = [
+        {"message_id": "MSG-02091", "sender": "rider", "timestamp": "2025-02-11T07:08:00Z",
+         "message": "This doesn't look like the route the app showed me.", "sentiment": -0.2,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02092", "sender": "driver", "timestamp": "2025-02-11T07:08:15Z",
+         "message": "There's some traffic on the main road. I know a better way through the side streets.", "sentiment": 0.1,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02093", "sender": "rider", "timestamp": "2025-02-11T07:08:30Z",
+         "message": "Do whatever is best, you know the roads better than me.", "sentiment": 0.0,
+         "contains_threat": False, "contains_agreement": True},
+        {"message_id": "MSG-02094", "sender": "driver", "timestamp": "2025-02-11T07:08:45Z",
+         "message": "Trust me, this'll be faster.", "sentiment": 0.2,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02095", "sender": "rider", "timestamp": "2025-02-11T07:15:00Z",
+         "message": "We're going in circles. This is way longer than it should be. I only said 'do whatever is best', I didn't agree to a 24% detour.", "sentiment": -0.5,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02096", "sender": "driver", "timestamp": "2025-02-11T07:15:20Z",
+         "message": "You said 'do whatever is best'. I took the route I thought was best. There was traffic on the main road — 3 minutes of delay. The rest is just the side streets being longer, I admit that, but you told me to choose.", "sentiment": -0.2,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02097", "sender": "rider", "timestamp": "2025-02-11T07:16:00Z",
+         "message": "I also told you verbally at the start of the ride to take the fastest route, not the longest one. 'Do whatever is best' meant take the fastest route, not add 5km.", "sentiment": -0.6,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02098", "sender": "driver", "timestamp": "2025-02-11T07:16:30Z",
+         "message": "That's not what you said. You said 'do whatever is best' and I did what I thought was best. The traffic was real, 3 minutes. The rest was my judgment call on the route. I've driven these streets for 3 years, I know them well.", "sentiment": -0.3,
+         "contains_threat": False, "contains_agreement": False},
+    ]
+    pack = {
+        "dispute": {
+            "dispute_id": did, "trip_id": trip_id, "filed_by": "rider",
+            "filed_at": "2025-02-11T08:45:00Z", "category": "route_deviation",
+            "claimed_amount": claimed,
+            "rider_statement": "The driver deviated 24% from the optimal route. When I said 'do whatever is best', I meant take the fastest route, not the longest. I also told the driver verbally at the start to take the fastest route. The driver took side streets that added 5.4km. Only 3 of 12 extra minutes were traffic — that's 25%, well below the 80% threshold for POL-4.4. The driver's own chat messages show he admits the side streets were longer and it was his 'judgment call'. That's not rider-requested, that's driver-chosen.",
+            "driver_statement": "The rider said 'do whatever is best, you know the roads better than me'. That's consent. I took the route I believed was best given the traffic on the main road. The traffic was real — 3 minutes of verified delay. The rest was the side streets being longer, which I acknowledge. But the rider gave me discretion and I exercised it. Now they're claiming they said something different verbally, but there's no recording of that. The chat shows what was actually said. I have 2600 trips, I know these streets.",
+            "priority": "medium",
+        },
+        "trip": trip, "fare": fare, "rider": rider, "driver": driver,
+        "route": route, "no_show": None, "chat": chat,
+        "policies": [BY_ID[p] for p in INLINE["route_deviation"]],
+        "precedents": [],
+        "fraud": {
+            "dispute_id": did, "rider_claims_30d": 5, "driver_claims_30d": 2,
+            "rider_repeat_claimer": False, "collusion_score": 0.03,
+            "device_fingerprint_shared": False, "photo_authenticity_score": None,
+            "risk_level": "low",
+        },
+    }
+    ids.append(b._commit(pack))
+
     return ids
-
-
-# ----------------------------------------------------------------- main
 BASE_PLAN = [
     # (builder method, outcome, count)
     ("route_case", "refund", 27),
