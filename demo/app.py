@@ -359,6 +359,128 @@ def render_case_card(pack: EvidencePack | None, dispute_id: str, playing: bool =
             f"Rider rating: {pack.rider.avg_rating:.1f}  |  Driver rating: {pack.driver.avg_rating:.1f}"
         )
 
+        # --- Detailed evidence section ---
+        with st.expander("Case Details", expanded=False):
+            # Party profiles
+            rc, dc = st.columns(2)
+            with rc:
+                st.markdown(f"**Rider:** {pack.rider.name}")
+                st.caption(
+                    f"Trips: {pack.rider.total_trips}  |  Rating: {pack.rider.avg_rating:.1f}  |  "
+                    f"Account age: {pack.rider.account_age_days}d  |  "
+                    f"Disputes (90d): {pack.rider.dispute_count_90d}  |  "
+                    f"Win rate: {pack.rider.dispute_win_rate:.0%}"
+                )
+            with dc:
+                st.markdown(f"**Driver:** {pack.driver.name}")
+                st.caption(
+                    f"Trips: {pack.driver.total_trips}  |  Rating: {pack.driver.avg_rating:.1f}  |  "
+                    f"Account age: {pack.driver.account_age_days}d  |  "
+                    f"Disputes (90d): {pack.driver.dispute_count_90d}  |  "
+                    f"Win rate: {pack.driver.dispute_win_rate:.0%}"
+                )
+
+            # Statements
+            if d.rider_statement or d.driver_statement:
+                st.markdown("**Statements:**")
+                if d.rider_statement:
+                    st.markdown(f"- *Rider:* {d.rider_statement}")
+                if d.driver_statement:
+                    st.markdown(f"- *Driver:* {d.driver_statement}")
+
+            # Category-specific evidence metrics
+            st.markdown("**Key Evidence:**")
+            if d.category == "route_deviation" and pack.route:
+                r = pack.route
+                traffic_share = r.traffic_delay_min / r.duration_delta_min if r.duration_delta_min > 0 else 0
+                c1, c2, c3, c4 = st.columns(4)
+                c1.metric("Deviation", f"{r.deviation_pct:.1%}",
+                          delta="exceeds 15%" if r.deviation_pct > 0.15 else "within 15%")
+                c2.metric("Extra Distance", f"{r.deviation_km:.2f} km")
+                c3.metric("Traffic Share", f"{traffic_share:.0%}",
+                          delta="excused (80%+)" if traffic_share >= 0.8 else "below 80%")
+                c4.metric("Route Efficiency", f"{r.route_efficiency_score:.2f}")
+                if r.num_stops:
+                    st.caption(f"Unscheduled stops: {r.num_stops} (longest {r.longest_stop_sec}s)")
+                    if r.unexpected_stops:
+                        for s in r.unexpected_stops:
+                            st.write(f"  - at km {s.at_km:.1f}, {s.duration_sec}s")
+                if r.deviation_justified_by:
+                    st.info(f"Justified by: **{r.deviation_justified_by}**")
+
+            elif d.category == "no_show" and pack.no_show:
+                n = pack.no_show
+                dist = n.driver_min_distance_to_pickup_m
+                zone = "beyond 100m (refund)" if dist > 100 else (
+                    "within 50m (fee stands)" if dist <= 50 else "grey zone 50-100m")
+                c1, c2, c3, c4 = st.columns(4)
+                c1.metric("Driver Distance", f"{dist:.0f}m", delta=zone)
+                c2.metric("Wait Time", f"{n.wait_time_min:.0f} min")
+                c3.metric("Rider GPS Moving", "Yes" if n.rider_gps_approaching else "No")
+                c4.metric("Fee Charged", f"${n.no_show_fee_charged:.2f}")
+
+            elif d.category == "fare_surge" and pack.fare:
+                f = pack.fare
+                surge_changed = abs(f.surge_multiplier - f.surge_at_booking) > 0.01
+                c1, c2, c3, c4 = st.columns(4)
+                c1.metric("Quoted", f"${f.estimated_fare_at_booking:.2f}")
+                c2.metric("Charged", f"${f.total_charged:.2f}",
+                          delta=f"+${f.total_charged - f.estimated_fare_at_booking:.2f}")
+                c3.metric("Surge", f"{f.surge_multiplier:.1f}x",
+                          delta=f"booked at {f.surge_at_booking:.1f}x" + (" — changed!" if surge_changed else ""))
+                c4.metric("Tolls", f"${f.tolls:.2f}")
+                if f.promo_code and f.promo_discount == 0:
+                    st.warning(f"Promo {f.promo_code} shown but NOT applied (discount $0)")
+
+            elif d.category == "damage_cleaning":
+                if pack.fraud and pack.fraud.photo_authenticity_score is not None:
+                    score = pack.fraud.photo_authenticity_score
+                    c1, c2, c3 = st.columns(3)
+                    c1.metric("Claimed", f"${d.claimed_amount:.2f}")
+                    c2.metric("Photo Authenticity", f"{score:.2f}",
+                              delta="verified" if score >= 0.5 else "questionable")
+                    c3.metric("Risk Level", pack.fraud.risk_level.title())
+                    if pack.fraud.collusion_score > 0:
+                        st.caption(f"Collusion score: {pack.fraud.collusion_score:.2f}")
+                    if pack.fraud.rider_repeat_claimer:
+                        st.warning("Rider is a repeat claimer (30d)")
+                else:
+                    st.metric("Claimed", f"${d.claimed_amount:.2f}")
+
+            # Trip info
+            t = pack.trip
+            st.caption(
+                f"Trip: {t.pickup_address} → {t.dropoff_address or '(no dropoff)'}  |  "
+                f"Status: {t.status.replace('_', ' ')}  |  "
+                f"Traffic: {t.traffic_conditions}  |  City: {t.city}"
+            )
+
+            # Chat highlights
+            if pack.chat:
+                st.markdown("**Chat Log:**")
+                for msg in pack.chat:
+                    sender_tag = {
+                        "rider": "R",
+                        "driver": "D",
+                        "system": "S",
+                    }.get(msg.sender, msg.sender[0].upper())
+                    style = 'color:#007bff' if msg.sender == "rider" else (
+                        'color:#fd7e14' if msg.sender == "driver" else 'color:#6c757d')
+                    st.markdown(
+                        f'<span style="{style};font-weight:600;">[{sender_tag}]</span> '
+                        f'<span style="color:#495057;">{msg.message}</span>',
+                        unsafe_allow_html=True,
+                    )
+
+            # Applicable policies
+            if pack.policies:
+                st.markdown("**Applicable Policies:**")
+                for pol in pack.policies:
+                    st.markdown(
+                        f"- **{pol.policy_id}**: {pol.title} "
+                        f"*(remedy: {pol.remedy_type.replace('_', ' ')})*"
+                    )
+
 
 def render_now_playing(stage: str, state: CaseState, flags) -> None:
     """The main now-playing panel — rich content that swaps per stage."""
@@ -1097,6 +1219,30 @@ if not ids:
 COMPLEX_IDS = [i for i in ids if 2000 <= int(i.split("-")[1]) <= 2009]
 SIMPLE_IDS = [i for i in ids if not (2000 <= int(i.split("-")[1]) <= 2009)]
 
+
+def _case_label(tools, dispute_id: str) -> str:
+    """Build a human-readable label for the case selector."""
+    try:
+        p = tools.get_evidence_pack(dispute_id)
+        d = p.dispute
+        cat = d.category.replace("_", " ").title()
+        r_name = p.rider.name.split()[0]
+        d_name = p.driver.name.split()[0]
+        filed = r_name if d.filed_by == "rider" else d_name
+        other = d_name if d.filed_by == "rider" else r_name
+        return f"{dispute_id} — {cat} — {filed} vs {other} — ${d.claimed_amount:.2f}"
+    except Exception:
+        return dispute_id
+
+
+# Build display labels for the current tier
+def _build_case_labels(tools, tier_ids: list[str]) -> dict[str, str]:
+    """Map dispute_id -> display label for the selector."""
+    labels = {}
+    for did in tier_ids:
+        labels[did] = _case_label(tools, did)
+    return labels
+
 # Find the case the system REFUSES to judge
 refuse_case = None
 gt_fn = getattr(tools, "ground_truth", None)
@@ -1116,7 +1262,10 @@ with st.sidebar:
     tier_ids = COMPLEX_IDS if tier == "Complex Cases" else SIMPLE_IDS
 
     default_idx = refuse_case in tier_ids and tier_ids.index(refuse_case) or 0
-    case = st.selectbox("Case", tier_ids, index=default_idx)
+    case_labels = _build_case_labels(tools, tier_ids)
+    display_labels = [case_labels[did] for did in tier_ids]
+    selected_label = st.selectbox("Case", display_labels, index=default_idx)
+    case = tier_ids[display_labels.index(selected_label)]
     cfg = st.selectbox("Config", ["C", "B", "A"], index=0,
                        help="C = Full tribunal | B = 3 agents, no debate | A = Single agent baseline")
 
@@ -1126,11 +1275,22 @@ with st.sidebar:
     st.caption(f"Opens on **{refuse_case}** — the case the system refuses to judge.")
 
 # ============================================================ layout
+# Tab selection — controlled by session state so we can auto-switch
+SS_TAB = "active_tab"
+active_tab = st.session_state.get(SS_TAB, 0)  # 0 = Live Court, 1 = Case Analysis
 
-tab_live, tab_analysis = st.tabs(["Live Court", "Case Analysis"])
+tab_labels = ["Live Court", "Case Analysis"]
+_active = st.radio("", tab_labels, index=active_tab, horizontal=True, label_visibility="collapsed")
+current_tab = tab_labels.index(_active)
+if current_tab != active_tab:
+    st.session_state[SS_TAB] = current_tab
+    active_tab = current_tab
+
+show_live = active_tab == 0
+show_analysis = active_tab == 1
 
 # --------------------------------------------------------------- live court tab
-with tab_live:
+if show_live:
     # --- Session-state keys for the music-player transport ---
     SS_KEY = "court_snapshots"       # list of (stage, state_snapshot, trace_step)
     SS_IDX = "court_idx"             # current playback index
@@ -1314,6 +1474,7 @@ with tab_live:
         st.session_state["final_state"] = running_state
         st.session_state["run_case"] = case
         st.session_state["run_cfg"] = cfg
+        st.session_state[SS_TAB] = 1  # auto-switch to Case Analysis
         st.rerun()
 
     # ------------------------------------------------------------------ playback buttons
@@ -1385,10 +1546,11 @@ with tab_live:
         st.rerun()
     elif is_playing and idx >= max_idx:
         st.session_state[SS_PLAYING] = False
+        st.session_state[SS_TAB] = 1  # auto-switch to Case Analysis
         st.rerun()
 
 # --------------------------------------------------------------- case analysis tab
-with tab_analysis:
+if show_analysis:
     fs = st.session_state.get("final_state")
 
     if not fs or st.session_state.get("run_case") != case:
