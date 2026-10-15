@@ -148,7 +148,7 @@ def run_advocate(state: CaseState, side: str) -> tuple[CaseBrief, int, int]:
     if config.is_stub():
         brief = stub_brief(side)
     else:
-        llm = get_llm("advocate").with_structured_output(CaseBrief)
+        llm = get_llm("advocate").with_structured_output(CaseBrief, method="function_calling")
         brief: CaseBrief = llm.invoke([SystemMessage(content=system), HumanMessage(content=user)])
 
     brief, uncited, badref = _sanitize_brief(brief, pack, side)

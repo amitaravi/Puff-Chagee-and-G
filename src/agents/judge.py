@@ -17,6 +17,7 @@ from ..core.state import (
     CaseBrief,
     CaseState,
     Claim,
+    ClaimAssessment,
     Verdict,
     log,
 )
@@ -175,6 +176,17 @@ def _sanitize_verdict(state: CaseState, verdict: Verdict) -> tuple[Verdict, list
         errors.append("judge: inserted fallback finding to avoid uncited judgment")
 
     verdict.amount = max(0.0, min(round(float(verdict.amount or 0.0), 2), pack.dispute.claimed_amount))
+
+    # --- Validate claim assessments (judge's inner monologue) ---
+    cleaned_assessments = []
+    for a in verdict.claim_assessments:
+        # Validate evidence_checked refs — drop invalid ones but keep the assessment
+        a.evidence_checked = [r for r in a.evidence_checked if _valid_evidence_ref(pack, r) or r in valid_policy_ids]
+        cleaned_assessments.append(a)
+    if len(cleaned_assessments) != len(verdict.claim_assessments):
+        errors.append("judge: cleaned invalid evidence refs in claim assessments")
+    verdict.claim_assessments = cleaned_assessments
+
     return verdict, errors
 
 
@@ -209,7 +221,7 @@ def _judge_user(state: CaseState, include_rebuttal: bool) -> str:
 def _call_judge(state: CaseState, include_rebuttal: bool) -> Verdict:
     if config.is_stub():
         return stub_verdict()
-    llm = get_llm("judge").with_structured_output(Verdict)
+    llm = get_llm("judge").with_structured_output(Verdict, method="function_calling")
     return llm.invoke(
         [
             SystemMessage(content=JUDGE_SYSTEM),
@@ -255,7 +267,7 @@ def single_agent(state: CaseState) -> dict:
     if config.is_stub():
         verdict = stub_verdict()
     else:
-        llm = get_llm("judge").with_structured_output(Verdict)
+        llm = get_llm("judge").with_structured_output(Verdict, method="function_calling")
         verdict = llm.invoke([SystemMessage(content=SINGLE_AGENT_SYSTEM), HumanMessage(content=user)])
     verdict, v_errors = _sanitize_verdict(state, verdict)
     verdict = finalize_confidence(state, verdict)
