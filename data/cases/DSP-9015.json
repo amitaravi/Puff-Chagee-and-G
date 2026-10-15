@@ -1,138 +1,162 @@
 {
-  "chat": [],
+  "chat": [
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "The app said $32 and I was charged $48.",
+      "message_id": "MSG-01130",
+      "sender": "rider",
+      "sentiment": -0.65,
+      "timestamp": "2025-02-11T07:09:28Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "Surge is set by the platform, not me.",
+      "message_id": "MSG-01131",
+      "sender": "driver",
+      "sentiment": -0.0,
+      "timestamp": "2025-02-11T07:10:55Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "It didn't show any surge when I booked.",
+      "message_id": "MSG-01132",
+      "sender": "rider",
+      "sentiment": -0.52,
+      "timestamp": "2025-02-11T07:11:35Z"
+    }
+  ],
   "dispute": {
-    "category": "no_show",
-    "claimed_amount": 5.0,
+    "category": "fare_surge",
+    "claimed_amount": 0.5,
     "dispute_id": "DSP-9015",
-    "driver_statement": "I was at the pickup point and waited.",
+    "driver_statement": "Fares and surge are set by the platform.",
     "filed_at": "2025-02-11T08:02:00Z",
     "filed_by": "rider",
     "priority": "medium",
-    "rider_statement": "The driver never showed up but I was still charged a no-show fee.",
-    "trip_id": "TRP-1065"
+    "rider_statement": "I was quoted $24.20 and charged $23.29.",
+    "trip_id": "TRP-1103"
   },
   "driver": {
-    "account_age_days": 1407,
-    "avg_rating": 3.91,
-    "cancellation_rate": 0.02,
+    "account_age_days": 1598,
+    "avg_rating": 4.28,
+    "cancellation_rate": 0.026,
     "dispute_count_90d": 1,
-    "dispute_win_rate": 0.2,
+    "dispute_win_rate": 0.29,
     "is_flagged_abuse": false,
-    "name": "Kwame Mensah",
-    "party_id": "DRV-0020",
+    "name": "Rafael Duarte",
+    "party_id": "DRV-0026",
     "role": "driver",
-    "total_trips": 2592
+    "total_trips": 4320
   },
   "fare": {
-    "base_fare": 0.0,
-    "booking_fee": 0.0,
+    "base_fare": 2.81,
+    "booking_fee": 2.0,
     "currency": "USD",
-    "distance_fare": 0.0,
-    "estimated_fare_at_booking": 5.0,
+    "distance_fare": 8.13,
+    "estimated_fare_at_booking": 24.2,
     "promo_code": null,
     "promo_discount": 0.0,
-    "surge_amount": 0.0,
-    "surge_at_booking": 1.0,
-    "surge_multiplier": 1.0,
-    "time_fare": 0.0,
-    "tolls": 0.0,
-    "total_charged": 5.0,
-    "trip_id": "TRP-1065"
+    "surge_amount": 7.1,
+    "surge_at_booking": 1.5,
+    "surge_multiplier": 1.5,
+    "time_fare": 3.25,
+    "tolls": 0,
+    "total_charged": 23.29,
+    "trip_id": "TRP-1103"
   },
   "fraud": {
-    "collusion_score": 0.08,
+    "collusion_score": 0.19,
     "device_fingerprint_shared": false,
-    "dispute_id": "DSP-1065",
+    "dispute_id": "DSP-1103",
     "driver_claims_30d": 1,
     "photo_authenticity_score": null,
-    "rider_claims_30d": 2,
-    "rider_repeat_claimer": false,
-    "risk_level": "low"
+    "rider_claims_30d": 9,
+    "rider_repeat_claimer": true,
+    "risk_level": "medium"
   },
-  "no_show": {
-    "driver_min_distance_to_pickup_m": 445.4,
-    "no_show_fee_charged": 5.0,
-    "rider_gps_approaching": false,
-    "wait_time_min": 8.5
-  },
+  "no_show": null,
   "policies": [
     {
-      "category": "no_show",
+      "category": "fare_surge",
       "conditions": {
-        "min_distance_m_gt": 100
+        "surge_consistent": true
       },
-      "policy_id": "POL-2.1a",
-      "remedy_formula": "no_show_fee_charged",
-      "remedy_type": "full_refund",
-      "rule_text": "Where the driver did not come within 100 metres of the pickup pin, the no-show fee is refunded in full.",
-      "title": "Driver Non-Arrival",
-      "version": "v2.0"
-    },
-    {
-      "category": "no_show",
-      "conditions": {
-        "min_distance_m_lte": 50,
-        "wait_time_min_gte": 5
-      },
-      "policy_id": "POL-2.1b",
+      "policy_id": "POL-3.1",
       "remedy_formula": null,
       "remedy_type": "no_action",
-      "rule_text": "Where the driver came within 50 metres of the pickup pin, waited at least 5 minutes, and rider telemetry shows no movement toward the vehicle, the no-show fee stands.",
-      "title": "Driver Arrival - Fee Stands",
-      "version": "v2.0"
+      "rule_text": "The fare shown at booking is an estimate. Where the applied surge matches the surge disclosed at booking, no refund is due.",
+      "title": "Estimates Are Not Quotes",
+      "version": "v2.2"
     },
     {
-      "category": "no_show",
-      "conditions": {},
-      "policy_id": "POL-2.2",
+      "category": "fare_surge",
+      "conditions": {
+        "surge_exceeds_disclosed": true
+      },
+      "policy_id": "POL-3.2",
+      "remedy_formula": "surge_amount * (1 - (surge_at_booking / surge_multiplier))",
+      "remedy_type": "partial_refund",
+      "rule_text": "Where the surge applied exceeds the surge disclosed at booking, the rider is refunded the difference attributable to the undisclosed portion.",
+      "title": "Undisclosed Surge",
+      "version": "v1.8"
+    },
+    {
+      "category": "fare_surge",
+      "conditions": {
+        "promo_unapplied": true
+      },
+      "policy_id": "POL-3.3",
       "remedy_formula": null,
-      "remedy_type": "no_action",
-      "rule_text": "Where the facts fall between the Policy 2.1a and 2.1b thresholds, the matter is not determinable on the record and is referred to human review.",
-      "title": "Grey-Band Referral",
+      "remedy_type": "partial_refund",
+      "rule_text": "Where a valid promotion was presented at booking but not applied to the final charge, the rider is refunded the promotional value.",
+      "title": "Promo Code Non-Application",
+      "version": "v1.5"
+    },
+    {
+      "category": "fare_surge",
+      "conditions": {
+        "tolls_unverified": true
+      },
+      "policy_id": "POL-3.4",
+      "remedy_formula": null,
+      "remedy_type": "partial_refund",
+      "rule_text": "Tolls may be charged only where the route actually traversed a tolled segment. Unverified tolls are refunded.",
+      "title": "Toll Verification",
       "version": "v1.1"
-    },
-    {
-      "category": "no_show",
-      "conditions": {
-        "wait_time_min_lte": 2
-      },
-      "policy_id": "POL-2.3",
-      "remedy_formula": "no_show_fee_charged",
-      "remedy_type": "full_refund",
-      "rule_text": "A rider who cancels within 2 minutes of acceptance without moving toward the pickup is not charged a no-show fee.",
-      "title": "Rider Cancellation Window",
-      "version": "v1.3"
     }
   ],
   "precedents": [],
   "rider": {
-    "account_age_days": 1834,
-    "avg_rating": 4.83,
-    "cancellation_rate": 0.102,
-    "dispute_count_90d": 2,
-    "dispute_win_rate": 0.3,
+    "account_age_days": 315,
+    "avg_rating": 4.64,
+    "cancellation_rate": 0.133,
+    "dispute_count_90d": 9,
+    "dispute_win_rate": 0.28,
     "is_flagged_abuse": false,
-    "name": "Aisha Rahman",
-    "party_id": "RDR-0039",
+    "name": "Hannah Weiss",
+    "party_id": "RDR-0012",
     "role": "rider",
-    "total_trips": 75
+    "total_trips": 257
   },
   "route": null,
   "trip": {
-    "actual_distance_km": 0.0,
-    "actual_duration_min": 8.5,
+    "actual_distance_km": 6.35,
+    "actual_duration_min": 11.6,
     "city": "Seattle",
-    "driver_id": "DRV-0020",
-    "dropoff_address": null,
-    "ended_at": "2025-02-11T07:12:00Z",
-    "estimated_distance_km": 14.89,
-    "estimated_duration_min": 32.8,
+    "driver_id": "DRV-0026",
+    "dropoff_address": "Ferry Building",
+    "ended_at": "2025-02-11T07:15:00Z",
+    "estimated_distance_km": 6.33,
+    "estimated_duration_min": 11.5,
     "pickup_address": "Rainey St",
     "requested_at": "2025-02-11T07:00:00Z",
-    "rider_id": "RDR-0039",
+    "rider_id": "RDR-0012",
     "started_at": "2025-02-11T07:04:00Z",
-    "status": "no_show",
-    "traffic_conditions": "light",
-    "trip_id": "TRP-1065"
+    "status": "completed",
+    "traffic_conditions": "moderate",
+    "trip_id": "TRP-1103"
   }
 }

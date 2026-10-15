@@ -734,6 +734,395 @@ def build_probes(b: Builder, rng: random.Random) -> None:
         b.add_pair(f"BIAS-S-{i:03d}", "bias_swap", [base, did])
 
 
+# ----------------------------------------------------------------- creative cases
+def build_creative_cases(b: Builder, rng: random.Random) -> list[str]:
+    """
+    Five hand-crafted, deeply complex cases — one per category plus a hybrid.
+    Each has unique statements, custom chat, tuned fraud signals, and is
+    engineered to stress a specific edge of the tribunal.
+    """
+    ids: list[str] = []
+
+    # ================================================================
+    # Case 1: DSP-2000 — "The Good Samaritan and the Road Closure"
+    # Category: route_deviation
+    # 28% deviation, rider consented in chat but feels misled, road_closure
+    # ================================================================
+    did, trip_id, msg = "DSP-2000", "TRP-2000", 2000
+    rider = {
+        "party_id": "RDR-9001", "role": "rider", "name": "Elena Vasquez",
+        "account_age_days": 540, "total_trips": 87, "avg_rating": 4.2,
+        "dispute_count_90d": 3, "dispute_win_rate": 0.33,
+        "cancellation_rate": 0.08, "is_flagged_abuse": False,
+    }
+    driver = {
+        "party_id": "DRV-9001", "role": "driver", "name": "James Okafor",
+        "account_age_days": 1200, "total_trips": 3100, "avg_rating": 4.9,
+        "dispute_count_90d": 1, "dispute_win_rate": 0.80,
+        "cancellation_rate": 0.02, "is_flagged_abuse": False,
+    }
+    optimal = 12.0
+    pct = 0.28
+    actual = round(optimal * (1 + pct), 2)
+    deviation_km = round(actual - optimal, 2)
+    traffic_delay = 3.0
+    duration_delta = 12.0
+    est_min = 22.0
+    act_min = round(est_min + duration_delta, 1)
+    trip = b._trip(trip_id, rider, driver, optimal, actual, est_min, act_min, "completed", "moderate")
+    fare = make_fare(rng, trip, optimal, actual, 1.0, 1.0, False)
+    refund_est = round(fare["distance_fare"] * (deviation_km / actual), 2)
+    claimed = round(refund_est * 1.15, 2)
+    route = {
+        "trip_id": trip_id, "optimal_distance_km": optimal, "actual_distance_km": actual,
+        "deviation_km": deviation_km, "deviation_pct": pct,
+        "duration_delta_min": duration_delta, "traffic_delay_min": traffic_delay,
+        "delay_attributable_to_traffic": False,
+        "rider_requested_detour": True,
+        "unexpected_stops": [], "num_stops": 0, "longest_stop_sec": 0,
+        "deviation_justified_by": "road_closure",
+        "route_efficiency_score": round(optimal / actual, 3),
+    }
+    chat = [
+        {"message_id": "MSG-02001", "sender": "system", "timestamp": "2025-02-11T07:08:00Z",
+         "message": "Road closure detected on Mission St between 16th and 22nd.", "sentiment": 0.0,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02002", "sender": "driver", "timestamp": "2025-02-11T07:08:30Z",
+         "message": "There's a road closure ahead, I'll have to go around via Valencia. Is that OK?", "sentiment": 0.1,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02003", "sender": "rider", "timestamp": "2025-02-11T07:09:00Z",
+         "message": "Can you go around? I don't want to be late.", "sentiment": -0.2,
+         "contains_threat": False, "contains_agreement": True},
+        {"message_id": "MSG-02004", "sender": "driver", "timestamp": "2025-02-11T07:09:15Z",
+         "message": "Taking Valencia now, it'll add a few minutes but it's the only open road.", "sentiment": 0.05,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02005", "sender": "rider", "timestamp": "2025-02-11T07:15:00Z",
+         "message": "This is taking way too long. Why are we on Valencia? This isn't what the app showed.", "sentiment": -0.6,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02006", "sender": "driver", "timestamp": "2025-02-11T07:15:30Z",
+         "message": "You asked me to go around. Mission is closed, this is the detour.", "sentiment": -0.1,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02007", "sender": "rider", "timestamp": "2025-02-11T07:16:00Z",
+         "message": "I only agreed because you said there was no other way. I'm being charged extra for a detour I didn't want.", "sentiment": -0.7,
+         "contains_threat": False, "contains_agreement": False},
+    ]
+    pack = {
+        "dispute": {
+            "dispute_id": did, "trip_id": trip_id, "filed_by": "rider",
+            "filed_at": "2025-02-11T08:30:00Z", "category": "route_deviation",
+            "claimed_amount": claimed,
+            "rider_statement": "The driver took a 28% longer route via Valencia Street claiming a road closure on Mission. I said 'go around' because he told me there was no other way, but I didn't agree to pay for a detour. The app showed a direct route down Mission and that's what I should be charged for.",
+            "driver_statement": "Mission Street was closed between 16th and 22nd — the city had construction barriers up. I asked the rider if I could go around and she said yes. I took Valencia, which is the official detour route. She changed her mind halfway through and started complaining about the fare. I have 3100 trips and a 4.9 rating. I did exactly what I was supposed to.",
+            "priority": "medium",
+        },
+        "trip": trip, "fare": fare, "rider": rider, "driver": driver,
+        "route": route, "no_show": None, "chat": chat,
+        "policies": [BY_ID[p] for p in INLINE["route_deviation"]],
+        "precedents": [],
+        "fraud": {
+            "dispute_id": did, "rider_claims_30d": 3, "driver_claims_30d": 1,
+            "rider_repeat_claimer": False, "collusion_score": 0.05,
+            "device_fingerprint_shared": False, "photo_authenticity_score": None,
+            "risk_level": "low",
+        },
+    }
+    ids.append(b._commit(pack))
+
+    # ================================================================
+    # Case 2: DSP-2001 — "The Wrong Pickup Pin"
+    # Category: no_show
+    # Driver 180m from pin (clear refund), but rider dropped pin wrong
+    # ================================================================
+    did, trip_id, msg = "DSP-2001", "TRP-2001", 2010
+    rider = {
+        "party_id": "RDR-9002", "role": "rider", "name": "Marcus Tan",
+        "account_age_days": 320, "total_trips": 145, "avg_rating": 3.8,
+        "dispute_count_90d": 6, "dispute_win_rate": 0.50,
+        "cancellation_rate": 0.15, "is_flagged_abuse": False,
+    }
+    driver = {
+        "party_id": "DRV-9002", "role": "driver", "name": "Sarah Lindqvist",
+        "account_age_days": 800, "total_trips": 1800, "avg_rating": 4.7,
+        "dispute_count_90d": 2, "dispute_win_rate": 0.65,
+        "cancellation_rate": 0.03, "is_flagged_abuse": False,
+    }
+    dist = 180.0
+    wait = 8.0
+    fee = 7.00
+    optimal = 6.0
+    trip = b._trip(trip_id, rider, driver, optimal, 0.0, round(optimal * 2.2, 1),
+                  wait, "no_show", "light")
+    trip["pickup_address"] = " Ferry Building, San Francisco"
+    fare = {
+        "trip_id": trip_id, "base_fare": 0.0, "distance_fare": 0.0, "time_fare": 0.0,
+        "booking_fee": 0.0, "surge_multiplier": 1.0, "surge_amount": 0.0, "tolls": 0.0,
+        "promo_code": None, "promo_discount": 0.0, "total_charged": fee,
+        "estimated_fare_at_booking": fee, "surge_at_booking": 1.0, "currency": "USD",
+    }
+    no_show = {
+        "driver_min_distance_to_pickup_m": dist,
+        "wait_time_min": wait,
+        "rider_gps_approaching": True,
+        "no_show_fee_charged": fee,
+    }
+    chat = [
+        {"message_id": "MSG-02011", "sender": "driver", "timestamp": "2025-02-11T07:04:00Z",
+         "message": "I'm at the Ferry Building entrance, near the clock tower. I don't see you.", "sentiment": 0.0,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02012", "sender": "rider", "timestamp": "2025-02-11T07:05:00Z",
+         "message": "I'm at the entrance too, where are you? I don't see your car.", "sentiment": -0.3,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02013", "sender": "driver", "timestamp": "2025-02-11T07:06:00Z",
+         "message": "I'm at the pin location. It says Ferry Building but I'm on the Embarcadero side. Are you on the Market Street side?", "sentiment": -0.1,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02014", "sender": "rider", "timestamp": "2025-02-11T07:10:00Z",
+         "message": "Oh. I think I may have dropped the pin at the wrong entrance. I'm near Market, not Embarcadero. Can you come over here?", "sentiment": -0.4,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02015", "sender": "driver", "timestamp": "2025-02-11T07:11:00Z",
+         "message": "I waited 8 minutes at the pin. I have to move on, I have another pickup. The fee is going to stand.", "sentiment": -0.2,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02016", "sender": "rider", "timestamp": "2025-02-11T07:12:00Z",
+         "message": "That's not fair. You never came to where I actually was. I'm disputing this charge.", "sentiment": -0.6,
+         "contains_threat": False, "contains_agreement": False},
+    ]
+    pack = {
+        "dispute": {
+            "dispute_id": did, "trip_id": trip_id, "filed_by": "rider",
+            "filed_at": "2025-02-11T08:00:00Z", "category": "no_show",
+            "claimed_amount": fee,
+            "rider_statement": "The driver never showed up at my location. He was 180 meters away on the other side of the Ferry Building and refused to come to where I was standing. I waited 8 minutes in the cold. He then drove off and I was charged a $7 no-show fee. Yes, I may have dropped the pin at the wrong entrance, but the driver should have come to me when I told him where I was. I have dashcam footage from my Uber dashcam that shows I was at the Market Street entrance the entire time.",
+            "driver_statement": "I arrived at the pin location on the Embarcadero side of the Ferry Building at 7:04. The rider was not there. I sent three messages over 8 minutes. At 7:10 she finally said she was at the wrong entrance — 180 meters away. I had already waited the full window and had another pickup. The no-show fee is standard. She's filed 6 disputes in the last 3 months.",
+            "priority": "medium",
+        },
+        "trip": trip, "fare": fare, "rider": rider, "driver": driver,
+        "route": None, "no_show": no_show, "chat": chat,
+        "policies": [BY_ID[p] for p in INLINE["no_show"]],
+        "precedents": [],
+        "fraud": {
+            "dispute_id": did, "rider_claims_30d": 6, "driver_claims_30d": 2,
+            "rider_repeat_claimer": True, "collusion_score": 0.02,
+            "device_fingerprint_shared": False, "photo_authenticity_score": None,
+            "risk_level": "medium",
+        },
+    }
+    ids.append(b._commit(pack))
+
+    # ================================================================
+    # Case 3: DSP-2002 — "The Stadium Surge and the Vanished Promo"
+    # Category: fare_surge
+    # Surge 1.0x -> 2.8x + unapplied promo + phantom toll
+    # ================================================================
+    did, trip_id, msg = "DSP-2002", "TRP-2002", 2020
+    rider = {
+        "party_id": "RDR-9003", "role": "rider", "name": "Priya Raman",
+        "account_age_days": 900, "total_trips": 320, "avg_rating": 4.8,
+        "dispute_count_90d": 1, "dispute_win_rate": 0.50,
+        "cancellation_rate": 0.04, "is_flagged_abuse": False,
+    }
+    driver = {
+        "party_id": "DRV-9003", "role": "driver", "name": "Daniel Ortiz",
+        "account_age_days": 600, "total_trips": 2400, "avg_rating": 4.6,
+        "dispute_count_90d": 0, "dispute_win_rate": 0.0,
+        "cancellation_rate": 0.05, "is_flagged_abuse": False,
+    }
+    optimal = 3.2
+    pct = 0.03
+    actual = round(optimal * (1 + pct), 2)
+    est_min = 12.0
+    act_min = 13.0
+    surge_at_booking = 1.0
+    surge = 2.8
+    trip = b._trip(trip_id, rider, driver, optimal, actual, est_min, act_min,
+                  "completed", "moderate")
+    trip["city"] = "Austin"
+    trip["pickup_address"] = "Rainey St"
+    trip["dropoff_address"] = "W Hotel, Austin"
+    fare = make_fare(rng, trip, optimal, actual, surge, surge_at_booking, True)
+    # Override fare to add phantom toll and fix promo
+    fare["tolls"] = 6.25
+    fare["promo_code"] = "SUPERBOWL25"
+    fare["promo_discount"] = 0.0  # promo was NOT applied despite being presented
+    fare["total_charged"] = round(fare["base_fare"] + fare["distance_fare"] + fare["time_fare"]
+                                  + fare["booking_fee"] + fare["surge_amount"] + fare["tolls"]
+                                  - fare["promo_discount"], 2)
+    owed = fare["surge_amount"] * (1 - surge_at_booking / surge)
+    claimed = round(max(0.5, owed + 6.25 + 4.0), 2)  # surge excess + phantom toll + promo value
+    chat = [
+        {"message_id": "MSG-02021", "sender": "rider", "timestamp": "2025-02-11T07:15:00Z",
+         "message": "The app said $18 and I was charged $42. What happened?", "sentiment": -0.6,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02022", "sender": "driver", "timestamp": "2025-02-11T07:15:30Z",
+         "message": "Surge is set by the platform, not me. Game just let out at the stadium, so surge kicked in.", "sentiment": 0.0,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02023", "sender": "rider", "timestamp": "2025-02-11T07:16:00Z",
+         "message": "It didn't show any surge when I booked. And I had a SUPERBOWL25 promo code that was supposed to give me $4 off. It wasn't applied.", "sentiment": -0.7,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02024", "sender": "driver", "timestamp": "2025-02-11T07:16:30Z",
+         "message": "I don't handle the billing. You'll have to take it up with support.", "sentiment": -0.1,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02025", "sender": "rider", "timestamp": "2025-02-11T07:17:00Z",
+         "message": "And there's a $6.25 toll? We didn't go through any toll. This was a 3km trip through downtown Austin.", "sentiment": -0.8,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02026", "sender": "driver", "timestamp": "2025-02-11T07:17:30Z",
+         "message": "The toll is automatic, I don't control it. Maybe the app routed us through a toll segment.", "sentiment": -0.2,
+         "contains_threat": False, "contains_agreement": False},
+    ]
+    pack = {
+        "dispute": {
+            "dispute_id": did, "trip_id": trip_id, "filed_by": "rider",
+            "filed_at": "2025-02-11T08:00:00Z", "category": "fare_surge",
+            "claimed_amount": claimed,
+            "rider_statement": "I was quoted $18.00 at booking and charged $42. The surge went from 1.0x to 2.8x with no disclosure. My SUPERBOWL25 promo code for $4 off was never applied. And there's a $6.25 toll for a 3km trip through downtown Austin that has no tolls. Three separate billing errors on one ride.",
+            "driver_statement": "Surge pricing and tolls are set by the platform. I just drive the route the app gives me. The rider should contact support about promo codes and billing discrepancies.",
+            "priority": "medium",
+        },
+        "trip": trip, "fare": fare, "rider": rider, "driver": driver,
+        "route": None, "no_show": None, "chat": chat,
+        "policies": [BY_ID[p] for p in INLINE["fare_surge"]],
+        "precedents": [],
+        "fraud": {
+            "dispute_id": did, "rider_claims_30d": 1, "driver_claims_30d": 0,
+            "rider_repeat_claimer": False, "collusion_score": 0.01,
+            "device_fingerprint_shared": False, "photo_authenticity_score": None,
+            "risk_level": "low",
+        },
+    }
+    ids.append(b._commit(pack))
+
+    # ================================================================
+    # Case 4: DSP-2003 — "The Staged Photo and the 26-Hour Delay"
+    # Category: damage_cleaning
+    # Genuine photo (0.82) but filed 26hrs late, tests POL-5.3
+    # ================================================================
+    did, trip_id, msg = "DSP-2003", "TRP-2003", 2030
+    rider = {
+        "party_id": "RDR-9004", "role": "rider", "name": "Grace Okonkwo",
+        "account_age_days": 450, "total_trips": 62, "avg_rating": 4.9,
+        "dispute_count_90d": 0, "dispute_win_rate": 0.0,
+        "cancellation_rate": 0.02, "is_flagged_abuse": False,
+    }
+    driver = {
+        "party_id": "DRV-9004", "role": "driver", "name": "Marcus Bell",
+        "account_age_days": 700, "total_trips": 1500, "avg_rating": 4.5,
+        "dispute_count_90d": 2, "dispute_win_rate": 0.50,
+        "cancellation_rate": 0.06, "is_flagged_abuse": False,
+    }
+    optimal = 5.0
+    actual = 5.0
+    est_min = 15.0
+    act_min = 14.0
+    trip = b._trip(trip_id, rider, driver, optimal, actual, est_min, act_min,
+                  "completed", "light")
+    fare = make_fare(rng, trip, optimal, actual, 1.0, 1.0, False)
+    claimed = 25.00
+    chat = [
+        {"message_id": "MSG-02031", "sender": "rider", "timestamp": "2025-02-11T07:18:00Z",
+         "message": "Great ride, thanks! Five stars.", "sentiment": 0.8,
+         "contains_threat": False, "contains_agreement": True},
+        {"message_id": "MSG-02032", "sender": "driver", "timestamp": "2025-02-11T07:18:30Z",
+         "message": "Thank you! Have a great day.", "sentiment": 0.7,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02033", "sender": "rider", "timestamp": "2025-02-11T07:19:00Z",
+         "message": "Will do! Left my water bottle, grabbing it now. Have a good one!", "sentiment": 0.6,
+         "contains_threat": False, "contains_agreement": False},
+    ]
+    pack = {
+        "dispute": {
+            "dispute_id": did, "trip_id": trip_id, "filed_by": "driver",
+            "filed_at": "2025-02-12T09:00:00Z",  # 26 hours after trip end at ~7:19
+            "category": "damage_cleaning",
+            "claimed_amount": claimed,
+            "rider_statement": "The car was perfectly clean when I left. I even rated the driver five stars and said 'great ride' in the chat. The trip was completely uneventful. Then 26 hours later he files a $25 cleaning claim with a photo of some spill in the back seat. I don't know what happened in those 26 hours. Maybe he spilled something. Maybe another rider did. But that wasn't me.",
+            "driver_statement": "I didn't notice the damage until I cleaned the car the next morning. There was a sticky drink spill on the back seat that I didn't see when the ride ended because it was dark and the spill was under the seat. The photo is genuine — authenticity score 0.82. I filed the claim as soon as I found it. I know it's late but the damage was caused during this trip. The rider was drinking from a water bottle and mentioned grabbing it when leaving.",
+            "priority": "medium",
+        },
+        "trip": trip, "fare": fare, "rider": rider, "driver": driver,
+        "route": None, "no_show": None, "chat": chat,
+        "policies": [BY_ID[p] for p in INLINE["damage_cleaning"]],
+        "precedents": [],
+        "fraud": {
+            "dispute_id": did, "rider_claims_30d": 0, "driver_claims_30d": 2,
+            "rider_repeat_claimer": False, "collusion_score": 0.01,
+            "device_fingerprint_shared": False, "photo_authenticity_score": 0.82,
+            "risk_level": "low",
+        },
+    }
+    ids.append(b._commit(pack))
+
+    # ================================================================
+    # Case 5: DSP-2004 — "The Collusion Special"
+    # Category: route_deviation (hybrid)
+    # 22% deviation (clear refund) BUT collusion_score 0.85, shared device
+    # ================================================================
+    did, trip_id, msg = "DSP-2004", "TRP-2004", 2040
+    rider = {
+        "party_id": "RDR-9005", "role": "rider", "name": "Wei Zhang",
+        "account_age_days": 220, "total_trips": 38, "avg_rating": 3.5,
+        "dispute_count_90d": 9, "dispute_win_rate": 0.78,
+        "cancellation_rate": 0.18, "is_flagged_abuse": True,
+    }
+    driver = {
+        "party_id": "DRV-9005", "role": "driver", "name": "Aisha Rahman",
+        "account_age_days": 180, "total_trips": 420, "avg_rating": 4.1,
+        "dispute_count_90d": 3, "dispute_win_rate": 0.67,
+        "cancellation_rate": 0.12, "is_flagged_abuse": False,
+    }
+    optimal = 8.0
+    pct = 0.22
+    actual = round(optimal * (1 + pct), 2)
+    deviation_km = round(actual - optimal, 2)
+    traffic_delay = 0.0
+    duration_delta = 10.0
+    est_min = 20.0
+    act_min = round(est_min + duration_delta, 1)
+    trip = b._trip(trip_id, rider, driver, optimal, actual, est_min, act_min,
+                  "completed", "light")
+    fare = make_fare(rng, trip, optimal, actual, 1.0, 1.0, False)
+    refund_est = round(fare["distance_fare"] * (deviation_km / actual), 2)
+    claimed = round(refund_est * 1.1, 2)
+    route = {
+        "trip_id": trip_id, "optimal_distance_km": optimal, "actual_distance_km": actual,
+        "deviation_km": deviation_km, "deviation_pct": pct,
+        "duration_delta_min": duration_delta, "traffic_delay_min": traffic_delay,
+        "delay_attributable_to_traffic": False,
+        "rider_requested_detour": False,
+        "unexpected_stops": [], "num_stops": 0, "longest_stop_sec": 0,
+        "deviation_justified_by": None,
+        "route_efficiency_score": round(optimal / actual, 3),
+    }
+    chat = [
+        {"message_id": "MSG-02041", "sender": "rider", "timestamp": "2025-02-11T07:10:00Z",
+         "message": "Taking the long way today?", "sentiment": -0.2,
+         "contains_threat": False, "contains_agreement": False},
+        {"message_id": "MSG-02042", "sender": "driver", "timestamp": "2025-02-11T07:10:15Z",
+         "message": "Just following the route.", "sentiment": 0.0,
+         "contains_threat": False, "contains_agreement": False},
+    ]
+    pack = {
+        "dispute": {
+            "dispute_id": did, "trip_id": trip_id, "filed_by": "rider",
+            "filed_at": "2025-02-11T08:05:00Z", "category": "route_deviation",
+            "claimed_amount": claimed,
+            "rider_statement": "The driver deviated 22% from the optimal route, going east on Geary then south on Masonic before reaching the destination. There was no traffic and I did not request a detour. The route added 1.76km and 10 minutes to the trip. I was charged for the extra distance. The driver's explanation of 'just following the route' doesn't make sense — the app's optimal route goes straight down Fulton.",
+            "driver_statement": "I followed the route the app gave me. It routed me east on Geary then south on Masonic. The rider asked if I was taking the long way and I said I was following the route, which is true. I don't control the navigation. The optimal route goes straight down Fulton but the app sent me on Geary and Masonic instead. The rider is correct that there was no traffic and I did not take a detour — I went exactly where the app told me to go.",
+            "priority": "medium",
+        },
+        "trip": trip, "fare": fare, "rider": rider, "driver": driver,
+        "route": route, "no_show": None, "chat": chat,
+        "policies": [BY_ID[p] for p in INLINE["route_deviation"]],
+        "precedents": [],
+        "fraud": {
+            "dispute_id": did, "rider_claims_30d": 9, "driver_claims_30d": 3,
+            "rider_repeat_claimer": True, "collusion_score": 0.85,
+            "device_fingerprint_shared": True, "photo_authenticity_score": None,
+            "risk_level": "high",
+        },
+    }
+    ids.append(b._commit(pack))
+
+    return ids
+
+
 # ----------------------------------------------------------------- main
 BASE_PLAN = [
     # (builder method, outcome, count)
@@ -766,6 +1155,10 @@ def main(argv=None) -> int:
     for method, outcome, count in BASE_PLAN:
         for _ in range(count):
             base_ids.append(getattr(b, method)(outcome))
+
+    # Hand-crafted complex cases
+    creative_ids = build_creative_cases(b, rng)
+    base_ids.extend(creative_ids)
 
     if not args.no_probes:
         build_probes(b, rng)

@@ -1,0 +1,150 @@
+{
+  "chat": [
+    {
+      "contains_agreement": true,
+      "contains_threat": false,
+      "message": "Great ride, thanks! Five stars.",
+      "message_id": "MSG-02031",
+      "sender": "rider",
+      "sentiment": 0.8,
+      "timestamp": "2025-02-11T07:18:00Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "Thank you! Have a great day.",
+      "message_id": "MSG-02032",
+      "sender": "driver",
+      "sentiment": 0.7,
+      "timestamp": "2025-02-11T07:18:30Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "Will do! Left my water bottle, grabbing it now. Have a good one!",
+      "message_id": "MSG-02033",
+      "sender": "rider",
+      "sentiment": 0.6,
+      "timestamp": "2025-02-11T07:19:00Z"
+    }
+  ],
+  "dispute": {
+    "category": "damage_cleaning",
+    "claimed_amount": 25.0,
+    "dispute_id": "DSP-2003",
+    "driver_statement": "I didn't notice the damage until I cleaned the car the next morning. There was a sticky drink spill on the back seat that I didn't see when the ride ended because it was dark and the spill was under the seat. The photo is genuine \u2014 authenticity score 0.82. I filed the claim as soon as I found it. I know it's late but the damage was caused during this trip. The rider was drinking from a water bottle and mentioned grabbing it when leaving.",
+    "filed_at": "2025-02-12T09:00:00Z",
+    "filed_by": "driver",
+    "priority": "medium",
+    "rider_statement": "The car was perfectly clean when I left. I even rated the driver five stars and said 'great ride' in the chat. The trip was completely uneventful. Then 26 hours later he files a $25 cleaning claim with a photo of some spill in the back seat. I don't know what happened in those 26 hours. Maybe he spilled something. Maybe another rider did. But that wasn't me.",
+    "trip_id": "TRP-2003"
+  },
+  "driver": {
+    "account_age_days": 700,
+    "avg_rating": 4.5,
+    "cancellation_rate": 0.06,
+    "dispute_count_90d": 2,
+    "dispute_win_rate": 0.5,
+    "is_flagged_abuse": false,
+    "name": "Marcus Bell",
+    "party_id": "DRV-9004",
+    "role": "driver",
+    "total_trips": 1500
+  },
+  "fare": {
+    "base_fare": 3.0,
+    "booking_fee": 2.0,
+    "currency": "USD",
+    "distance_fare": 6.1,
+    "estimated_fare_at_booking": 15.3,
+    "promo_code": null,
+    "promo_discount": 0.0,
+    "surge_amount": 0.0,
+    "surge_at_booking": 1.0,
+    "surge_multiplier": 1.0,
+    "time_fare": 3.92,
+    "tolls": 0,
+    "total_charged": 15.02,
+    "trip_id": "TRP-2003"
+  },
+  "fraud": {
+    "collusion_score": 0.01,
+    "device_fingerprint_shared": false,
+    "dispute_id": "DSP-2003",
+    "driver_claims_30d": 2,
+    "photo_authenticity_score": 0.82,
+    "rider_claims_30d": 0,
+    "rider_repeat_claimer": false,
+    "risk_level": "low"
+  },
+  "no_show": null,
+  "policies": [
+    {
+      "category": "damage_cleaning",
+      "conditions": {
+        "photo_authenticity_gte": 0.7
+      },
+      "policy_id": "POL-5.1",
+      "remedy_formula": null,
+      "remedy_type": "compensate_driver",
+      "rule_text": "A cleaning fee is payable to the driver where a verified photograph shows damage or soiling caused during the trip, capped at $25.",
+      "title": "Cleaning Fee - Verified Damage",
+      "version": "v1.6"
+    },
+    {
+      "category": "damage_cleaning",
+      "conditions": {
+        "photo_authenticity_lt": 0.4
+      },
+      "policy_id": "POL-5.2",
+      "remedy_formula": null,
+      "remedy_type": "no_action",
+      "rule_text": "Where the submitted photograph fails authenticity verification, the claim is dismissed.",
+      "title": "Unverified or Fabricated Evidence",
+      "version": "v1.2"
+    },
+    {
+      "category": "damage_cleaning",
+      "conditions": {
+        "reported_after_hours_gt": 24
+      },
+      "policy_id": "POL-5.3",
+      "remedy_formula": null,
+      "remedy_type": "no_action",
+      "rule_text": "Damage reported more than 24 hours after trip end is presumed pre-existing unless the driver produces contemporaneous evidence.",
+      "title": "Prior Damage",
+      "version": "v1.0"
+    }
+  ],
+  "precedents": [],
+  "rider": {
+    "account_age_days": 450,
+    "avg_rating": 4.9,
+    "cancellation_rate": 0.02,
+    "dispute_count_90d": 0,
+    "dispute_win_rate": 0.0,
+    "is_flagged_abuse": false,
+    "name": "Grace Okonkwo",
+    "party_id": "RDR-9004",
+    "role": "rider",
+    "total_trips": 62
+  },
+  "route": null,
+  "trip": {
+    "actual_distance_km": 5.0,
+    "actual_duration_min": 14.0,
+    "city": "San Francisco",
+    "driver_id": "DRV-9004",
+    "dropoff_address": "101 California St",
+    "ended_at": "2025-02-11T07:18:00Z",
+    "estimated_distance_km": 5.0,
+    "estimated_duration_min": 15.0,
+    "pickup_address": "SFO Terminal 2",
+    "requested_at": "2025-02-11T07:00:00Z",
+    "rider_id": "RDR-9004",
+    "started_at": "2025-02-11T07:04:00Z",
+    "status": "completed",
+    "traffic_conditions": "light",
+    "trip_id": "TRP-2003"
+  }
+}

@@ -3,88 +3,88 @@
     {
       "contains_agreement": false,
       "contains_threat": false,
-      "message": "You're scamming me with this route.",
-      "message_id": "MSG-00590",
+      "message": "Why are we going this way? This isn't the route the app showed.",
+      "message_id": "MSG-00580",
       "sender": "rider",
-      "sentiment": -0.76,
-      "timestamp": "2025-02-11T07:11:07Z"
+      "sentiment": -0.37,
+      "timestamp": "2025-02-11T07:04:54Z"
     },
     {
       "contains_agreement": false,
       "contains_threat": false,
-      "message": "It's the fastest way right now.",
-      "message_id": "MSG-00591",
+      "message": "Shortcut, trust me. Avoids the lights.",
+      "message_id": "MSG-00581",
       "sender": "driver",
-      "sentiment": -0.2,
-      "timestamp": "2025-02-11T07:12:48Z"
+      "sentiment": 0.04,
+      "timestamp": "2025-02-11T07:05:51Z"
     },
     {
       "contains_agreement": false,
       "contains_threat": false,
-      "message": "I'm reporting this. You'll hear from support.",
-      "message_id": "MSG-00592",
+      "message": "This is adding several kilometres to my trip.",
+      "message_id": "MSG-00582",
       "sender": "rider",
-      "sentiment": -0.67,
-      "timestamp": "2025-02-11T07:13:15Z"
+      "sentiment": -0.54,
+      "timestamp": "2025-02-11T07:06:03Z"
     },
     {
       "contains_agreement": false,
       "contains_threat": false,
-      "message": "Report whatever you want.",
-      "message_id": "MSG-00593",
+      "message": "Traffic was bad back there.",
+      "message_id": "MSG-00583",
       "sender": "driver",
-      "sentiment": -0.35,
-      "timestamp": "2025-02-11T07:14:45Z"
+      "sentiment": -0.09,
+      "timestamp": "2025-02-11T07:07:26Z"
     }
   ],
   "dispute": {
     "category": "route_deviation",
-    "claimed_amount": 6.85,
+    "claimed_amount": 7.1,
     "dispute_id": "DSP-9121",
     "driver_statement": "I followed the app's route exactly.",
     "filed_at": "2025-02-11T08:02:00Z",
     "filed_by": "rider",
     "priority": "medium",
     "rider_statement": "The driver took a longer route and I was overcharged.",
-    "trip_id": "TRP-1049"
+    "trip_id": "TRP-1048"
   },
   "driver": {
-    "account_age_days": 446,
-    "avg_rating": 4.49,
-    "cancellation_rate": 0.063,
+    "account_age_days": 1770,
+    "avg_rating": 4.24,
+    "cancellation_rate": 0.091,
     "dispute_count_90d": 1,
-    "dispute_win_rate": 0.45,
+    "dispute_win_rate": 0.6,
     "is_flagged_abuse": false,
-    "name": "Aisha Rahman",
-    "party_id": "DRV-0002",
+    "name": "Tomoko Sato",
+    "party_id": "DRV-0021",
     "role": "driver",
-    "total_trips": 5681
+    "total_trips": 646
   },
   "fare": {
-    "base_fare": 2.39,
+    "base_fare": 2.8,
     "booking_fee": 2.0,
     "currency": "USD",
-    "distance_fare": 20.47,
-    "estimated_fare_at_booking": 37.1,
+    "distance_fare": 23.13,
+    "estimated_fare_at_booking": 34.16,
     "promo_code": null,
     "promo_discount": 0.0,
-    "surge_amount": 6.57,
-    "surge_at_booking": 1.2,
-    "surge_multiplier": 1.2,
-    "time_fare": 10.0,
-    "tolls": 0,
-    "total_charged": 41.43,
-    "trip_id": "TRP-1049"
+    "surge_amount": 0.0,
+    "surge_at_booking": 1.0,
+    "surge_multiplier": 1.0,
+    "time_fare": 10.75,
+    "tolls": 6.25,
+    "total_charged": 44.93,
+    "trip_id": "TRP-1048"
   },
   "fraud": {
-    "collusion_score": 0.1,
+    "collusion_score": 0.16,
     "device_fingerprint_shared": false,
-    "dispute_id": "DSP-1049",
+    "dispute_id": "DSP-1048",
     "driver_claims_30d": 1,
     "photo_authenticity_score": null,
-    "rider_claims_30d": 1,
-    "rider_repeat_claimer": false,
-    "risk_level": "low"
+    "rider_claims_30d": 9,
+    "rider_repeat_claimer": true,
+    "risk_level": "medium"
   },
   "no_show": null,
   "policies": [
@@ -153,48 +153,55 @@
   ],
   "precedents": [],
   "rider": {
-    "account_age_days": 927,
-    "avg_rating": 4.23,
-    "cancellation_rate": 0.081,
-    "dispute_count_90d": 1,
-    "dispute_win_rate": 0.26,
+    "account_age_days": 976,
+    "avg_rating": 3.98,
+    "cancellation_rate": 0.078,
+    "dispute_count_90d": 9,
+    "dispute_win_rate": 0.25,
     "is_flagged_abuse": false,
-    "name": "Aisha Rahman",
-    "party_id": "RDR-0023",
+    "name": "Sofia Alvarez",
+    "party_id": "RDR-0009",
     "role": "rider",
-    "total_trips": 534
+    "total_trips": 393
   },
   "route": {
-    "actual_distance_km": 20.8,
+    "actual_distance_km": 20.36,
     "delay_attributable_to_traffic": false,
     "deviation_justified_by": null,
-    "deviation_km": 2.87,
+    "deviation_km": 2.81,
     "deviation_pct": 0.16,
-    "duration_delta_min": 11.4,
-    "longest_stop_sec": 0,
-    "num_stops": 0,
-    "optimal_distance_km": 17.93,
+    "duration_delta_min": 14.4,
+    "longest_stop_sec": 320,
+    "num_stops": 1,
+    "optimal_distance_km": 17.55,
     "rider_requested_detour": false,
-    "route_efficiency_score": 0.963,
+    "route_efficiency_score": 0.979,
     "traffic_delay_min": 0.0,
-    "trip_id": "TRP-1049",
-    "unexpected_stops": []
+    "trip_id": "TRP-1048",
+    "unexpected_stops": [
+      {
+        "at_km": 7.5,
+        "duration_sec": 320,
+        "lat": 37.66,
+        "lng": -122.4632
+      }
+    ]
   },
   "trip": {
-    "actual_distance_km": 18.61,
-    "actual_duration_min": 35.7,
-    "city": "Austin",
-    "driver_id": "DRV-0002",
-    "dropoff_address": "Mission & 16th",
-    "ended_at": "2025-02-11T07:39:00Z",
-    "estimated_distance_km": 17.93,
-    "estimated_duration_min": 24.3,
-    "pickup_address": "101 California St",
+    "actual_distance_km": 17.93,
+    "actual_duration_min": 38.4,
+    "city": "Seattle",
+    "driver_id": "DRV-0021",
+    "dropoff_address": "Pike Place",
+    "ended_at": "2025-02-11T07:42:00Z",
+    "estimated_distance_km": 17.55,
+    "estimated_duration_min": 24.0,
+    "pickup_address": "SFO Terminal 2",
     "requested_at": "2025-02-11T07:00:00Z",
-    "rider_id": "RDR-0023",
+    "rider_id": "RDR-0009",
     "started_at": "2025-02-11T07:04:00Z",
     "status": "completed",
     "traffic_conditions": "light",
-    "trip_id": "TRP-1049"
+    "trip_id": "TRP-1048"
   }
 }

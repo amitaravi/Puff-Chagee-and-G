@@ -1,0 +1,189 @@
+{
+  "chat": [
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "The app said $18 and I was charged $42. What happened?",
+      "message_id": "MSG-02021",
+      "sender": "rider",
+      "sentiment": -0.6,
+      "timestamp": "2025-02-11T07:15:00Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "Surge is set by the platform, not me. Game just let out at the stadium, so surge kicked in.",
+      "message_id": "MSG-02022",
+      "sender": "driver",
+      "sentiment": 0.0,
+      "timestamp": "2025-02-11T07:15:30Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "It didn't show any surge when I booked. And I had a SUPERBOWL25 promo code that was supposed to give me $4 off. It wasn't applied.",
+      "message_id": "MSG-02023",
+      "sender": "rider",
+      "sentiment": -0.7,
+      "timestamp": "2025-02-11T07:16:00Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "I don't handle the billing. You'll have to take it up with support.",
+      "message_id": "MSG-02024",
+      "sender": "driver",
+      "sentiment": -0.1,
+      "timestamp": "2025-02-11T07:16:30Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "And there's a $6.25 toll? We didn't go through any toll. This was a 3km trip through downtown Austin.",
+      "message_id": "MSG-02025",
+      "sender": "rider",
+      "sentiment": -0.8,
+      "timestamp": "2025-02-11T07:17:00Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "The toll is automatic, I don't control it. Maybe the app routed us through a toll segment.",
+      "message_id": "MSG-02026",
+      "sender": "driver",
+      "sentiment": -0.2,
+      "timestamp": "2025-02-11T07:17:30Z"
+    }
+  ],
+  "dispute": {
+    "category": "fare_surge",
+    "claimed_amount": 21.39,
+    "dispute_id": "DSP-2002",
+    "driver_statement": "Surge pricing and tolls are set by the platform. I just drive the route the app gives me. The rider should contact support about promo codes and billing discrepancies.",
+    "filed_at": "2025-02-11T08:00:00Z",
+    "filed_by": "rider",
+    "priority": "medium",
+    "rider_statement": "I was quoted $18.00 at booking and charged $42. The surge went from 1.0x to 2.8x with no disclosure. My SUPERBOWL25 promo code for $4 off was never applied. And there's a $6.25 toll for a 3km trip through downtown Austin that has no tolls. Three separate billing errors on one ride.",
+    "trip_id": "TRP-2002"
+  },
+  "driver": {
+    "account_age_days": 600,
+    "avg_rating": 4.6,
+    "cancellation_rate": 0.05,
+    "dispute_count_90d": 0,
+    "dispute_win_rate": 0.0,
+    "is_flagged_abuse": false,
+    "name": "Daniel Ortiz",
+    "party_id": "DRV-9003",
+    "role": "driver",
+    "total_trips": 2400
+  },
+  "fare": {
+    "base_fare": 2.33,
+    "booking_fee": 2.0,
+    "currency": "USD",
+    "distance_fare": 3.66,
+    "estimated_fare_at_booking": 10.87,
+    "promo_code": "SUPERBOWL25",
+    "promo_discount": 0.0,
+    "surge_amount": 17.33,
+    "surge_at_booking": 1.0,
+    "surge_multiplier": 2.8,
+    "time_fare": 3.64,
+    "tolls": 6.25,
+    "total_charged": 35.21,
+    "trip_id": "TRP-2002"
+  },
+  "fraud": {
+    "collusion_score": 0.01,
+    "device_fingerprint_shared": false,
+    "dispute_id": "DSP-2002",
+    "driver_claims_30d": 0,
+    "photo_authenticity_score": null,
+    "rider_claims_30d": 1,
+    "rider_repeat_claimer": false,
+    "risk_level": "low"
+  },
+  "no_show": null,
+  "policies": [
+    {
+      "category": "fare_surge",
+      "conditions": {
+        "surge_consistent": true
+      },
+      "policy_id": "POL-3.1",
+      "remedy_formula": null,
+      "remedy_type": "no_action",
+      "rule_text": "The fare shown at booking is an estimate. Where the applied surge matches the surge disclosed at booking, no refund is due.",
+      "title": "Estimates Are Not Quotes",
+      "version": "v2.2"
+    },
+    {
+      "category": "fare_surge",
+      "conditions": {
+        "surge_exceeds_disclosed": true
+      },
+      "policy_id": "POL-3.2",
+      "remedy_formula": "surge_amount * (1 - (surge_at_booking / surge_multiplier))",
+      "remedy_type": "partial_refund",
+      "rule_text": "Where the surge applied exceeds the surge disclosed at booking, the rider is refunded the difference attributable to the undisclosed portion.",
+      "title": "Undisclosed Surge",
+      "version": "v1.8"
+    },
+    {
+      "category": "fare_surge",
+      "conditions": {
+        "promo_unapplied": true
+      },
+      "policy_id": "POL-3.3",
+      "remedy_formula": null,
+      "remedy_type": "partial_refund",
+      "rule_text": "Where a valid promotion was presented at booking but not applied to the final charge, the rider is refunded the promotional value.",
+      "title": "Promo Code Non-Application",
+      "version": "v1.5"
+    },
+    {
+      "category": "fare_surge",
+      "conditions": {
+        "tolls_unverified": true
+      },
+      "policy_id": "POL-3.4",
+      "remedy_formula": null,
+      "remedy_type": "partial_refund",
+      "rule_text": "Tolls may be charged only where the route actually traversed a tolled segment. Unverified tolls are refunded.",
+      "title": "Toll Verification",
+      "version": "v1.1"
+    }
+  ],
+  "precedents": [],
+  "rider": {
+    "account_age_days": 900,
+    "avg_rating": 4.8,
+    "cancellation_rate": 0.04,
+    "dispute_count_90d": 1,
+    "dispute_win_rate": 0.5,
+    "is_flagged_abuse": false,
+    "name": "Priya Raman",
+    "party_id": "RDR-9003",
+    "role": "rider",
+    "total_trips": 320
+  },
+  "route": null,
+  "trip": {
+    "actual_distance_km": 3.3,
+    "actual_duration_min": 13.0,
+    "city": "Austin",
+    "driver_id": "DRV-9003",
+    "dropoff_address": "W Hotel, Austin",
+    "ended_at": "2025-02-11T07:17:00Z",
+    "estimated_distance_km": 3.2,
+    "estimated_duration_min": 12.0,
+    "pickup_address": "Rainey St",
+    "requested_at": "2025-02-11T07:00:00Z",
+    "rider_id": "RDR-9003",
+    "started_at": "2025-02-11T07:04:00Z",
+    "status": "completed",
+    "traffic_conditions": "moderate",
+    "trip_id": "TRP-2002"
+  }
+}
