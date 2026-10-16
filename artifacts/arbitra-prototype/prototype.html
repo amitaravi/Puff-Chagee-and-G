@@ -44,6 +44,27 @@
     .case-button small { display:flex; justify-content:space-between; gap:10px; margin-bottom:5px; color:inherit; opacity:.65; font-weight:700; letter-spacing:.05em }
     .case-button strong { display:block; font-size:15px }
     .case-button span { display:block; margin-top:4px; color:inherit; opacity:.7; font-size:12px }
+    .case-state { display:inline-flex!important; align-items:center; gap:6px; margin:8px 0 0!important; font-size:10px!important; font-weight:850; letter-spacing:.1em; text-transform:uppercase }
+    .case-state::before { content:""; width:7px; height:7px; border-radius:50%; background:#a7b0bd }
+    .case-state.running::before { background:#f0c976; box-shadow:0 0 0 4px rgba(240,201,118,.16); animation:pulse 1s infinite }
+    .case-state.done::before { background:#55c69b }
+    .batch { margin-bottom:22px; overflow:hidden; border:1px solid #c9d3df; border-radius:14px; background:#fff; box-shadow:var(--shadow) }
+    .batch-head { display:flex; align-items:center; justify-content:space-between; gap:18px; padding:20px 22px; color:white; background:var(--navy) }
+    .batch-head h3 { margin:3px 0 0; font:700 25px Georgia,serif }
+    .batch-head p { margin:4px 0 0; color:#c8d5e5; font-size:13px }
+    .run-all,.run-one { border:0; border-radius:9px; font-weight:850; cursor:pointer; transition:.18s ease }
+    .run-all { flex:0 0 auto; padding:12px 17px; color:#10233f; background:#f0c976 }
+    .run-all:hover,.run-one:hover { transform:translateY(-1px); filter:brightness(1.04) }
+    .run-all:disabled,.run-one:disabled { cursor:wait; opacity:.58; transform:none }
+    .batch-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:#e3e7ec }
+    .batch-case { min-width:0; padding:15px 17px; border:0; color:var(--ink); background:#fff; text-align:left; cursor:pointer }
+    .batch-case:hover { background:#fbf8f1 }
+    .batch-case small { display:flex; align-items:center; gap:7px; color:var(--muted); font-size:10px; font-weight:850; letter-spacing:.08em; text-transform:uppercase }
+    .batch-case small::before { content:""; width:7px; height:7px; border-radius:50%; background:#a7b0bd }
+    .batch-case.running small::before { background:var(--gold); animation:pulse 1s infinite }
+    .batch-case.done small::before { background:var(--green) }
+    .batch-case strong { display:block; overflow:hidden; margin:5px 0 2px; text-overflow:ellipsis; white-space:nowrap }
+    .batch-case span { color:var(--muted); font-size:12px }
     .case-view { min-width:0; overflow:hidden; border:1px solid var(--line); border-radius:14px; background:var(--card); box-shadow:var(--shadow) }
     .case-hero { display:grid; grid-template-columns:1fr auto; gap:24px; padding:28px 30px; color:white; background:linear-gradient(120deg,#132946,#1d426d) }
     .case-hero h3 { margin:5px 0 8px; font:700 clamp(26px,3vw,39px)/1.1 Georgia,serif }
@@ -51,6 +72,12 @@
     .outcome { align-self:start; min-width:150px; padding:13px 16px; border:1px solid rgba(255,255,255,.24); border-radius:10px; background:rgba(255,255,255,.08); text-align:center }
     .outcome small { display:block; color:#b9c8d9; font-size:10px; font-weight:800; letter-spacing:.14em }
     .outcome strong { display:block; margin-top:5px; color:#fff; font-size:16px }
+    .runbar { display:flex; align-items:center; justify-content:space-between; gap:18px; padding:13px 24px; border-bottom:1px solid var(--line); background:#eef3f8 }
+    .run-status { display:flex; align-items:center; gap:9px; color:#52657b; font-size:12px; font-weight:750 }
+    .run-status::before { content:""; flex:0 0 auto; width:8px; height:8px; border-radius:50%; background:#8c99a8 }
+    .run-status.running::before { background:var(--gold); box-shadow:0 0 0 4px rgba(214,169,75,.18); animation:pulse 1s infinite }
+    .run-status.done::before { background:var(--green) }
+    .run-one { padding:9px 13px; color:white; background:var(--blue) }
     .tabs { display:flex; overflow:auto; padding:0 24px; border-bottom:1px solid var(--line); background:#fbf8f1 }
     .tab { padding:15px 14px 12px; border:0; border-bottom:3px solid transparent; color:var(--muted); background:none; font-weight:750; white-space:nowrap; cursor:pointer }
     .tab[aria-selected="true"] { color:var(--blue); border-color:var(--blue) }
@@ -70,6 +97,9 @@
     .step-mark { position:relative; display:grid; place-items:center; width:34px; height:34px; border:2px solid #b7c5d7; border-radius:50%; color:var(--blue); background:white; font-size:12px; font-weight:900 }
     .step:not(:last-child) .step-mark::after { content:""; position:absolute; top:32px; left:14px; width:2px; height:calc(100% + 18px); background:#d8dee7 }
     .step.emphasis .step-mark { color:white; border-color:var(--blue); background:var(--blue) }
+    .step.pending { opacity:.38 }
+    .step.running .step-mark { color:#755012; border-color:var(--gold); background:#fff7e5; animation:pulse 1s infinite }
+    .step.done .step-mark { color:white; border-color:var(--green); background:var(--green) }
     .step h4 { margin:2px 0 3px }
     .step p { margin:0; color:var(--muted) }
     .analysis-grid { display:grid; grid-template-columns:1.25fr .75fr; gap:22px }
@@ -94,17 +124,20 @@
     .proof-card p { margin:0; color:var(--muted); font-size:13px }
     footer { display:flex; justify-content:space-between; gap:20px; padding:28px clamp(20px,5vw,76px); color:#aebed1; background:var(--navy); font-size:12px }
     .kbd { padding:2px 7px; border:1px solid #c8d1dc; border-radius:5px; color:#53647a; background:#f4f6f8; font:11px ui-monospace,monospace }
+    @keyframes pulse { 50% { opacity:.48 } }
     @media (max-width:900px) {
       .court,.analysis-grid { grid-template-columns:1fr }
       .docket { position:static }
       .opinion { padding:0; border:0 }
-      .proof-grid,.hero-stats { grid-template-columns:repeat(2,1fr) }
+      .proof-grid,.hero-stats,.batch-grid { grid-template-columns:repeat(2,1fr) }
       .fact-grid { grid-template-columns:repeat(2,1fr) }
     }
     @media (max-width:600px) {
       .topnav { display:none }
       .hero { padding-top:50px }
       .case-hero,.sides { grid-template-columns:1fr }
+      .batch-head,.runbar { align-items:stretch; flex-direction:column }
+      .batch-grid { grid-template-columns:1fr }
       .outcome { text-align:left }
       .proof-grid { grid-template-columns:1fr }
       .section-head { display:block }
@@ -150,8 +183,15 @@
     <section id="courtroom">
       <div class="section-head">
         <div><div class="eyebrow" style="color:#a27621">The courtroom</div><h2>Choose a case. Inspect the judgment.</h2></div>
-        <p>Every case is cached inside this file. Switch cases and views instantly; use <span class="kbd">←</span> <span class="kbd">→</span> during a presentation.</p>
+        <p>Every case and verdict is cached inside this file. Replay one case or the complete docket with no network or model key.</p>
       </div>
+      <section class="batch" aria-labelledby="batchTitle">
+        <div class="batch-head">
+          <div><div class="eyebrow">Complete docket</div><h3 id="batchTitle">Run all four jurisdictions</h3><p id="batchMessage">Ready · cached deterministic replay</p></div>
+          <button id="runAll" class="run-all" type="button">▶ Run all 4 cases</button>
+        </div>
+        <div id="batchGrid" class="batch-grid" aria-live="polite"></div>
+      </section>
       <div class="court">
         <aside class="docket" aria-label="Four courtroom use cases">
           <div class="docket-title">Four courtroom use cases</div>
@@ -159,6 +199,7 @@
         </aside>
         <article class="case-view" aria-live="polite">
           <div id="caseHero" class="case-hero"></div>
+          <div class="runbar"><div id="runStatus" class="run-status">Ready to replay from cached evidence</div><button id="runOne" class="run-one" type="button">Run selected case</button></div>
           <div class="tabs" role="tablist">
             <button class="tab" data-tab="file" aria-selected="true">Case file</button>
             <button class="tab" data-tab="timeline" aria-selected="false">Court timeline</button>
@@ -283,28 +324,87 @@ const CASES = [
 ];
 
 let currentCase = 0;
+let busy = false;
+const runStates = CASES.map(()=>({state:"ready",progress:-1}));
 const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const buttons = document.getElementById("caseButtons");
+const delay = ms => new Promise(resolve=>setTimeout(resolve,ms));
 
 function renderButtons(){
-  buttons.innerHTML = CASES.map((c,i)=>`<button class="case-button" data-case="${i}" aria-selected="${i===currentCase}"><small><span>${esc(c.id)}</span><span>${esc(c.category)}</span></small><strong>${c.icon} ${esc(c.title)}</strong><span>${esc(c.deck.slice(0,70))}…</span></button>`).join("");
-  buttons.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{ currentCase=Number(b.dataset.case); renderCase(); }));
+  buttons.innerHTML = CASES.map((c,i)=>`<button class="case-button" data-case="${i}" aria-selected="${i===currentCase}"><small><span>${esc(c.id)}</span><span>${esc(c.category)}</span></small><strong>${c.icon} ${esc(c.title)}</strong><span>${esc(c.deck.slice(0,70))}…</span><span class="case-state ${runStates[i].state}">${runStates[i].state}</span></button>`).join("");
+  buttons.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{ if(busy)return; currentCase=Number(b.dataset.case); renderCase(); }));
+}
+
+function renderBatch(){
+  const complete=runStates.filter(s=>s.state==="done").length;
+  const running=runStates.findIndex(s=>s.state==="running");
+  document.getElementById("batchMessage").textContent=running>=0
+    ? `Running ${running+1} of ${CASES.length} · ${CASES[running].id}`
+    : complete===CASES.length ? "Complete · 4 cases · 4 cached verdicts" : `${complete} of ${CASES.length} complete · cached deterministic replay`;
+  document.getElementById("batchGrid").innerHTML=CASES.map((c,i)=>`<button class="batch-case ${runStates[i].state}" data-batch-case="${i}" type="button"><small>${runStates[i].state}</small><strong>${c.icon} ${esc(c.category)}</strong><span>${runStates[i].state==="done"?esc(c.outcome):esc(c.id)}</span></button>`).join("");
+  document.querySelectorAll("[data-batch-case]").forEach(b=>b.addEventListener("click",()=>{ if(busy)return; currentCase=Number(b.dataset.batchCase); renderCase(); document.querySelector(".case-view").scrollIntoView({behavior:"smooth",block:"start"}); }));
+  document.getElementById("runAll").disabled=busy;
+  document.getElementById("runAll").textContent=busy?"Running docket…":complete===CASES.length?"↻ Replay all 4 cases":"▶ Run all 4 cases";
 }
 
 function renderCase(){
   const c=CASES[currentCase];
+  const state=runStates[currentCase];
   renderButtons();
-  document.getElementById("caseHero").innerHTML=`<div><div class="eyebrow">${esc(c.id)} · ${esc(c.category)}</div><h3>${c.icon} ${esc(c.title)}</h3><p>${esc(c.deck)}</p></div><div class="outcome"><small>CACHED OUTCOME</small><strong>${esc(c.outcome)}</strong></div>`;
+  renderBatch();
+  const outcomeLabel=state.state==="running"?"PROCESSING":state.state==="done"?"VERDICT":"CACHED OUTCOME";
+  document.getElementById("caseHero").innerHTML=`<div><div class="eyebrow">${esc(c.id)} · ${esc(c.category)}</div><h3>${c.icon} ${esc(c.title)}</h3><p>${esc(c.deck)}</p></div><div class="outcome"><small>${outcomeLabel}</small><strong>${state.state==="running"?esc(c.steps[state.progress]?.[1]||"Opening case"):esc(c.outcome)}</strong></div>`;
+  const status=document.getElementById("runStatus");
+  status.className=`run-status ${state.state}`;
+  status.textContent=state.state==="running"?`Stage ${state.progress+1} of ${c.steps.length} · ${c.steps[state.progress][1]}`:state.state==="done"?`Complete · ${c.outcome} · ${c.policy.split(" · ")[0]}`:"Ready to replay from cached evidence";
+  document.getElementById("runOne").disabled=busy;
+  document.getElementById("runOne").textContent=state.state==="done"?"Replay selected case":"Run selected case";
   document.getElementById("panel-file").innerHTML=`<div class="fact-grid">${c.facts.map(f=>`<div class="fact"><small>${esc(f[0])}</small><strong>${esc(f[1])}</strong></div>`).join("")}</div><div class="sides"><div class="side"><h4>Rider's position</h4><p>${esc(c.rider)}</p></div><div class="side driver"><h4>Driver's position</h4><p>${esc(c.driver)}</p></div></div>`;
-  document.getElementById("panel-timeline").innerHTML=`<div class="timeline">${c.steps.map((s,i)=>`<div class="step ${i===c.steps.length-1?'emphasis':''}"><div class="step-mark">${esc(s[0])}</div><div><h4>${esc(s[1])}</h4><p>${esc(s[2])}</p></div></div>`).join("")}</div>`;
+  document.getElementById("panel-timeline").innerHTML=`<div class="timeline">${c.steps.map((s,i)=>{const stageState=state.state==="done"||i<state.progress?"done":i===state.progress&&state.state==="running"?"running":"pending";return `<div class="step ${stageState} ${i===c.steps.length-1?'emphasis':''}"><div class="step-mark">${stageState==="done"?"✓":esc(s[0])}</div><div><h4>${esc(s[1])}</h4><p>${esc(s[2])}</p></div></div>`}).join("")}</div>`;
   document.getElementById("panel-analysis").innerHTML=`<div class="analysis-grid"><div class="opinion"><h4>The evidence</h4><p>${esc(c.evidence)}</p><h4>Judicial reasoning</h4><p>${esc(c.reasoning)}</p><div class="policy"><strong>Controlling rule</strong><br>${esc(c.policy)}</div><h4>The verdict</h4><p>${esc(c.verdict)}</p></div><aside class="why"><div class="eyebrow">Why this case matters</div><h4>${esc(c.title)}</h4><p>${esc(c.why)}</p></aside></div>`;
 }
 
-document.querySelectorAll(".tab").forEach(tab=>tab.addEventListener("click",()=>{
-  document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",String(t===tab)));
-  document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id===`panel-${tab.dataset.tab}`));
-}));
+function selectTab(name){
+  document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",String(t.dataset.tab===name)));
+  document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id===`panel-${name}`));
+}
+
+async function runCase(index,partOfBatch=false){
+  currentCase=index;
+  runStates[index]={state:"running",progress:0};
+  selectTab("timeline");
+  renderCase();
+  for(let i=0;i<CASES[index].steps.length;i++){
+    runStates[index].progress=i;
+    renderCase();
+    await delay(360);
+  }
+  runStates[index]={state:"done",progress:CASES[index].steps.length-1};
+  renderCase();
+  if(!partOfBatch){ busy=false; renderCase(); selectTab("analysis"); }
+}
+
+document.getElementById("runOne").addEventListener("click",async()=>{
+  if(busy)return;
+  busy=true;
+  await runCase(currentCase);
+});
+
+document.getElementById("runAll").addEventListener("click",async()=>{
+  if(busy)return;
+  busy=true;
+  runStates.forEach((_,i)=>runStates[i]={state:"ready",progress:-1});
+  renderCase();
+  for(let i=0;i<CASES.length;i++) await runCase(i,true);
+  busy=false;
+  currentCase=0;
+  renderCase();
+  selectTab("analysis");
+});
+
+document.querySelectorAll(".tab").forEach(tab=>tab.addEventListener("click",()=>selectTab(tab.dataset.tab)));
 document.addEventListener("keydown",e=>{
+  if(busy)return;
   if(e.key==="ArrowRight"){ currentCase=(currentCase+1)%CASES.length; renderCase(); }
   if(e.key==="ArrowLeft"){ currentCase=(currentCase-1+CASES.length)%CASES.length; renderCase(); }
 });
