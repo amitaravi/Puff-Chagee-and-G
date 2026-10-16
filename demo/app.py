@@ -14,6 +14,7 @@ Run:  streamlit run demo/app.py
 
 from __future__ import annotations
 
+import json
 import os
 import sys
 import time
@@ -103,6 +104,39 @@ RULING_COLORS = {
     "dismissed": ("red", "Dismissed"),
 }
 
+# Four presentation-ready cases: one per jurisdiction, each chosen to demonstrate a
+# concrete capability from Differentiation.md rather than category breadth alone.
+DEMO_USE_CASES = [
+    {
+        "id": "DSP-2005",
+        "icon": "\U0001f6d1",
+        "title": "Knows when to defer",
+        "category": "No-show & Pickup",
+        "proof": "A 65m pickup grey zone cannot be resolved reliably, so the court refers it to a human with a complete record.",
+    },
+    {
+        "id": "DSP-2000",
+        "icon": "\u2696\ufe0f",
+        "title": "Tests conflicting evidence",
+        "category": "Route Deviation",
+        "proof": "A large detour looks wrongful until the chat record shows the rider requested it; the court weighs evidence, not accusation.",
+    },
+    {
+        "id": "DSP-2007",
+        "icon": "\U0001f9fe",
+        "title": "Untangles compound charges",
+        "category": "Fare & Surge",
+        "proof": "Surge disclosure, a missing promotion, and a disputed toll are assessed as separate claims with an itemized remedy.",
+    },
+    {
+        "id": "DSP-2008",
+        "icon": "\U0001f50d",
+        "title": "Checks proof and causation",
+        "category": "Damage & Cleaning",
+        "proof": "The court separates photo authenticity from who caused the damage, while considering timing and repeat-claim signals.",
+    },
+]
+
 CHECK = "\u2705"
 CROSS = "\u274c"
 DASH = "\u2014"
@@ -171,6 +205,130 @@ def key_evidence_summary(pack: EvidencePack) -> str:
     if d.category == "damage_cleaning":
         return f"Damage/cleaning claim — ${pack.dispute.claimed_amount:.2f}"
     return f"{d.category} — ${d.claimed_amount:.2f}"
+
+
+def render_demo_use_case(dispute_id: str) -> None:
+    """Explain the differentiation point demonstrated by the selected showcase case."""
+    use_case = next((item for item in DEMO_USE_CASES if item["id"] == dispute_id), None)
+    if not use_case:
+        return
+    st.markdown(
+        f"### {use_case['icon']} Why this case matters\n"
+        f"**{use_case['title']}** — {use_case['proof']}"
+    )
+    st.caption(
+        f"Use case: {use_case['category']} · {use_case['id']} · "
+        "Change Config A/B/C to compare the single-agent, multi-agent, and full-tribunal paths."
+    )
+    st.divider()
+
+
+def render_system_proof(tools) -> None:
+    """Presentation-first summary of the evidence behind the tribunal."""
+    repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    try:
+        with open(os.path.join(repo_root, "data", "index.json"), encoding="utf-8") as index_file:
+            data_index = json.load(index_file)
+    except (OSError, json.JSONDecodeError):
+        data_index = {"counts": {}, "pair_roles": {}}
+
+    counts = data_index.get("counts", {})
+    pair_roles = data_index.get("pair_roles", {})
+    pair_counts = {
+        role: sum(1 for pair_role in pair_roles.values() if pair_role == role)
+        for role in {"near_twin", "threshold", "bias_mirror", "bias_swap"}
+    }
+    summary_a = _load_evaluation_summary("A") or {}
+    probes = summary_a.get("probes", {})
+    truths = tools.ground_truth() if callable(getattr(tools, "ground_truth", None)) else {}
+    escalation_count = sum(1 for truth in truths.values() if truth.get("should_escalate"))
+
+    st.markdown(
+        '<div style="background:linear-gradient(135deg,#111827,#1f2937);color:white;'
+        'padding:28px;border-radius:14px;margin-bottom:20px;">'
+        '<div style="font-size:0.8rem;color:#fbbf24;letter-spacing:2px;font-weight:700;">'
+        'PROOF, NOT PROMISES</div>'
+        '<div style="font-size:2rem;font-weight:800;margin:8px 0;">A court that shows its work.</div>'
+        '<div style="color:#d1d5db;font-size:1rem;max-width:850px;">'
+        'One ruling can be a lucky prompt. Arbitra is tested for safe escalation, consistent '
+        'policy boundaries, party neutrality, and the value of each tribunal layer.'
+        '</div></div>',
+        unsafe_allow_html=True,
+    )
+
+    metric_cols = st.columns(4)
+    metric_cols[0].metric("Total case corpus", counts.get("cases", "—"))
+    metric_cols[1].metric("Designed human referrals", escalation_count or "—")
+    metric_cols[2].metric("Consistency pairs", pair_counts.get("near_twin", 0) + pair_counts.get("threshold", 0))
+    metric_cols[3].metric("Fairness pairs", pair_counts.get("bias_mirror", 0) + pair_counts.get("bias_swap", 0))
+
+    st.divider()
+    left, right = st.columns(2)
+
+    with left:
+        with st.container(border=True):
+            st.markdown("### \U0001f6d1 1. Knows when not to judge")
+            st.markdown(
+                "**DSP-2005** sits in the no-show policy's grey zone: the driver stopped "
+                "**65m** from the pin, waited **7 minutes**, and the rider was still approaching."
+            )
+            st.error("The record cannot establish arrival. Refer to a human; preserve the full case file.")
+            st.caption("Presentation beat: safety is a feature, not a failure.")
+
+        with st.container(border=True):
+            st.markdown("### \U0001f9ed 3. Audits fairness instead of claiming it")
+            identity_rate = probes.get("bias_swap")
+            st.markdown(
+                f"**{pair_counts.get('bias_swap', 0)} identity-swap pairs** exchange party "
+                "attributes while preserving the facts. "
+                + (f"Measured outcome stability: **{identity_rate:.0%}**." if identity_rate is not None else "")
+            )
+            st.markdown(
+                f"A second set of **{pair_counts.get('bias_mirror', 0)} filing-role mirrors** "
+                "checks whether merely changing who filed changes who wins."
+            )
+            st.caption("The audit is published even when it exposes a weakness.")
+
+    with right:
+        with st.container(border=True):
+            st.markdown("### \U0001f4cf 2. Stable on twins, sensitive at the line")
+            twin_rate = probes.get("near_twin")
+            threshold_rate = probes.get("threshold")
+            st.markdown(
+                f"**{pair_counts.get('near_twin', 0)} near-twin pairs** should keep the same ruling "
+                + (f"— measured consistency: **{twin_rate:.0%}**." if twin_rate is not None else ".")
+            )
+            st.markdown(
+                f"**{pair_counts.get('threshold', 0)} boundary pairs** straddle the 15% rule and "
+                + (f"should flip — measured sensitivity: **{threshold_rate:.0%}**." if threshold_rate is not None else "should flip.")
+            )
+            st.caption("Presentation beat: the judge is neither random nor blind to policy boundaries.")
+
+        with st.container(border=True):
+            st.markdown("### \u2696\ufe0f 4. Every tribunal layer can be challenged")
+            st.markdown(
+                "The same case can run as **A: one agent**, **B: advocates without debate**, or "
+                "**C: the full tribunal**. The live timeline exposes the provisional ruling, "
+                "rebuttals, final judgment, and confidence gate."
+            )
+            rows = []
+            for config_name in ("A", "B", "C"):
+                summary = _load_evaluation_summary(config_name)
+                if summary:
+                    rows.append({
+                        "Config": config_name,
+                        "Cases": summary["n"],
+                        "Autonomy": f"{summary['autonomy_rate']:.1%}",
+                        "Accuracy*": f"{summary['accuracy_non_escalated']:.1%}",
+                    })
+            if rows:
+                st.table(rows)
+            st.caption("* Accuracy among non-escalated cases. Config C is currently a preliminary 3-case sample.")
+
+    st.info(
+        "The presentation starts with a refusal, then shows a ruling, then closes with corpus-level evidence. "
+        "That makes the distinction clear: a case demonstrates behavior; the test suite measures reliability."
+    )
 
 
 def render_progress_bar(trace_map: dict, current_stage: str | None, exit_stage: str | None) -> str:
@@ -746,7 +904,111 @@ def render_verdict_banner(state: CaseState) -> None:
         st.success("Ruling stands — confidence above threshold.")
 
 
-def _generate_case_analysis(state: CaseState) -> str:
+def _load_evaluation_summary(config_name: str) -> dict | None:
+    """Load a saved evaluation summary for one architecture."""
+    result_path = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        "results",
+        f"eval_{config_name}_dev.json",
+    )
+    try:
+        with open(result_path, encoding="utf-8") as result_file:
+            return json.load(result_file)["summary"]
+    except (OSError, KeyError, TypeError, json.JSONDecodeError):
+        return None
+
+
+def _evaluation_context(config_name: str) -> str:
+    """Format measured evaluation facts for the selected architecture."""
+    summary = _load_evaluation_summary(config_name)
+    if not summary:
+        return "No measured evaluation result is available for this configuration."
+
+    facts = [
+        f"precomputed dev evaluation n={summary['n']}",
+        f"autonomy={summary['autonomy_rate']:.1%}",
+        f"non-escalated accuracy={summary['accuracy_non_escalated']:.1%} "
+        f"(n={summary['n_non_escalated']})",
+        f"escalation accuracy={summary['escalation_accuracy']:.1%}",
+    ]
+    if summary.get("n_flip_scored"):
+        facts.append(
+            f"provisional-to-final flip rate={summary['flip_rate']:.1%} "
+            f"(n={summary['n_flip_scored']})"
+        )
+    probes = summary.get("probes", {})
+    if "near_twin" in probes:
+        facts.append(f"near-twin consistency={probes['near_twin']:.1%}")
+    if "threshold" in probes:
+        facts.append(f"threshold sensitivity={probes['threshold']:.1%}")
+    if "bias_swap" in probes:
+        facts.append(f"party-attribute insensitivity={probes['bias_swap']:.1%}")
+    return "; ".join(facts) + "."
+
+
+def _demo_cache_path(dispute_id: str, config_name: str) -> str:
+    repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(repo_root, "demo", "cache", f"{dispute_id}_{config_name}.json")
+
+
+def _load_demo_cache(dispute_id: str, config_name: str) -> dict | None:
+    """Load a repository-backed showcase result, if one has been generated."""
+    try:
+        with open(_demo_cache_path(dispute_id, config_name), encoding="utf-8") as cache_file:
+            cached = json.load(cache_file)
+    except (OSError, json.JSONDecodeError):
+        return None
+    if cached.get("schema_version") != 1 or cached.get("dispute_id") != dispute_id:
+        return None
+    return cached
+
+
+def _save_demo_cache(state: CaseState, analysis_markdown: str, config_name: str) -> None:
+    """Persist a curated demo analysis so a fresh session needs no model call."""
+    pack = state.get("pack")
+    verdict = state.get("verdict")
+    if not pack or not verdict or pack.dispute.dispute_id not in {
+        item["id"] for item in DEMO_USE_CASES
+    }:
+        return
+
+    def dump_model(value):
+        return value.model_dump() if value is not None else None
+
+    payload = {
+        "schema_version": 1,
+        "dispute_id": pack.dispute.dispute_id,
+        "config": config_name,
+        "verdict": dump_model(verdict),
+        "rider_brief": dump_model(state.get("rider_brief")),
+        "driver_brief": dump_model(state.get("driver_brief")),
+        "analysis_markdown": analysis_markdown,
+    }
+    cache_path = _demo_cache_path(pack.dispute.dispute_id, config_name)
+    os.makedirs(os.path.dirname(cache_path), exist_ok=True)
+    with open(cache_path, "w", encoding="utf-8") as cache_file:
+        json.dump(payload, cache_file, indent=2, ensure_ascii=False)
+        cache_file.write("\n")
+
+
+def _state_from_demo_cache(cached: dict, pack: EvidencePack) -> CaseState:
+    """Rehydrate the typed objects used by the normal Case Analysis renderer."""
+    state: CaseState = {
+        "dispute_id": cached["dispute_id"],
+        "config": cached["config"],
+        "pack": pack,
+        "verdict": Verdict(**cached["verdict"]),
+        "trace": [],
+        "errors": [],
+    }
+    if cached.get("rider_brief"):
+        state["rider_brief"] = CaseBrief(**cached["rider_brief"])
+    if cached.get("driver_brief"):
+        state["driver_brief"] = CaseBrief(**cached["driver_brief"])
+    return state
+
+
+def _generate_case_analysis(state: CaseState, config_name: str) -> str:
     """Ask the LLM to explain the tribunal's verdict as a structured narrative."""
     from langchain_core.messages import HumanMessage, SystemMessage
     from src.core.llm import get_llm
@@ -758,6 +1020,7 @@ def _generate_case_analysis(state: CaseState) -> str:
 
     d = pack.dispute
     _, rlabel = RULING_COLORS.get(v.ruling, ("gray", v.ruling))
+    use_case = next((item for item in DEMO_USE_CASES if item["id"] == d.dispute_id), None)
 
     # Build the full case context for the LLM
     case_summary = (
@@ -832,6 +1095,8 @@ def _generate_case_analysis(state: CaseState) -> str:
         f"\n--- VERDICT ---\n"
         f"Ruling: {rlabel}. Amount: ${v.amount:.2f}. Confidence: {v.confidence:.2f}.\n"
         f"Cited policy: {v.cited_policy_id or 'none'}.\n"
+        f"Escalated to human review: {v.should_escalate}.\n"
+        f"Escalation reason: {v.escalation_reason or 'none'}.\n"
     )
     if v.provisional_ruling:
         _, prov_label = RULING_COLORS.get(v.provisional_ruling, ("gray", v.provisional_ruling))
@@ -854,6 +1119,15 @@ def _generate_case_analysis(state: CaseState) -> str:
             case_summary += f"    Reasoning: {a.reasoning}\n"
             if a.evidence_checked:
                 case_summary += f"    Checked: {', '.join(a.evidence_checked)}\n"
+
+    if use_case:
+        case_summary += (
+            f"\n--- DEMONSTRATION PURPOSE ---\n"
+            f"Capability: {use_case['title']}.\n"
+            f"Why selected: {use_case['proof']}\n"
+            f"Measured context for configuration {config_name}: "
+            f"{_evaluation_context(config_name)}\n"
+        )
 
     system = SystemMessage(content=(
         "You are the judge who just ruled on this dispute. Now explain your decision "
@@ -888,6 +1162,15 @@ def _generate_case_analysis(state: CaseState) -> str:
         "the rider's claim that... unconvincing because...' or 'The driver's point about... "
         "gave me pause, but ultimately...' Show your work. Don't just state conclusions — "
         "show the reader how you got there.\n\n"
+        "## Why This Case Matters\n"
+        "Explain the named demonstration capability in 2-4 focused paragraphs. Connect it "
+        "to the exact evidence, the policy boundary, and the court procedure used here. "
+        "Explicitly say why the court did or did not escalate to a human. If a provisional "
+        "ruling exists, compare it with the final ruling and explain what the adversarial "
+        "process changed or confirmed. Then cite the supplied measured evaluation context, "
+        "including its sample size, as corroborating system-level evidence. Clearly distinguish "
+        "what this individual case demonstrates from what the corpus evaluation measures; do "
+        "not claim that one case proves consistency or fairness.\n\n"
         "## The Verdict\n"
         "State the ruling, amount, and confidence. Explain why the confidence is what "
         "it is — what makes you sure, what still nags at you. If there were complicating "
@@ -895,8 +1178,8 @@ def _generate_case_analysis(state: CaseState) -> str:
         "Write in first person as the judge. Be specific to THIS case — reference the "
         "actual numbers, actual claims, actual policy provisions. Do not be generic. "
         "Keep The Dispute, The Evidence, What Each Side Argued, and The Verdict to 2-4 "
-        "sentences each. But My Reasoning should be the longest section by far — 3-5 "
-        "paragraphs, thorough and detailed. Be direct and human."
+        "sentences each. My Reasoning should be the longest section by far — 3-5 paragraphs — "
+        "and Why This Case Matters should be 2-4 paragraphs. Be direct and human."
     ))
     human = HumanMessage(content=f"Here is the complete case file, advocate briefs, and your verdict:\n\n{case_summary}")
 
@@ -1243,6 +1526,20 @@ def _build_case_labels(tools, tier_ids: list[str]) -> dict[str, str]:
         labels[did] = _case_label(tools, did)
     return labels
 
+
+def _complex_showcase_ids(available_ids: list[str]) -> list[str]:
+    """Return the curated demo cases that exist in the current dataset."""
+    available = set(available_ids)
+    return [item["id"] for item in DEMO_USE_CASES if item["id"] in available]
+
+
+def _complex_sidebar_label(tools, dispute_id: str) -> str:
+    """Label complex cases by the capability they demonstrate."""
+    use_case = next((item for item in DEMO_USE_CASES if item["id"] == dispute_id), None)
+    if use_case:
+        return f"{use_case['icon']}  {use_case['title']}"
+    return _case_label(tools, dispute_id)
+
 # Find the case the system REFUSES to judge
 refuse_case = None
 gt_fn = getattr(tools, "ground_truth", None)
@@ -1259,27 +1556,40 @@ with st.sidebar:
     st.divider()
 
     tier = st.radio("Case Type", ["Simple Cases", "Complex Cases"], index=1)
-    tier_ids = COMPLEX_IDS if tier == "Complex Cases" else SIMPLE_IDS
-
-    default_idx = refuse_case in tier_ids and tier_ids.index(refuse_case) or 0
-    case_labels = _build_case_labels(tools, tier_ids)
-    display_labels = [case_labels[did] for did in tier_ids]
-    selected_label = st.selectbox("Case", display_labels, index=default_idx)
-    case = tier_ids[display_labels.index(selected_label)]
+    if tier == "Complex Cases":
+        showcase_ids = _complex_showcase_ids(COMPLEX_IDS)
+        case = st.radio(
+            "Four courtroom use cases",
+            showcase_ids,
+            format_func=lambda dispute_id: _complex_sidebar_label(tools, dispute_id),
+            help="One case per jurisdiction, selected to prove a distinct court capability.",
+        )
+        selected_use_case = next(item for item in DEMO_USE_CASES if item["id"] == case)
+        st.caption(f"**{selected_use_case['category']}** · {case}")
+        st.caption(selected_use_case["proof"])
+    else:
+        default_idx = SIMPLE_IDS.index(refuse_case) if refuse_case in SIMPLE_IDS else 0
+        case_labels = _build_case_labels(tools, SIMPLE_IDS)
+        display_labels = [case_labels[did] for did in SIMPLE_IDS]
+        selected_label = st.selectbox("Case", display_labels, index=default_idx)
+        case = SIMPLE_IDS[display_labels.index(selected_label)]
     cfg = st.selectbox("Config", ["C", "B", "A"], index=0,
                        help="C = Full tribunal | B = 3 agents, no debate | A = Single agent baseline")
 
     flags = flags_for(cfg)
 
     st.divider()
-    st.caption(f"Opens on **{refuse_case}** — the case the system refuses to judge.")
+    if tier == "Complex Cases":
+        st.caption("The demo opens with uncertainty: a case the court sends to human review.")
+    else:
+        st.caption(f"Human-review safeguard case: **{refuse_case}**")
 
 # ============================================================ layout
 # Tab selection — controlled by session state so we can auto-switch
 SS_TAB = "active_tab"
-active_tab = st.session_state.get(SS_TAB, 0)  # 0 = Live Court, 1 = Case Analysis
+active_tab = st.session_state.get(SS_TAB, 0)  # 0 = Live Court, 1 = Case Analysis, 2 = System Proof
 
-tab_labels = ["Live Court", "Case Analysis"]
+tab_labels = ["Live Court", "Case Analysis", "System Proof"]
 _active = st.radio("", tab_labels, index=active_tab, horizontal=True, label_visibility="collapsed")
 current_tab = tab_labels.index(_active)
 if current_tab != active_tab:
@@ -1288,6 +1598,7 @@ if current_tab != active_tab:
 
 show_live = active_tab == 0
 show_analysis = active_tab == 1
+show_proof = active_tab == 2
 
 # --------------------------------------------------------------- live court tab
 if show_live:
@@ -1552,10 +1863,19 @@ if show_live:
 # --------------------------------------------------------------- case analysis tab
 if show_analysis:
     fs = st.session_state.get("final_state")
+    cached_demo = _load_demo_cache(case, cfg)
 
-    if not fs or st.session_state.get("run_case") != case:
-        st.info("No case to analyze yet. Press **Play** in the **Live Court** tab first.")
-        st.stop()
+    if (not fs or st.session_state.get("run_case") != case
+            or st.session_state.get("run_cfg") != cfg):
+        if cached_demo:
+            try:
+                cached_pack = tools.get_evidence_pack(case)
+                fs = _state_from_demo_cache(cached_demo, cached_pack)
+            except Exception:
+                fs = None
+        if not fs:
+            st.info("No cached analysis yet. Press **Play** in the **Live Court** tab first.")
+            st.stop()
 
     v = fs.get("verdict")
     pack = fs.get("pack")
@@ -1565,6 +1885,9 @@ if show_analysis:
         st.stop()
 
     _, rlabel = RULING_COLORS.get(v.ruling, ("gray", v.ruling))
+
+    if case in COMPLEX_IDS:
+        render_demo_use_case(case)
 
     # ---- Verdict header card ----
     st.markdown(
@@ -1579,13 +1902,22 @@ if show_analysis:
         f'</div>',
         unsafe_allow_html=True,
     )
+    if v.should_escalate:
+        st.error("This ruling is not final — the court referred the case to human review.")
+        if v.escalation_reason:
+            st.caption(f"Reason: {v.escalation_reason}")
 
     # ---- LLM-generated case analysis (cached) ----
-    analysis_key = f"analysis_{case}_{cfg}"
+    analysis_key = f"analysis_v2_{case}_{cfg}"
 
     if analysis_key not in st.session_state:
-        with st.spinner("The judge is writing the analysis..."):
-            st.session_state[analysis_key] = _generate_case_analysis(fs)
+        if cached_demo and cached_demo.get("analysis_markdown"):
+            st.session_state[analysis_key] = cached_demo["analysis_markdown"]
+        else:
+            with st.spinner("The judge is writing the analysis..."):
+                generated_analysis = _generate_case_analysis(fs, cfg)
+                st.session_state[analysis_key] = generated_analysis
+                _save_demo_cache(fs, generated_analysis, cfg)
 
     analysis_md = st.session_state[analysis_key]
 
@@ -1595,6 +1927,7 @@ if show_analysis:
         "The Evidence":         ("#00b894", "&#128202;"),     # chart
         "What Each Side Argued":("#fdcb6e", "&#9878;"),       # scales
         "My Reasoning":         ("#a29bfe", "&#129504;"),     # brain
+        "Why This Case Matters":("#ff7675", "&#127919;"),     # target
         "The Verdict":          ("#ffc107", "&#9881;&#65039;"), # gear
     }
 
@@ -1657,3 +1990,7 @@ if show_analysis:
                     f'</div>',
                     unsafe_allow_html=True,
                 )
+
+# --------------------------------------------------------------- system proof tab
+if show_proof:
+    render_system_proof(tools)
