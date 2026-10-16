@@ -204,6 +204,16 @@ class Claim(BaseModel):
         return bool(self.evidence_refs) or bool(self.policy_refs)
 
 
+class ClaimAssessment(BaseModel):
+    """The judge's reaction to a single advocate claim — the inner monologue."""
+
+    side: Literal["rider", "driver"]
+    claim_text: str
+    verdict: Literal["accepted", "rejected", "questioned", "struck"]
+    reasoning: str
+    evidence_checked: list[str] = Field(default_factory=list)
+
+
 class CaseBrief(BaseModel):
     side: Literal["rider", "driver"]
     theory: str
@@ -232,6 +242,8 @@ class Verdict(BaseModel):
     findings_of_fact: list[Claim] = Field(default_factory=list)
     conclusions_of_law: list[str] = Field(default_factory=list)
     remedy_rationale: str = ""
+
+    claim_assessments: list[ClaimAssessment] = Field(default_factory=list)
 
     confidence: float = 0.0
     confidence_factors: list[ConfidenceFactor] = Field(default_factory=list)

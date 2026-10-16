@@ -2,69 +2,69 @@
   {
     "category": "route_deviation",
     "cited_policy_id": "POL-4.3",
-    "confidence": 0.95,
-    "decided_at": "2023-03-14",
-    "fact_summary": "16.1km trip, 6.9km deviation, light traffic, no rider detour request.",
+    "confidence": 0.81,
+    "decided_at": "2024-04-02",
+    "fact_summary": "11.6km trip, 6.3km deviation, partial traffic attribution.",
     "key_facts": {
-      "deviation_pct": 0.429,
-      "duration_delta_min": 6,
-      "traffic_delay_min": 17
+      "deviation_pct": 0.543,
+      "duration_delta_min": 12,
+      "traffic_delay_min": 14
     },
     "precedent_id": "PRC-0001",
-    "reasoning": "Deviation exceeded 15% and was not attributable to traffic. POL-4.3 applies; distance fare refunded proportionally.",
+    "reasoning": "Traffic accounted for only part of the excess. Partial refund awarded under POL-4.3 on the non-traffic portion.",
     "ruling": "refund_rider"
   },
   {
     "category": "no_show",
-    "cited_policy_id": "POL-2.3",
-    "confidence": 0.95,
-    "decided_at": "2024-05-14",
-    "fact_summary": "Driver closest approach 140m, waited under 2 min.",
+    "cited_policy_id": "POL-2.1b",
+    "confidence": 0.79,
+    "decided_at": "2023-02-20",
+    "fact_summary": "Driver closest approach 400m, waited 9 min, rider GPS static.",
     "key_facts": {
-      "driver_min_distance_to_pickup_m": 140,
-      "wait_time_min": 1
+      "driver_min_distance_to_pickup_m": 400,
+      "wait_time_min": 9
     },
     "precedent_id": "PRC-0002",
-    "reasoning": "Cancellation within the POL-2.3 window; no fee chargeable.",
-    "ruling": "refund_rider"
+    "reasoning": "All POL-2.1b conditions met. Fee stands.",
+    "ruling": "no_action"
   },
   {
     "category": "fare_surge",
-    "cited_policy_id": "POL-3.3",
-    "confidence": 0.79,
-    "decided_at": "2024-09-28",
-    "fact_summary": "Valid promo presented at booking, not applied to the final charge.",
+    "cited_policy_id": "POL-3.2",
+    "confidence": 0.86,
+    "decided_at": "2025-10-17",
+    "fact_summary": "Surge 1.89x applied against a lower multiplier disclosed at booking.",
     "key_facts": {
-      "surge_multiplier": 2.12
+      "surge_multiplier": 1.89
     },
     "precedent_id": "PRC-0003",
-    "reasoning": "POL-3.3: promotional value refunded.",
+    "reasoning": "Undisclosed surge. POL-3.2: excess attributable to the undisclosed portion refunded.",
     "ruling": "refund_rider"
   },
   {
     "category": "route_deviation",
-    "cited_policy_id": "POL-4.3",
-    "confidence": 0.85,
-    "decided_at": "2025-04-19",
-    "fact_summary": "8.9km trip, 7.7km deviation, within normal variance.",
+    "cited_policy_id": "POL-4.5",
+    "confidence": 0.86,
+    "decided_at": "2023-01-15",
+    "fact_summary": "28.4km trip, 1.8km deviation, rider requested the scenic route in chat.",
     "key_facts": {
-      "deviation_pct": 0.865,
-      "duration_delta_min": 8,
-      "traffic_delay_min": 2
+      "deviation_pct": 0.063,
+      "duration_delta_min": 10,
+      "traffic_delay_min": 10
     },
     "precedent_id": "PRC-0004",
-    "reasoning": "Deviation below the 15% threshold. POL-4.3 not engaged.",
+    "reasoning": "Detour was rider-requested. POL-4.5: not an unjustified deviation.",
     "ruling": "no_action"
   },
   {
     "category": "no_show",
     "cited_policy_id": "POL-2.1b",
-    "confidence": 0.9,
-    "decided_at": "2024-04-09",
-    "fact_summary": "Driver closest approach 400m, waited 4 min, rider GPS static.",
+    "confidence": 0.83,
+    "decided_at": "2024-09-23",
+    "fact_summary": "Driver closest approach 75m, waited 1 min, rider GPS static.",
     "key_facts": {
-      "driver_min_distance_to_pickup_m": 400,
-      "wait_time_min": 4
+      "driver_min_distance_to_pickup_m": 75,
+      "wait_time_min": 1
     },
     "precedent_id": "PRC-0005",
     "reasoning": "All POL-2.1b conditions met. Fee stands.",
@@ -72,125 +72,125 @@
   },
   {
     "category": "fare_surge",
-    "cited_policy_id": "POL-3.3",
-    "confidence": 0.79,
-    "decided_at": "2023-09-09",
-    "fact_summary": "Valid promo presented at booking, not applied to the final charge.",
+    "cited_policy_id": "POL-3.1",
+    "confidence": 0.95,
+    "decided_at": "2023-05-04",
+    "fact_summary": "Total exceeded estimate by 12%, surge consistent.",
     "key_facts": {
-      "surge_multiplier": 1.69
+      "surge_multiplier": 2.4
     },
     "precedent_id": "PRC-0006",
-    "reasoning": "POL-3.3: promotional value refunded.",
-    "ruling": "refund_rider"
-  },
-  {
-    "category": "route_deviation",
-    "cited_policy_id": "POL-4.4",
-    "confidence": 0.91,
-    "decided_at": "2025-11-17",
-    "fact_summary": "28.3km trip, 7.1km deviation, heavy traffic fully accounting for the delay.",
-    "key_facts": {
-      "deviation_pct": 0.251,
-      "duration_delta_min": 14,
-      "traffic_delay_min": 7
-    },
-    "precedent_id": "PRC-0007",
-    "reasoning": "Deviation exceeded 15% but was wholly attributable to documented heavy traffic. POL-4.4 exception applies.",
-    "ruling": "no_action"
-  },
-  {
-    "category": "no_show",
-    "cited_policy_id": "POL-2.1b",
-    "confidence": 0.83,
-    "decided_at": "2025-04-23",
-    "fact_summary": "Driver closest approach 75m, waited 1 min, rider GPS static.",
-    "key_facts": {
-      "driver_min_distance_to_pickup_m": 75,
-      "wait_time_min": 1
-    },
-    "precedent_id": "PRC-0008",
-    "reasoning": "All POL-2.1b conditions met. Fee stands.",
-    "ruling": "no_action"
-  },
-  {
-    "category": "fare_surge",
-    "cited_policy_id": "POL-3.1",
-    "confidence": 0.8,
-    "decided_at": "2024-05-02",
-    "fact_summary": "Total exceeded estimate by 9%, surge consistent.",
-    "key_facts": {
-      "surge_multiplier": 2.36
-    },
-    "precedent_id": "PRC-0009",
     "reasoning": "Overrun explained by trip duration, which is priced normally. POL-3.1: no refund.",
     "ruling": "no_action"
   },
   {
     "category": "route_deviation",
     "cited_policy_id": "POL-4.3",
-    "confidence": 0.8,
-    "decided_at": "2025-03-18",
-    "fact_summary": "13.3km trip, 1.2km deviation, light traffic, no rider detour request.",
+    "confidence": 0.87,
+    "decided_at": "2024-01-03",
+    "fact_summary": "23.6km trip, 1.4km deviation, light traffic, no rider detour request.",
     "key_facts": {
-      "deviation_pct": 0.09,
-      "duration_delta_min": 8,
-      "traffic_delay_min": 8
+      "deviation_pct": 0.059,
+      "duration_delta_min": 22,
+      "traffic_delay_min": 9
     },
-    "precedent_id": "PRC-0010",
+    "precedent_id": "PRC-0007",
     "reasoning": "Deviation exceeded 15% and was not attributable to traffic. POL-4.3 applies; distance fare refunded proportionally.",
     "ruling": "refund_rider"
   },
   {
     "category": "no_show",
-    "cited_policy_id": "POL-2.1b",
-    "confidence": 0.94,
-    "decided_at": "2023-11-08",
-    "fact_summary": "Driver closest approach 30m, waited 1 min, rider GPS static.",
+    "cited_policy_id": "POL-2.3",
+    "confidence": 0.88,
+    "decided_at": "2023-02-23",
+    "fact_summary": "Driver closest approach 75m, waited under 2 min.",
     "key_facts": {
-      "driver_min_distance_to_pickup_m": 30,
-      "wait_time_min": 1
+      "driver_min_distance_to_pickup_m": 75,
+      "wait_time_min": 3
     },
-    "precedent_id": "PRC-0011",
-    "reasoning": "All POL-2.1b conditions met. Fee stands.",
-    "ruling": "no_action"
-  },
-  {
-    "category": "fare_surge",
-    "cited_policy_id": "POL-3.2",
-    "confidence": 0.94,
-    "decided_at": "2023-03-24",
-    "fact_summary": "Surge 2.3x applied against a lower multiplier disclosed at booking.",
-    "key_facts": {
-      "surge_multiplier": 2.3
-    },
-    "precedent_id": "PRC-0012",
-    "reasoning": "Undisclosed surge. POL-3.2: excess attributable to the undisclosed portion refunded.",
+    "precedent_id": "PRC-0008",
+    "reasoning": "Cancellation within the POL-2.3 window; no fee chargeable.",
     "ruling": "refund_rider"
   },
   {
+    "category": "fare_surge",
+    "cited_policy_id": "POL-3.1",
+    "confidence": 0.85,
+    "decided_at": "2023-06-07",
+    "fact_summary": "Surge 1.19x applied, matching booking disclosure. Total within estimate tolerance.",
+    "key_facts": {
+      "surge_multiplier": 1.19
+    },
+    "precedent_id": "PRC-0009",
+    "reasoning": "POL-3.1: an estimate is not a quote and surge was disclosed. No refund.",
+    "ruling": "no_action"
+  },
+  {
     "category": "route_deviation",
-    "cited_policy_id": "POL-4.5",
-    "confidence": 0.93,
-    "decided_at": "2023-04-27",
-    "fact_summary": "24.6km trip, 3.4km deviation, rider requested the scenic route in chat.",
+    "cited_policy_id": "POL-4.4",
+    "confidence": 0.94,
+    "decided_at": "2023-07-01",
+    "fact_summary": "21.7km trip, 3.0km deviation, heavy traffic fully accounting for the delay.",
     "key_facts": {
       "deviation_pct": 0.138,
-      "duration_delta_min": 11,
-      "traffic_delay_min": 7
+      "duration_delta_min": 16,
+      "traffic_delay_min": 17
+    },
+    "precedent_id": "PRC-0010",
+    "reasoning": "Deviation exceeded 15% but was wholly attributable to documented heavy traffic. POL-4.4 exception applies.",
+    "ruling": "no_action"
+  },
+  {
+    "category": "no_show",
+    "cited_policy_id": "POL-2.1a",
+    "confidence": 0.85,
+    "decided_at": "2023-08-08",
+    "fact_summary": "Driver closest approach 75m, never entered the pickup zone.",
+    "key_facts": {
+      "driver_min_distance_to_pickup_m": 75,
+      "wait_time_min": 3
+    },
+    "precedent_id": "PRC-0011",
+    "reasoning": "Driver did not come within 100m. POL-2.1a: fee refunded in full.",
+    "ruling": "refund_rider"
+  },
+  {
+    "category": "fare_surge",
+    "cited_policy_id": "POL-3.1",
+    "confidence": 0.84,
+    "decided_at": "2023-05-12",
+    "fact_summary": "Surge 1.99x applied, matching booking disclosure. Total within estimate tolerance.",
+    "key_facts": {
+      "surge_multiplier": 1.99
+    },
+    "precedent_id": "PRC-0012",
+    "reasoning": "POL-3.1: an estimate is not a quote and surge was disclosed. No refund.",
+    "ruling": "no_action"
+  },
+  {
+    "category": "route_deviation",
+    "cited_policy_id": "POL-4.3",
+    "confidence": 0.81,
+    "decided_at": "2024-01-04",
+    "fact_summary": "15.0km trip, 7.9km deviation, within normal variance.",
+    "key_facts": {
+      "deviation_pct": 0.527,
+      "duration_delta_min": 13,
+      "traffic_delay_min": 17
     },
     "precedent_id": "PRC-0013",
-    "reasoning": "Detour was rider-requested. POL-4.5: not an unjustified deviation.",
+    "reasoning": "Deviation below the 15% threshold. POL-4.3 not engaged.",
     "ruling": "no_action"
   },
   {
     "category": "no_show",
     "cited_policy_id": "POL-2.3",
-    "confidence": 0.94,
-    "decided_at": "2024-06-21",
-    "fact_summary": "Driver closest approach 12m, waited under 2 min.",
+    "confidence": 0.83,
+    "decided_at": "2025-07-01",
+    "fact_summary": "Driver closest approach 400m, waited under 2 min.",
     "key_facts": {
-      "driver_min_distance_to_pickup_m": 12,
-      "wait_time_min": 3
+      "driver_min_distance_to_pickup_m": 400,
+      "wait_time_min": 1
     },
     "precedent_id": "PRC-0014",
     "reasoning": "Cancellation within the POL-2.3 window; no fee chargeable.",
@@ -198,41 +198,41 @@
   },
   {
     "category": "fare_surge",
-    "cited_policy_id": "POL-3.3",
-    "confidence": 0.79,
-    "decided_at": "2025-07-12",
-    "fact_summary": "Valid promo presented at booking, not applied to the final charge.",
+    "cited_policy_id": "POL-3.1",
+    "confidence": 0.87,
+    "decided_at": "2025-07-11",
+    "fact_summary": "Surge 2.08x applied, matching booking disclosure. Total within estimate tolerance.",
     "key_facts": {
-      "surge_multiplier": 1.27
+      "surge_multiplier": 2.08
     },
     "precedent_id": "PRC-0015",
-    "reasoning": "POL-3.3: promotional value refunded.",
-    "ruling": "refund_rider"
+    "reasoning": "POL-3.1: an estimate is not a quote and surge was disclosed. No refund.",
+    "ruling": "no_action"
   },
   {
     "category": "route_deviation",
-    "cited_policy_id": "POL-4.5",
-    "confidence": 0.78,
-    "decided_at": "2025-11-24",
-    "fact_summary": "15.9km trip, 7.9km deviation, rider requested the scenic route in chat.",
+    "cited_policy_id": "POL-4.3",
+    "confidence": 0.85,
+    "decided_at": "2023-05-10",
+    "fact_summary": "22.4km trip, 4.5km deviation, partial traffic attribution.",
     "key_facts": {
-      "deviation_pct": 0.497,
-      "duration_delta_min": 15,
-      "traffic_delay_min": 3
+      "deviation_pct": 0.201,
+      "duration_delta_min": 16,
+      "traffic_delay_min": 6
     },
     "precedent_id": "PRC-0016",
-    "reasoning": "Detour was rider-requested. POL-4.5: not an unjustified deviation.",
-    "ruling": "no_action"
+    "reasoning": "Traffic accounted for only part of the excess. Partial refund awarded under POL-4.3 on the non-traffic portion.",
+    "ruling": "refund_rider"
   },
   {
     "category": "no_show",
     "cited_policy_id": "POL-2.1a",
     "confidence": 0.87,
-    "decided_at": "2025-07-11",
-    "fact_summary": "Driver closest approach 75m, never entered the pickup zone.",
+    "decided_at": "2025-03-22",
+    "fact_summary": "Driver closest approach 140m, never entered the pickup zone.",
     "key_facts": {
-      "driver_min_distance_to_pickup_m": 75,
-      "wait_time_min": 1
+      "driver_min_distance_to_pickup_m": 140,
+      "wait_time_min": 6
     },
     "precedent_id": "PRC-0017",
     "reasoning": "Driver did not come within 100m. POL-2.1a: fee refunded in full.",
@@ -240,41 +240,41 @@
   },
   {
     "category": "fare_surge",
-    "cited_policy_id": "POL-3.3",
-    "confidence": 0.85,
-    "decided_at": "2023-05-10",
-    "fact_summary": "Valid promo presented at booking, not applied to the final charge.",
+    "cited_policy_id": "POL-3.2",
+    "confidence": 0.81,
+    "decided_at": "2023-04-16",
+    "fact_summary": "Surge 1.34x applied against a lower multiplier disclosed at booking.",
     "key_facts": {
-      "surge_multiplier": 1.92
+      "surge_multiplier": 1.34
     },
     "precedent_id": "PRC-0018",
-    "reasoning": "POL-3.3: promotional value refunded.",
+    "reasoning": "Undisclosed surge. POL-3.2: excess attributable to the undisclosed portion refunded.",
     "ruling": "refund_rider"
   },
   {
     "category": "route_deviation",
-    "cited_policy_id": "POL-4.4",
-    "confidence": 0.87,
-    "decided_at": "2025-03-22",
-    "fact_summary": "15.7km trip, 4.7km deviation, heavy traffic fully accounting for the delay.",
+    "cited_policy_id": "POL-4.3",
+    "confidence": 0.81,
+    "decided_at": "2025-01-25",
+    "fact_summary": "26.2km trip, 0.8km deviation, within normal variance.",
     "key_facts": {
-      "deviation_pct": 0.299,
-      "duration_delta_min": 17,
-      "traffic_delay_min": 10
+      "deviation_pct": 0.031,
+      "duration_delta_min": 21,
+      "traffic_delay_min": 13
     },
     "precedent_id": "PRC-0019",
-    "reasoning": "Deviation exceeded 15% but was wholly attributable to documented heavy traffic. POL-4.4 exception applies.",
+    "reasoning": "Deviation below the 15% threshold. POL-4.3 not engaged.",
     "ruling": "no_action"
   },
   {
     "category": "no_show",
     "cited_policy_id": "POL-2.1b",
-    "confidence": 0.81,
-    "decided_at": "2023-04-16",
-    "fact_summary": "Driver closest approach 30m, waited 4 min, rider GPS static.",
+    "confidence": 0.86,
+    "decided_at": "2024-11-17",
+    "fact_summary": "Driver closest approach 12m, waited 9 min, rider GPS static.",
     "key_facts": {
-      "driver_min_distance_to_pickup_m": 30,
-      "wait_time_min": 4
+      "driver_min_distance_to_pickup_m": 12,
+      "wait_time_min": 9
     },
     "precedent_id": "PRC-0020",
     "reasoning": "All POL-2.1b conditions met. Fee stands.",
@@ -282,153 +282,153 @@
   },
   {
     "category": "fare_surge",
-    "cited_policy_id": "POL-3.2",
-    "confidence": 0.9,
-    "decided_at": "2023-02-25",
-    "fact_summary": "Surge 1.6x applied against a lower multiplier disclosed at booking.",
-    "key_facts": {
-      "surge_multiplier": 1.6
-    },
-    "precedent_id": "PRC-0021",
-    "reasoning": "Undisclosed surge. POL-3.2: excess attributable to the undisclosed portion refunded.",
-    "ruling": "refund_rider"
-  },
-  {
-    "category": "route_deviation",
-    "cited_policy_id": "POL-4.3",
-    "confidence": 0.86,
-    "decided_at": "2024-11-17",
-    "fact_summary": "10.5km trip, 6.5km deviation, partial traffic attribution.",
-    "key_facts": {
-      "deviation_pct": 0.619,
-      "duration_delta_min": 17,
-      "traffic_delay_min": 16
-    },
-    "precedent_id": "PRC-0022",
-    "reasoning": "Traffic accounted for only part of the excess. Partial refund awarded under POL-4.3 on the non-traffic portion.",
-    "ruling": "refund_rider"
-  },
-  {
-    "category": "no_show",
-    "cited_policy_id": "POL-2.2",
+    "cited_policy_id": "POL-3.1",
     "confidence": 0.86,
     "decided_at": "2023-11-09",
-    "fact_summary": "Driver closest approach 400m, waited 6 min, rider GPS ambiguous.",
+    "fact_summary": "Total exceeded estimate by 36%, surge consistent.",
     "key_facts": {
-      "driver_min_distance_to_pickup_m": 400,
-      "wait_time_min": 6
+      "surge_multiplier": 2.35
     },
-    "precedent_id": "PRC-0023",
-    "reasoning": "Grey band. Benefit of the doubt resolved in favour of the rider; low confidence, referred.",
-    "ruling": "refund_rider"
-  },
-  {
-    "category": "fare_surge",
-    "cited_policy_id": "POL-3.3",
-    "confidence": 0.79,
-    "decided_at": "2023-04-13",
-    "fact_summary": "Valid promo presented at booking, not applied to the final charge.",
-    "key_facts": {
-      "surge_multiplier": 1.5
-    },
-    "precedent_id": "PRC-0024",
-    "reasoning": "POL-3.3: promotional value refunded.",
-    "ruling": "refund_rider"
-  },
-  {
-    "category": "route_deviation",
-    "cited_policy_id": "POL-4.4",
-    "confidence": 0.93,
-    "decided_at": "2024-10-23",
-    "fact_summary": "22.7km trip, 0.7km deviation, heavy traffic fully accounting for the delay.",
-    "key_facts": {
-      "deviation_pct": 0.031,
-      "duration_delta_min": 13,
-      "traffic_delay_min": 13
-    },
-    "precedent_id": "PRC-0025",
-    "reasoning": "Deviation exceeded 15% but was wholly attributable to documented heavy traffic. POL-4.4 exception applies.",
-    "ruling": "no_action"
-  },
-  {
-    "category": "no_show",
-    "cited_policy_id": "POL-2.1b",
-    "confidence": 0.93,
-    "decided_at": "2024-09-24",
-    "fact_summary": "Driver closest approach 12m, waited 4 min, rider GPS static.",
-    "key_facts": {
-      "driver_min_distance_to_pickup_m": 12,
-      "wait_time_min": 4
-    },
-    "precedent_id": "PRC-0026",
-    "reasoning": "All POL-2.1b conditions met. Fee stands.",
-    "ruling": "no_action"
-  },
-  {
-    "category": "fare_surge",
-    "cited_policy_id": "POL-3.1",
-    "confidence": 0.91,
-    "decided_at": "2024-03-20",
-    "fact_summary": "Surge 2.0x applied, matching booking disclosure. Total within estimate tolerance.",
-    "key_facts": {
-      "surge_multiplier": 2.0
-    },
-    "precedent_id": "PRC-0027",
-    "reasoning": "POL-3.1: an estimate is not a quote and surge was disclosed. No refund.",
+    "precedent_id": "PRC-0021",
+    "reasoning": "Overrun explained by trip duration, which is priced normally. POL-3.1: no refund.",
     "ruling": "no_action"
   },
   {
     "category": "route_deviation",
     "cited_policy_id": "POL-4.3",
-    "confidence": 0.81,
-    "decided_at": "2024-07-11",
-    "fact_summary": "5.7km trip, 3.3km deviation, within normal variance.",
+    "confidence": 0.94,
+    "decided_at": "2023-03-05",
+    "fact_summary": "17.1km trip, 2.1km deviation, within normal variance.",
     "key_facts": {
-      "deviation_pct": 0.579,
-      "duration_delta_min": 3,
-      "traffic_delay_min": 18
+      "deviation_pct": 0.123,
+      "duration_delta_min": 5,
+      "traffic_delay_min": 14
     },
-    "precedent_id": "PRC-0028",
+    "precedent_id": "PRC-0022",
     "reasoning": "Deviation below the 15% threshold. POL-4.3 not engaged.",
     "ruling": "no_action"
   },
   {
     "category": "no_show",
     "cited_policy_id": "POL-2.1a",
-    "confidence": 0.78,
-    "decided_at": "2025-01-12",
+    "confidence": 0.85,
+    "decided_at": "2023-07-13",
     "fact_summary": "Driver closest approach 140m, never entered the pickup zone.",
     "key_facts": {
       "driver_min_distance_to_pickup_m": 140,
-      "wait_time_min": 4
+      "wait_time_min": 6
     },
-    "precedent_id": "PRC-0029",
+    "precedent_id": "PRC-0023",
     "reasoning": "Driver did not come within 100m. POL-2.1a: fee refunded in full.",
     "ruling": "refund_rider"
   },
   {
     "category": "fare_surge",
-    "cited_policy_id": "POL-3.1",
-    "confidence": 0.82,
-    "decided_at": "2024-11-04",
-    "fact_summary": "Surge 2.26x applied, matching booking disclosure. Total within estimate tolerance.",
+    "cited_policy_id": "POL-3.2",
+    "confidence": 0.93,
+    "decided_at": "2024-09-24",
+    "fact_summary": "Surge 1.45x applied against a lower multiplier disclosed at booking.",
     "key_facts": {
-      "surge_multiplier": 2.26
+      "surge_multiplier": 1.45
     },
-    "precedent_id": "PRC-0030",
-    "reasoning": "POL-3.1: an estimate is not a quote and surge was disclosed. No refund.",
+    "precedent_id": "PRC-0024",
+    "reasoning": "Undisclosed surge. POL-3.2: excess attributable to the undisclosed portion refunded.",
+    "ruling": "refund_rider"
+  },
+  {
+    "category": "route_deviation",
+    "cited_policy_id": "POL-4.3",
+    "confidence": 0.84,
+    "decided_at": "2025-07-24",
+    "fact_summary": "25.0km trip, 7.2km deviation, within normal variance.",
+    "key_facts": {
+      "deviation_pct": 0.288,
+      "duration_delta_min": 10,
+      "traffic_delay_min": 15
+    },
+    "precedent_id": "PRC-0025",
+    "reasoning": "Deviation below the 15% threshold. POL-4.3 not engaged.",
     "ruling": "no_action"
+  },
+  {
+    "category": "no_show",
+    "cited_policy_id": "POL-2.1a",
+    "confidence": 0.8,
+    "decided_at": "2024-03-28",
+    "fact_summary": "Driver closest approach 140m, never entered the pickup zone.",
+    "key_facts": {
+      "driver_min_distance_to_pickup_m": 140,
+      "wait_time_min": 9
+    },
+    "precedent_id": "PRC-0026",
+    "reasoning": "Driver did not come within 100m. POL-2.1a: fee refunded in full.",
+    "ruling": "refund_rider"
+  },
+  {
+    "category": "fare_surge",
+    "cited_policy_id": "POL-3.3",
+    "confidence": 0.83,
+    "decided_at": "2024-05-27",
+    "fact_summary": "Valid promo presented at booking, not applied to the final charge.",
+    "key_facts": {
+      "surge_multiplier": 1.51
+    },
+    "precedent_id": "PRC-0027",
+    "reasoning": "POL-3.3: promotional value refunded.",
+    "ruling": "refund_rider"
   },
   {
     "category": "route_deviation",
     "cited_policy_id": "POL-4.3",
     "confidence": 0.92,
-    "decided_at": "2023-05-04",
-    "fact_summary": "28.7km trip, 3.8km deviation, within normal variance.",
+    "decided_at": "2023-04-27",
+    "fact_summary": "16.8km trip, 6.0km deviation, light traffic, no rider detour request.",
     "key_facts": {
-      "deviation_pct": 0.132,
+      "deviation_pct": 0.357,
       "duration_delta_min": 14,
-      "traffic_delay_min": 8
+      "traffic_delay_min": 1
+    },
+    "precedent_id": "PRC-0028",
+    "reasoning": "Deviation exceeded 15% and was not attributable to traffic. POL-4.3 applies; distance fare refunded proportionally.",
+    "ruling": "refund_rider"
+  },
+  {
+    "category": "no_show",
+    "cited_policy_id": "POL-2.1b",
+    "confidence": 0.92,
+    "decided_at": "2023-10-20",
+    "fact_summary": "Driver closest approach 400m, waited 3 min, rider GPS static.",
+    "key_facts": {
+      "driver_min_distance_to_pickup_m": 400,
+      "wait_time_min": 3
+    },
+    "precedent_id": "PRC-0029",
+    "reasoning": "All POL-2.1b conditions met. Fee stands.",
+    "ruling": "no_action"
+  },
+  {
+    "category": "fare_surge",
+    "cited_policy_id": "POL-3.2",
+    "confidence": 0.85,
+    "decided_at": "2025-04-03",
+    "fact_summary": "Surge 2.39x applied against a lower multiplier disclosed at booking.",
+    "key_facts": {
+      "surge_multiplier": 2.39
+    },
+    "precedent_id": "PRC-0030",
+    "reasoning": "Undisclosed surge. POL-3.2: excess attributable to the undisclosed portion refunded.",
+    "ruling": "refund_rider"
+  },
+  {
+    "category": "route_deviation",
+    "cited_policy_id": "POL-4.3",
+    "confidence": 0.84,
+    "decided_at": "2024-11-12",
+    "fact_summary": "22.3km trip, 5.1km deviation, within normal variance.",
+    "key_facts": {
+      "deviation_pct": 0.229,
+      "duration_delta_min": 12,
+      "traffic_delay_min": 3
     },
     "precedent_id": "PRC-0031",
     "reasoning": "Deviation below the 15% threshold. POL-4.3 not engaged.",
@@ -437,12 +437,12 @@
   {
     "category": "no_show",
     "cited_policy_id": "POL-2.1b",
-    "confidence": 0.8,
-    "decided_at": "2024-11-20",
-    "fact_summary": "Driver closest approach 30m, waited 1 min, rider GPS static.",
+    "confidence": 0.91,
+    "decided_at": "2024-03-24",
+    "fact_summary": "Driver closest approach 12m, waited 6 min, rider GPS static.",
     "key_facts": {
-      "driver_min_distance_to_pickup_m": 30,
-      "wait_time_min": 1
+      "driver_min_distance_to_pickup_m": 12,
+      "wait_time_min": 6
     },
     "precedent_id": "PRC-0032",
     "reasoning": "All POL-2.1b conditions met. Fee stands.",
@@ -450,125 +450,125 @@
   },
   {
     "category": "fare_surge",
-    "cited_policy_id": "POL-3.2",
-    "confidence": 0.87,
-    "decided_at": "2024-01-28",
-    "fact_summary": "Surge 1.99x applied against a lower multiplier disclosed at booking.",
+    "cited_policy_id": "POL-3.1",
+    "confidence": 0.93,
+    "decided_at": "2023-05-15",
+    "fact_summary": "Total exceeded estimate by 21%, surge consistent.",
     "key_facts": {
-      "surge_multiplier": 1.99
+      "surge_multiplier": 1.4
     },
     "precedent_id": "PRC-0033",
-    "reasoning": "Undisclosed surge. POL-3.2: excess attributable to the undisclosed portion refunded.",
-    "ruling": "refund_rider"
-  },
-  {
-    "category": "route_deviation",
-    "cited_policy_id": "POL-4.3",
-    "confidence": 0.95,
-    "decided_at": "2024-10-26",
-    "fact_summary": "25.6km trip, 1.0km deviation, partial traffic attribution.",
-    "key_facts": {
-      "deviation_pct": 0.039,
-      "duration_delta_min": 17,
-      "traffic_delay_min": 11
-    },
-    "precedent_id": "PRC-0034",
-    "reasoning": "Traffic accounted for only part of the excess. Partial refund awarded under POL-4.3 on the non-traffic portion.",
-    "ruling": "refund_rider"
-  },
-  {
-    "category": "no_show",
-    "cited_policy_id": "POL-2.3",
-    "confidence": 0.83,
-    "decided_at": "2024-04-25",
-    "fact_summary": "Driver closest approach 75m, waited under 2 min.",
-    "key_facts": {
-      "driver_min_distance_to_pickup_m": 75,
-      "wait_time_min": 3
-    },
-    "precedent_id": "PRC-0035",
-    "reasoning": "Cancellation within the POL-2.3 window; no fee chargeable.",
-    "ruling": "refund_rider"
-  },
-  {
-    "category": "fare_surge",
-    "cited_policy_id": "POL-3.3",
-    "confidence": 0.84,
-    "decided_at": "2024-06-09",
-    "fact_summary": "Valid promo presented at booking, not applied to the final charge.",
-    "key_facts": {
-      "surge_multiplier": 1.27
-    },
-    "precedent_id": "PRC-0036",
-    "reasoning": "POL-3.3: promotional value refunded.",
-    "ruling": "refund_rider"
-  },
-  {
-    "category": "route_deviation",
-    "cited_policy_id": "POL-4.3",
-    "confidence": 0.87,
-    "decided_at": "2023-12-16",
-    "fact_summary": "22.5km trip, 2.4km deviation, within normal variance.",
-    "key_facts": {
-      "deviation_pct": 0.107,
-      "duration_delta_min": 19,
-      "traffic_delay_min": 0
-    },
-    "precedent_id": "PRC-0037",
-    "reasoning": "Deviation below the 15% threshold. POL-4.3 not engaged.",
-    "ruling": "no_action"
-  },
-  {
-    "category": "no_show",
-    "cited_policy_id": "POL-2.3",
-    "confidence": 0.87,
-    "decided_at": "2025-06-14",
-    "fact_summary": "Driver closest approach 140m, waited under 2 min.",
-    "key_facts": {
-      "driver_min_distance_to_pickup_m": 140,
-      "wait_time_min": 3
-    },
-    "precedent_id": "PRC-0038",
-    "reasoning": "Cancellation within the POL-2.3 window; no fee chargeable.",
-    "ruling": "refund_rider"
-  },
-  {
-    "category": "fare_surge",
-    "cited_policy_id": "POL-3.1",
-    "confidence": 0.8,
-    "decided_at": "2025-12-06",
-    "fact_summary": "Total exceeded estimate by 26%, surge consistent.",
-    "key_facts": {
-      "surge_multiplier": 2.08
-    },
-    "precedent_id": "PRC-0039",
     "reasoning": "Overrun explained by trip duration, which is priced normally. POL-3.1: no refund.",
     "ruling": "no_action"
   },
   {
     "category": "route_deviation",
     "cited_policy_id": "POL-4.4",
-    "confidence": 0.83,
-    "decided_at": "2024-03-10",
-    "fact_summary": "10.4km trip, 4.0km deviation, heavy traffic fully accounting for the delay.",
+    "confidence": 0.87,
+    "decided_at": "2024-05-11",
+    "fact_summary": "23.8km trip, 4.6km deviation, heavy traffic fully accounting for the delay.",
     "key_facts": {
-      "deviation_pct": 0.385,
-      "duration_delta_min": 19,
-      "traffic_delay_min": 18
+      "deviation_pct": 0.193,
+      "duration_delta_min": 13,
+      "traffic_delay_min": 12
     },
-    "precedent_id": "PRC-0040",
+    "precedent_id": "PRC-0034",
     "reasoning": "Deviation exceeded 15% but was wholly attributable to documented heavy traffic. POL-4.4 exception applies.",
     "ruling": "no_action"
   },
   {
     "category": "no_show",
-    "cited_policy_id": "POL-2.1b",
-    "confidence": 0.89,
-    "decided_at": "2024-02-28",
-    "fact_summary": "Driver closest approach 400m, waited 4 min, rider GPS static.",
+    "cited_policy_id": "POL-2.2",
+    "confidence": 0.82,
+    "decided_at": "2024-08-18",
+    "fact_summary": "Driver closest approach 12m, waited 9 min, rider GPS ambiguous.",
     "key_facts": {
-      "driver_min_distance_to_pickup_m": 400,
-      "wait_time_min": 4
+      "driver_min_distance_to_pickup_m": 12,
+      "wait_time_min": 9
+    },
+    "precedent_id": "PRC-0035",
+    "reasoning": "Grey band. Benefit of the doubt resolved in favour of the rider; low confidence, referred.",
+    "ruling": "refund_rider"
+  },
+  {
+    "category": "fare_surge",
+    "cited_policy_id": "POL-3.1",
+    "confidence": 0.9,
+    "decided_at": "2024-11-19",
+    "fact_summary": "Surge 1.44x applied, matching booking disclosure. Total within estimate tolerance.",
+    "key_facts": {
+      "surge_multiplier": 1.44
+    },
+    "precedent_id": "PRC-0036",
+    "reasoning": "POL-3.1: an estimate is not a quote and surge was disclosed. No refund.",
+    "ruling": "no_action"
+  },
+  {
+    "category": "route_deviation",
+    "cited_policy_id": "POL-4.5",
+    "confidence": 0.84,
+    "decided_at": "2023-02-24",
+    "fact_summary": "16.8km trip, 4.3km deviation, rider requested the scenic route in chat.",
+    "key_facts": {
+      "deviation_pct": 0.256,
+      "duration_delta_min": 20,
+      "traffic_delay_min": 13
+    },
+    "precedent_id": "PRC-0037",
+    "reasoning": "Detour was rider-requested. POL-4.5: not an unjustified deviation.",
+    "ruling": "no_action"
+  },
+  {
+    "category": "no_show",
+    "cited_policy_id": "POL-2.1a",
+    "confidence": 0.89,
+    "decided_at": "2023-04-10",
+    "fact_summary": "Driver closest approach 30m, never entered the pickup zone.",
+    "key_facts": {
+      "driver_min_distance_to_pickup_m": 30,
+      "wait_time_min": 6
+    },
+    "precedent_id": "PRC-0038",
+    "reasoning": "Driver did not come within 100m. POL-2.1a: fee refunded in full.",
+    "ruling": "refund_rider"
+  },
+  {
+    "category": "fare_surge",
+    "cited_policy_id": "POL-3.1",
+    "confidence": 0.91,
+    "decided_at": "2023-11-28",
+    "fact_summary": "Surge 2.46x applied, matching booking disclosure. Total within estimate tolerance.",
+    "key_facts": {
+      "surge_multiplier": 2.46
+    },
+    "precedent_id": "PRC-0039",
+    "reasoning": "POL-3.1: an estimate is not a quote and surge was disclosed. No refund.",
+    "ruling": "no_action"
+  },
+  {
+    "category": "route_deviation",
+    "cited_policy_id": "POL-4.3",
+    "confidence": 0.83,
+    "decided_at": "2024-02-27",
+    "fact_summary": "7.6km trip, 0.3km deviation, partial traffic attribution.",
+    "key_facts": {
+      "deviation_pct": 0.039,
+      "duration_delta_min": 18,
+      "traffic_delay_min": 9
+    },
+    "precedent_id": "PRC-0040",
+    "reasoning": "Traffic accounted for only part of the excess. Partial refund awarded under POL-4.3 on the non-traffic portion.",
+    "ruling": "refund_rider"
+  },
+  {
+    "category": "no_show",
+    "cited_policy_id": "POL-2.1b",
+    "confidence": 0.96,
+    "decided_at": "2023-09-25",
+    "fact_summary": "Driver closest approach 30m, waited 9 min, rider GPS static.",
+    "key_facts": {
+      "driver_min_distance_to_pickup_m": 30,
+      "wait_time_min": 9
     },
     "precedent_id": "PRC-0041",
     "reasoning": "All POL-2.1b conditions met. Fee stands.",
@@ -576,54 +576,54 @@
   },
   {
     "category": "fare_surge",
-    "cited_policy_id": "POL-3.2",
-    "confidence": 0.8,
-    "decided_at": "2023-07-16",
-    "fact_summary": "Surge 1.38x applied against a lower multiplier disclosed at booking.",
+    "cited_policy_id": "POL-3.3",
+    "confidence": 0.93,
+    "decided_at": "2024-05-19",
+    "fact_summary": "Valid promo presented at booking, not applied to the final charge.",
     "key_facts": {
-      "surge_multiplier": 1.38
+      "surge_multiplier": 2.36
     },
     "precedent_id": "PRC-0042",
-    "reasoning": "Undisclosed surge. POL-3.2: excess attributable to the undisclosed portion refunded.",
+    "reasoning": "POL-3.3: promotional value refunded.",
     "ruling": "refund_rider"
   },
   {
     "category": "route_deviation",
     "cited_policy_id": "POL-4.3",
-    "confidence": 0.8,
-    "decided_at": "2024-10-20",
-    "fact_summary": "19.4km trip, 5.6km deviation, light traffic, no rider detour request.",
+    "confidence": 0.82,
+    "decided_at": "2025-02-06",
+    "fact_summary": "6.5km trip, 7.7km deviation, within normal variance.",
     "key_facts": {
-      "deviation_pct": 0.289,
-      "duration_delta_min": 7,
-      "traffic_delay_min": 4
+      "deviation_pct": 1.185,
+      "duration_delta_min": 9,
+      "traffic_delay_min": 3
     },
     "precedent_id": "PRC-0043",
-    "reasoning": "Deviation exceeded 15% and was not attributable to traffic. POL-4.3 applies; distance fare refunded proportionally.",
-    "ruling": "refund_rider"
+    "reasoning": "Deviation below the 15% threshold. POL-4.3 not engaged.",
+    "ruling": "no_action"
   },
   {
     "category": "no_show",
-    "cited_policy_id": "POL-2.1a",
-    "confidence": 0.89,
-    "decided_at": "2025-02-25",
-    "fact_summary": "Driver closest approach 400m, never entered the pickup zone.",
+    "cited_policy_id": "POL-2.1b",
+    "confidence": 0.91,
+    "decided_at": "2024-02-22",
+    "fact_summary": "Driver closest approach 12m, waited 3 min, rider GPS static.",
     "key_facts": {
-      "driver_min_distance_to_pickup_m": 400,
-      "wait_time_min": 6
+      "driver_min_distance_to_pickup_m": 12,
+      "wait_time_min": 3
     },
     "precedent_id": "PRC-0044",
-    "reasoning": "Driver did not come within 100m. POL-2.1a: fee refunded in full.",
-    "ruling": "refund_rider"
+    "reasoning": "All POL-2.1b conditions met. Fee stands.",
+    "ruling": "no_action"
   },
   {
     "category": "fare_surge",
     "cited_policy_id": "POL-3.1",
-    "confidence": 0.78,
-    "decided_at": "2024-12-20",
-    "fact_summary": "Surge 1.83x applied, matching booking disclosure. Total within estimate tolerance.",
+    "confidence": 0.94,
+    "decided_at": "2023-02-02",
+    "fact_summary": "Surge 1.82x applied, matching booking disclosure. Total within estimate tolerance.",
     "key_facts": {
-      "surge_multiplier": 1.83
+      "surge_multiplier": 1.82
     },
     "precedent_id": "PRC-0045",
     "reasoning": "POL-3.1: an estimate is not a quote and surge was disclosed. No refund.",
@@ -631,83 +631,83 @@
   },
   {
     "category": "route_deviation",
-    "cited_policy_id": "POL-4.3",
-    "confidence": 0.86,
-    "decided_at": "2025-04-21",
-    "fact_summary": "12.3km trip, 2.0km deviation, partial traffic attribution.",
+    "cited_policy_id": "POL-4.4",
+    "confidence": 0.91,
+    "decided_at": "2024-09-18",
+    "fact_summary": "24.8km trip, 4.8km deviation, heavy traffic fully accounting for the delay.",
     "key_facts": {
-      "deviation_pct": 0.163,
-      "duration_delta_min": 17,
-      "traffic_delay_min": 9
+      "deviation_pct": 0.194,
+      "duration_delta_min": 12,
+      "traffic_delay_min": 18
     },
     "precedent_id": "PRC-0046",
+    "reasoning": "Deviation exceeded 15% but was wholly attributable to documented heavy traffic. POL-4.4 exception applies.",
+    "ruling": "no_action"
+  },
+  {
+    "category": "no_show",
+    "cited_policy_id": "POL-2.3",
+    "confidence": 0.95,
+    "decided_at": "2025-10-01",
+    "fact_summary": "Driver closest approach 400m, waited under 2 min.",
+    "key_facts": {
+      "driver_min_distance_to_pickup_m": 400,
+      "wait_time_min": 4
+    },
+    "precedent_id": "PRC-0047",
+    "reasoning": "Cancellation within the POL-2.3 window; no fee chargeable.",
+    "ruling": "refund_rider"
+  },
+  {
+    "category": "fare_surge",
+    "cited_policy_id": "POL-3.1",
+    "confidence": 0.96,
+    "decided_at": "2024-11-27",
+    "fact_summary": "Total exceeded estimate by 17%, surge consistent.",
+    "key_facts": {
+      "surge_multiplier": 2.37
+    },
+    "precedent_id": "PRC-0048",
+    "reasoning": "Overrun explained by trip duration, which is priced normally. POL-3.1: no refund.",
+    "ruling": "no_action"
+  },
+  {
+    "category": "route_deviation",
+    "cited_policy_id": "POL-4.3",
+    "confidence": 0.85,
+    "decided_at": "2024-05-22",
+    "fact_summary": "29.2km trip, 3.9km deviation, partial traffic attribution.",
+    "key_facts": {
+      "deviation_pct": 0.134,
+      "duration_delta_min": 13,
+      "traffic_delay_min": 13
+    },
+    "precedent_id": "PRC-0049",
     "reasoning": "Traffic accounted for only part of the excess. Partial refund awarded under POL-4.3 on the non-traffic portion.",
     "ruling": "refund_rider"
   },
   {
     "category": "no_show",
-    "cited_policy_id": "POL-2.1a",
-    "confidence": 0.86,
-    "decided_at": "2024-12-10",
-    "fact_summary": "Driver closest approach 30m, never entered the pickup zone.",
+    "cited_policy_id": "POL-2.3",
+    "confidence": 0.94,
+    "decided_at": "2023-11-28",
+    "fact_summary": "Driver closest approach 75m, waited under 2 min.",
     "key_facts": {
-      "driver_min_distance_to_pickup_m": 30,
-      "wait_time_min": 4
-    },
-    "precedent_id": "PRC-0047",
-    "reasoning": "Driver did not come within 100m. POL-2.1a: fee refunded in full.",
-    "ruling": "refund_rider"
-  },
-  {
-    "category": "fare_surge",
-    "cited_policy_id": "POL-3.3",
-    "confidence": 0.91,
-    "decided_at": "2025-05-01",
-    "fact_summary": "Valid promo presented at booking, not applied to the final charge.",
-    "key_facts": {
-      "surge_multiplier": 1.06
-    },
-    "precedent_id": "PRC-0048",
-    "reasoning": "POL-3.3: promotional value refunded.",
-    "ruling": "refund_rider"
-  },
-  {
-    "category": "route_deviation",
-    "cited_policy_id": "POL-4.3",
-    "confidence": 0.86,
-    "decided_at": "2025-08-09",
-    "fact_summary": "10.7km trip, 5.5km deviation, light traffic, no rider detour request.",
-    "key_facts": {
-      "deviation_pct": 0.514,
-      "duration_delta_min": 21,
-      "traffic_delay_min": 18
-    },
-    "precedent_id": "PRC-0049",
-    "reasoning": "Deviation exceeded 15% and was not attributable to traffic. POL-4.3 applies; distance fare refunded proportionally.",
-    "ruling": "refund_rider"
-  },
-  {
-    "category": "no_show",
-    "cited_policy_id": "POL-2.1a",
-    "confidence": 0.9,
-    "decided_at": "2023-06-14",
-    "fact_summary": "Driver closest approach 140m, never entered the pickup zone.",
-    "key_facts": {
-      "driver_min_distance_to_pickup_m": 140,
+      "driver_min_distance_to_pickup_m": 75,
       "wait_time_min": 4
     },
     "precedent_id": "PRC-0050",
-    "reasoning": "Driver did not come within 100m. POL-2.1a: fee refunded in full.",
+    "reasoning": "Cancellation within the POL-2.3 window; no fee chargeable.",
     "ruling": "refund_rider"
   },
   {
     "category": "fare_surge",
     "cited_policy_id": "POL-3.3",
-    "confidence": 0.8,
-    "decided_at": "2024-09-27",
+    "confidence": 0.83,
+    "decided_at": "2023-05-15",
     "fact_summary": "Valid promo presented at booking, not applied to the final charge.",
     "key_facts": {
-      "surge_multiplier": 1.47
+      "surge_multiplier": 2.14
     },
     "precedent_id": "PRC-0051",
     "reasoning": "POL-3.3: promotional value refunded.",
@@ -716,27 +716,27 @@
   {
     "category": "route_deviation",
     "cited_policy_id": "POL-4.3",
-    "confidence": 0.89,
-    "decided_at": "2023-04-09",
-    "fact_summary": "21.4km trip, 4.4km deviation, light traffic, no rider detour request.",
+    "confidence": 0.8,
+    "decided_at": "2023-08-04",
+    "fact_summary": "8.0km trip, 7.8km deviation, partial traffic attribution.",
     "key_facts": {
-      "deviation_pct": 0.206,
-      "duration_delta_min": 4,
-      "traffic_delay_min": 13
+      "deviation_pct": 0.975,
+      "duration_delta_min": 8,
+      "traffic_delay_min": 7
     },
     "precedent_id": "PRC-0052",
-    "reasoning": "Deviation exceeded 15% and was not attributable to traffic. POL-4.3 applies; distance fare refunded proportionally.",
+    "reasoning": "Traffic accounted for only part of the excess. Partial refund awarded under POL-4.3 on the non-traffic portion.",
     "ruling": "refund_rider"
   },
   {
     "category": "no_show",
     "cited_policy_id": "POL-2.1a",
-    "confidence": 0.84,
-    "decided_at": "2023-09-14",
-    "fact_summary": "Driver closest approach 12m, never entered the pickup zone.",
+    "confidence": 0.86,
+    "decided_at": "2023-07-07",
+    "fact_summary": "Driver closest approach 140m, never entered the pickup zone.",
     "key_facts": {
-      "driver_min_distance_to_pickup_m": 12,
-      "wait_time_min": 9
+      "driver_min_distance_to_pickup_m": 140,
+      "wait_time_min": 6
     },
     "precedent_id": "PRC-0053",
     "reasoning": "Driver did not come within 100m. POL-2.1a: fee refunded in full.",
@@ -744,27 +744,27 @@
   },
   {
     "category": "fare_surge",
-    "cited_policy_id": "POL-3.2",
-    "confidence": 0.87,
-    "decided_at": "2024-07-27",
-    "fact_summary": "Surge 1.75x applied against a lower multiplier disclosed at booking.",
+    "cited_policy_id": "POL-3.1",
+    "confidence": 0.91,
+    "decided_at": "2025-10-22",
+    "fact_summary": "Surge 2.23x applied, matching booking disclosure. Total within estimate tolerance.",
     "key_facts": {
-      "surge_multiplier": 1.75
+      "surge_multiplier": 2.23
     },
     "precedent_id": "PRC-0054",
-    "reasoning": "Undisclosed surge. POL-3.2: excess attributable to the undisclosed portion refunded.",
-    "ruling": "refund_rider"
+    "reasoning": "POL-3.1: an estimate is not a quote and surge was disclosed. No refund.",
+    "ruling": "no_action"
   },
   {
     "category": "route_deviation",
     "cited_policy_id": "POL-4.3",
-    "confidence": 0.91,
-    "decided_at": "2023-02-09",
-    "fact_summary": "29.5km trip, 2.1km deviation, partial traffic attribution.",
+    "confidence": 0.86,
+    "decided_at": "2024-04-23",
+    "fact_summary": "26.6km trip, 3.7km deviation, partial traffic attribution.",
     "key_facts": {
-      "deviation_pct": 0.071,
-      "duration_delta_min": 7,
-      "traffic_delay_min": 17
+      "deviation_pct": 0.139,
+      "duration_delta_min": 14,
+      "traffic_delay_min": 15
     },
     "precedent_id": "PRC-0055",
     "reasoning": "Traffic accounted for only part of the excess. Partial refund awarded under POL-4.3 on the non-traffic portion.",
@@ -772,71 +772,71 @@
   },
   {
     "category": "no_show",
+    "cited_policy_id": "POL-2.1a",
+    "confidence": 0.85,
+    "decided_at": "2025-11-05",
+    "fact_summary": "Driver closest approach 75m, never entered the pickup zone.",
+    "key_facts": {
+      "driver_min_distance_to_pickup_m": 75,
+      "wait_time_min": 6
+    },
+    "precedent_id": "PRC-0056",
+    "reasoning": "Driver did not come within 100m. POL-2.1a: fee refunded in full.",
+    "ruling": "refund_rider"
+  },
+  {
+    "category": "fare_surge",
+    "cited_policy_id": "POL-3.3",
+    "confidence": 0.78,
+    "decided_at": "2023-07-28",
+    "fact_summary": "Valid promo presented at booking, not applied to the final charge.",
+    "key_facts": {
+      "surge_multiplier": 1.15
+    },
+    "precedent_id": "PRC-0057",
+    "reasoning": "POL-3.3: promotional value refunded.",
+    "ruling": "refund_rider"
+  },
+  {
+    "category": "route_deviation",
+    "cited_policy_id": "POL-4.4",
+    "confidence": 0.93,
+    "decided_at": "2025-07-11",
+    "fact_summary": "6.9km trip, 6.3km deviation, heavy traffic fully accounting for the delay.",
+    "key_facts": {
+      "deviation_pct": 0.913,
+      "duration_delta_min": 13,
+      "traffic_delay_min": 8
+    },
+    "precedent_id": "PRC-0058",
+    "reasoning": "Deviation exceeded 15% but was wholly attributable to documented heavy traffic. POL-4.4 exception applies.",
+    "ruling": "no_action"
+  },
+  {
+    "category": "no_show",
     "cited_policy_id": "POL-2.3",
-    "confidence": 0.94,
-    "decided_at": "2024-09-16",
+    "confidence": 0.96,
+    "decided_at": "2025-12-28",
     "fact_summary": "Driver closest approach 75m, waited under 2 min.",
     "key_facts": {
       "driver_min_distance_to_pickup_m": 75,
-      "wait_time_min": 4
+      "wait_time_min": 3
     },
-    "precedent_id": "PRC-0056",
+    "precedent_id": "PRC-0059",
     "reasoning": "Cancellation within the POL-2.3 window; no fee chargeable.",
     "ruling": "refund_rider"
   },
   {
     "category": "fare_surge",
-    "cited_policy_id": "POL-3.1",
-    "confidence": 0.88,
-    "decided_at": "2023-07-02",
-    "fact_summary": "Total exceeded estimate by 21%, surge consistent.",
+    "cited_policy_id": "POL-3.2",
+    "confidence": 0.86,
+    "decided_at": "2023-09-14",
+    "fact_summary": "Surge 1.44x applied against a lower multiplier disclosed at booking.",
     "key_facts": {
-      "surge_multiplier": 2.47
-    },
-    "precedent_id": "PRC-0057",
-    "reasoning": "Overrun explained by trip duration, which is priced normally. POL-3.1: no refund.",
-    "ruling": "no_action"
-  },
-  {
-    "category": "route_deviation",
-    "cited_policy_id": "POL-4.5",
-    "confidence": 0.87,
-    "decided_at": "2025-06-28",
-    "fact_summary": "23.6km trip, 5.7km deviation, rider requested the scenic route in chat.",
-    "key_facts": {
-      "deviation_pct": 0.242,
-      "duration_delta_min": 15,
-      "traffic_delay_min": 12
-    },
-    "precedent_id": "PRC-0058",
-    "reasoning": "Detour was rider-requested. POL-4.5: not an unjustified deviation.",
-    "ruling": "no_action"
-  },
-  {
-    "category": "no_show",
-    "cited_policy_id": "POL-2.1b",
-    "confidence": 0.79,
-    "decided_at": "2024-06-20",
-    "fact_summary": "Driver closest approach 12m, waited 3 min, rider GPS static.",
-    "key_facts": {
-      "driver_min_distance_to_pickup_m": 12,
-      "wait_time_min": 3
-    },
-    "precedent_id": "PRC-0059",
-    "reasoning": "All POL-2.1b conditions met. Fee stands.",
-    "ruling": "no_action"
-  },
-  {
-    "category": "fare_surge",
-    "cited_policy_id": "POL-3.3",
-    "confidence": 0.89,
-    "decided_at": "2023-11-22",
-    "fact_summary": "Valid promo presented at booking, not applied to the final charge.",
-    "key_facts": {
-      "surge_multiplier": 2.31
+      "surge_multiplier": 1.44
     },
     "precedent_id": "PRC-0060",
-    "reasoning": "POL-3.3: promotional value refunded.",
+    "reasoning": "Undisclosed surge. POL-3.2: excess attributable to the undisclosed portion refunded.",
     "ruling": "refund_rider"
   }
 ]

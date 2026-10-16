@@ -1,0 +1,25 @@
+flowchart LR
+    D[Docket] --> X[Discovery]
+    X --> F{Fast paths}
+    F -->|dismiss / settle| G[Confidence gate]
+    F -->|full hearing| R[Rider Advocate]
+    F -->|full hearing| V[Driver Advocate]
+    X -->|redacted identical record| R
+    X -->|redacted identical record| V
+    R --> P[Provisional Judge]
+    V --> P
+    P --> B[Rebuttal / right of reply]
+    B --> J[Final Judge]
+    C[Precedents + fraud signals] -->|judge-only context| J
+    J --> G
+    G -->|confidence ≥ 0.75| O[Final judgment]
+    G -->|confidence < 0.75 or critical| H[Human appellate review]
+
+    classDef court fill:#10233f,color:#fff,stroke:#10233f;
+    classDef advocate fill:#eaf1ff,color:#174eae,stroke:#2d63d5;
+    classDef gate fill:#fff7e5,color:#755012,stroke:#d6a94b;
+    classDef human fill:#fff0f0,color:#a52f38,stroke:#c94b52;
+    class D,P,J,O court;
+    class R,V advocate;
+    class F,G gate;
+    class H human;

@@ -1,0 +1,236 @@
+{
+  "chat": [
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "This doesn't look like the route the app showed me.",
+      "message_id": "MSG-02091",
+      "sender": "rider",
+      "sentiment": -0.2,
+      "timestamp": "2025-02-11T07:08:00Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "There's some traffic on the main road. I know a better way through the side streets.",
+      "message_id": "MSG-02092",
+      "sender": "driver",
+      "sentiment": 0.1,
+      "timestamp": "2025-02-11T07:08:15Z"
+    },
+    {
+      "contains_agreement": true,
+      "contains_threat": false,
+      "message": "Do whatever is best, you know the roads better than me.",
+      "message_id": "MSG-02093",
+      "sender": "rider",
+      "sentiment": 0.0,
+      "timestamp": "2025-02-11T07:08:30Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "Trust me, this'll be faster.",
+      "message_id": "MSG-02094",
+      "sender": "driver",
+      "sentiment": 0.2,
+      "timestamp": "2025-02-11T07:08:45Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "We're going in circles. This is way longer than it should be. I only said 'do whatever is best', I didn't agree to a 24% detour.",
+      "message_id": "MSG-02095",
+      "sender": "rider",
+      "sentiment": -0.5,
+      "timestamp": "2025-02-11T07:15:00Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "You said 'do whatever is best'. I took the route I thought was best. There was traffic on the main road \u2014 3 minutes of delay. The rest is just the side streets being longer, I admit that, but you told me to choose.",
+      "message_id": "MSG-02096",
+      "sender": "driver",
+      "sentiment": -0.2,
+      "timestamp": "2025-02-11T07:15:20Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "I also told you verbally at the start of the ride to take the fastest route, not the longest one. 'Do whatever is best' meant take the fastest route, not add 5km.",
+      "message_id": "MSG-02097",
+      "sender": "rider",
+      "sentiment": -0.6,
+      "timestamp": "2025-02-11T07:16:00Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "That's not what you said. You said 'do whatever is best' and I did what I thought was best. The traffic was real, 3 minutes. The rest was my judgment call on the route. I've driven these streets for 3 years, I know them well.",
+      "message_id": "MSG-02098",
+      "sender": "driver",
+      "sentiment": -0.3,
+      "timestamp": "2025-02-11T07:16:30Z"
+    }
+  ],
+  "dispute": {
+    "category": "route_deviation",
+    "claimed_amount": 3.1,
+    "dispute_id": "DSP-2009",
+    "driver_statement": "The rider said 'do whatever is best, you know the roads better than me'. That's consent. I took the route I believed was best given the traffic on the main road. The traffic was real \u2014 3 minutes of verified delay. The rest was the side streets being longer, which I acknowledge. But the rider gave me discretion and I exercised it. Now they're claiming they said something different verbally, but there's no recording of that. The chat shows what was actually said. I have 2600 trips, I know these streets.",
+    "filed_at": "2025-02-11T08:45:00Z",
+    "filed_by": "rider",
+    "priority": "medium",
+    "rider_statement": "The driver deviated 24% from the optimal route. When I said 'do whatever is best', I meant take the fastest route, not the longest. I also told the driver verbally at the start to take the fastest route. The driver took side streets that added 5.4km. Only 3 of 12 extra minutes were traffic \u2014 that's 25%, well below the 80% threshold for POL-4.4. The driver's own chat messages show he admits the side streets were longer and it was his 'judgment call'. That's not rider-requested, that's driver-chosen.",
+    "trip_id": "TRP-2009"
+  },
+  "driver": {
+    "account_age_days": 850,
+    "avg_rating": 4.5,
+    "cancellation_rate": 0.04,
+    "dispute_count_90d": 2,
+    "dispute_win_rate": 0.75,
+    "is_flagged_abuse": false,
+    "name": "Yuki Tanaka",
+    "party_id": "DRV-9010",
+    "role": "driver",
+    "total_trips": 2600
+  },
+  "fare": {
+    "base_fare": 2.21,
+    "booking_fee": 2.0,
+    "currency": "USD",
+    "distance_fare": 13.95,
+    "estimated_fare_at_booking": 21.34,
+    "promo_code": null,
+    "promo_discount": 0.0,
+    "surge_amount": 0.0,
+    "surge_at_booking": 1.0,
+    "surge_multiplier": 1.0,
+    "time_fare": 9.24,
+    "tolls": 0,
+    "total_charged": 27.4,
+    "trip_id": "TRP-2009"
+  },
+  "fraud": {
+    "collusion_score": 0.03,
+    "device_fingerprint_shared": false,
+    "dispute_id": "DSP-2009",
+    "driver_claims_30d": 2,
+    "photo_authenticity_score": null,
+    "rider_claims_30d": 5,
+    "rider_repeat_claimer": false,
+    "risk_level": "low"
+  },
+  "no_show": null,
+  "policies": [
+    {
+      "category": "route_deviation",
+      "conditions": {
+        "deviation_pct_gt": 0.15,
+        "rider_requested_detour": false,
+        "traffic_justified": false
+      },
+      "policy_id": "POL-4.3",
+      "remedy_formula": "distance_fare * (deviation_km / actual_distance_km)",
+      "remedy_type": "partial_refund",
+      "rule_text": "If the actual route exceeds the optimal route by more than 15%, and the excess is not attributable to traffic or a rider-requested detour, the rider is refunded the distance-fare proportional to the unjustified deviation.",
+      "title": "Route Deviation - Refund Eligibility",
+      "version": "v2.1"
+    },
+    {
+      "category": "route_deviation",
+      "conditions": {
+        "traffic_share_gte": 0.8
+      },
+      "policy_id": "POL-4.4",
+      "remedy_formula": null,
+      "remedy_type": "no_action",
+      "rule_text": "Where the excess duration is wholly or substantially attributable to documented traffic conditions, the deviation is excused and no refund is due under Policy 4.3.",
+      "title": "Traffic-Attributable Deviation",
+      "version": "v1.9"
+    },
+    {
+      "category": "route_deviation",
+      "conditions": {
+        "rider_requested_detour": true
+      },
+      "policy_id": "POL-4.5",
+      "remedy_formula": null,
+      "remedy_type": "no_action",
+      "rule_text": "A detour requested or expressly assented to by the rider is not an unjustified deviation, irrespective of the resulting distance.",
+      "title": "Rider-Requested Detour",
+      "version": "v1.2"
+    },
+    {
+      "category": "route_deviation",
+      "conditions": {
+        "deviation_pct_lt": 0.05
+      },
+      "policy_id": "POL-4.6",
+      "remedy_formula": null,
+      "remedy_type": "no_action",
+      "rule_text": "A deviation of less than 5% does not engage Policy 4.3 and the claim is dismissed without hearing.",
+      "title": "De Minimis Deviation",
+      "version": "v1.0"
+    },
+    {
+      "category": "route_deviation",
+      "conditions": {
+        "longest_stop_sec_gt": 120
+      },
+      "policy_id": "POL-4.7",
+      "remedy_formula": "distance_fare * (deviation_km / actual_distance_km)",
+      "remedy_type": "partial_refund",
+      "rule_text": "An unscheduled stop exceeding 120 seconds that is not rider-requested is treated as unjustified deviation for the purposes of Policy 4.3.",
+      "title": "Unscheduled Stops",
+      "version": "v1.4"
+    }
+  ],
+  "precedents": [],
+  "rider": {
+    "account_age_days": 600,
+    "avg_rating": 4.1,
+    "cancellation_rate": 0.09,
+    "dispute_count_90d": 5,
+    "dispute_win_rate": 0.6,
+    "is_flagged_abuse": false,
+    "name": "Kwame Mensah",
+    "party_id": "RDR-9010",
+    "role": "rider",
+    "total_trips": 175
+  },
+  "route": {
+    "actual_distance_km": 11.16,
+    "delay_attributable_to_traffic": false,
+    "deviation_justified_by": null,
+    "deviation_km": 2.16,
+    "deviation_pct": 0.24,
+    "duration_delta_min": 12.0,
+    "longest_stop_sec": 0,
+    "num_stops": 0,
+    "optimal_distance_km": 9.0,
+    "rider_requested_detour": false,
+    "route_efficiency_score": 0.806,
+    "traffic_delay_min": 3.0,
+    "trip_id": "TRP-2009",
+    "unexpected_stops": []
+  },
+  "trip": {
+    "actual_distance_km": 11.16,
+    "actual_duration_min": 33.0,
+    "city": "Austin",
+    "driver_id": "DRV-9010",
+    "dropoff_address": "Pike Place",
+    "ended_at": "2025-02-11T07:37:00Z",
+    "estimated_distance_km": 9.0,
+    "estimated_duration_min": 21.0,
+    "pickup_address": "Union Square",
+    "requested_at": "2025-02-11T07:00:00Z",
+    "rider_id": "RDR-9010",
+    "started_at": "2025-02-11T07:04:00Z",
+    "status": "completed",
+    "traffic_conditions": "moderate",
+    "trip_id": "TRP-2009"
+  }
+}

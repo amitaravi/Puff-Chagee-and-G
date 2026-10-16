@@ -18,6 +18,7 @@ from ..core.state import (
     CaseBrief,
     CaseState,
     Claim,
+    ClaimAssessment,
     ConfidenceFactor,
     Verdict,
     log,
@@ -179,6 +180,17 @@ def _sanitize_verdict(state: CaseState, verdict: Verdict) -> tuple[Verdict, list
         errors.append("judge: inserted fallback finding to avoid uncited judgment")
 
     verdict.amount = max(0.0, min(round(float(verdict.amount or 0.0), 2), pack.dispute.claimed_amount))
+
+    # --- Validate claim assessments (judge's inner monologue) ---
+    cleaned_assessments = []
+    for a in verdict.claim_assessments:
+        # Validate evidence_checked refs — drop invalid ones but keep the assessment
+        a.evidence_checked = [r for r in a.evidence_checked if _valid_evidence_ref(pack, r) or r in valid_policy_ids]
+        cleaned_assessments.append(a)
+    if len(cleaned_assessments) != len(verdict.claim_assessments):
+        errors.append("judge: cleaned invalid evidence refs in claim assessments")
+    verdict.claim_assessments = cleaned_assessments
+
     return verdict, errors
 
 
@@ -215,7 +227,7 @@ def _call_judge(state: CaseState, include_rebuttal: bool) -> Verdict:
         return stub_verdict()
     if not model_ready():
         return deterministic_verdict(state["pack"])
-    llm = get_llm("judge").with_structured_output(Verdict)
+    llm = get_llm("judge").with_structured_output(Verdict, method="function_calling")
     try:
         return llm.invoke(
             [
@@ -266,7 +278,7 @@ def single_agent(state: CaseState) -> dict:
     elif not model_ready():
         verdict = deterministic_verdict(pack)
     else:
-        llm = get_llm("judge").with_structured_output(Verdict)
+        llm = get_llm("judge").with_structured_output(Verdict, method="function_calling")
         try:
             verdict = llm.invoke([SystemMessage(content=SINGLE_AGENT_SYSTEM), HumanMessage(content=user)])
         except (OpenAIInvalidRequestError, OpenAIRateLimitError):

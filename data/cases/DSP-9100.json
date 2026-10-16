@@ -4,49 +4,49 @@
       "contains_agreement": false,
       "contains_threat": false,
       "message": "You're scamming me with this route.",
-      "message_id": "MSG-00570",
+      "message_id": "MSG-00200",
       "sender": "rider",
-      "sentiment": -0.74,
-      "timestamp": "2025-02-11T07:03:48Z"
+      "sentiment": -0.8,
+      "timestamp": "2025-02-11T07:11:18Z"
     },
     {
       "contains_agreement": false,
       "contains_threat": false,
       "message": "It's the fastest way right now.",
-      "message_id": "MSG-00571",
+      "message_id": "MSG-00201",
       "sender": "driver",
-      "sentiment": -0.26,
-      "timestamp": "2025-02-11T07:04:03Z"
+      "sentiment": -0.21,
+      "timestamp": "2025-02-11T07:12:17Z"
     },
     {
       "contains_agreement": false,
       "contains_threat": false,
       "message": "I'm reporting this. You'll hear from support.",
-      "message_id": "MSG-00572",
+      "message_id": "MSG-00202",
       "sender": "rider",
-      "sentiment": -0.74,
-      "timestamp": "2025-02-11T07:05:18Z"
+      "sentiment": -0.62,
+      "timestamp": "2025-02-11T07:13:30Z"
     },
     {
       "contains_agreement": false,
       "contains_threat": false,
       "message": "Report whatever you want.",
-      "message_id": "MSG-00573",
+      "message_id": "MSG-00203",
       "sender": "driver",
-      "sentiment": -0.26,
-      "timestamp": "2025-02-11T07:06:58Z"
+      "sentiment": -0.31,
+      "timestamp": "2025-02-11T07:14:15Z"
     }
   ],
   "dispute": {
     "category": "route_deviation",
-    "claimed_amount": 5.92,
+    "claimed_amount": 9.35,
     "dispute_id": "DSP-9100",
-    "driver_statement": "Route was within normal variance.",
+    "driver_statement": "I took the route I always take.",
     "filed_at": "2025-02-11T08:02:00Z",
     "filed_by": "rider",
     "priority": "medium",
-    "rider_statement": "The driver went the wrong way and overcharged me.",
-    "trip_id": "TRP-1047"
+    "rider_statement": "The driver took a much longer route than necessary and I was charged for it.",
+    "trip_id": "TRP-1010"
   },
   "driver": {
     "account_age_days": 80,
@@ -61,30 +61,30 @@
     "total_trips": 1519
   },
   "fare": {
-    "base_fare": 2.8,
+    "base_fare": 3.09,
     "booking_fee": 2.0,
     "currency": "USD",
-    "distance_fare": 11.74,
-    "estimated_fare_at_booking": 22.35,
+    "distance_fare": 27.94,
+    "estimated_fare_at_booking": 27.81,
     "promo_code": null,
     "promo_discount": 0.0,
-    "surge_amount": 0.0,
+    "surge_amount": 7.8,
     "surge_at_booking": 1.0,
-    "surge_multiplier": 1.0,
-    "time_fare": 9.91,
+    "surge_multiplier": 1.2,
+    "time_fare": 7.95,
     "tolls": 0,
-    "total_charged": 26.45,
-    "trip_id": "TRP-1047"
+    "total_charged": 48.78,
+    "trip_id": "TRP-1010"
   },
   "fraud": {
-    "collusion_score": 0.08,
+    "collusion_score": 0.19,
     "device_fingerprint_shared": false,
-    "dispute_id": "DSP-1047",
+    "dispute_id": "DSP-1010",
     "driver_claims_30d": 2,
     "photo_authenticity_score": null,
-    "rider_claims_30d": 9,
-    "rider_repeat_claimer": true,
-    "risk_level": "medium"
+    "rider_claims_30d": 0,
+    "rider_repeat_claimer": false,
+    "risk_level": "low"
   },
   "no_show": null,
   "policies": [
@@ -153,48 +153,48 @@
   ],
   "precedents": [],
   "rider": {
-    "account_age_days": 976,
-    "avg_rating": 3.98,
-    "cancellation_rate": 0.078,
-    "dispute_count_90d": 9,
-    "dispute_win_rate": 0.25,
-    "is_flagged_abuse": false,
-    "name": "Sofia Alvarez",
-    "party_id": "RDR-0009",
+    "account_age_days": 771,
+    "avg_rating": 5.0,
+    "cancellation_rate": 0.029,
+    "dispute_count_90d": 0,
+    "dispute_win_rate": 0.46,
+    "is_flagged_abuse": true,
+    "name": "Wei Zhang",
+    "party_id": "RDR-0013",
     "role": "rider",
-    "total_trips": 393
+    "total_trips": 229
   },
   "route": {
-    "actual_distance_km": 10.15,
+    "actual_distance_km": 20.84,
     "delay_attributable_to_traffic": false,
     "deviation_justified_by": null,
-    "deviation_km": 1.25,
+    "deviation_km": 2.56,
     "deviation_pct": 0.14,
-    "duration_delta_min": 9.6,
+    "duration_delta_min": 17.1,
     "longest_stop_sec": 0,
     "num_stops": 0,
-    "optimal_distance_km": 8.9,
+    "optimal_distance_km": 18.28,
     "rider_requested_detour": false,
-    "route_efficiency_score": 0.879,
+    "route_efficiency_score": 0.7,
     "traffic_delay_min": 0.0,
-    "trip_id": "TRP-1047",
+    "trip_id": "TRP-1010",
     "unexpected_stops": []
   },
   "trip": {
-    "actual_distance_km": 10.12,
-    "actual_duration_min": 35.4,
-    "city": "Austin",
+    "actual_distance_km": 26.11,
+    "actual_duration_min": 28.4,
+    "city": "Chicago",
     "driver_id": "DRV-0008",
-    "dropoff_address": "Union Square",
-    "ended_at": "2025-02-11T07:39:00Z",
-    "estimated_distance_km": 8.9,
-    "estimated_duration_min": 25.8,
-    "pickup_address": "101 California St",
+    "dropoff_address": "SFO Terminal 2",
+    "ended_at": "2025-02-11T07:32:00Z",
+    "estimated_distance_km": 18.28,
+    "estimated_duration_min": 11.3,
+    "pickup_address": "Union Square",
     "requested_at": "2025-02-11T07:00:00Z",
-    "rider_id": "RDR-0009",
+    "rider_id": "RDR-0013",
     "started_at": "2025-02-11T07:04:00Z",
     "status": "completed",
-    "traffic_conditions": "moderate",
-    "trip_id": "TRP-1047"
+    "traffic_conditions": "light",
+    "trip_id": "TRP-1010"
   }
 }

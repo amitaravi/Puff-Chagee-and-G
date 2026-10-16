@@ -3,173 +3,189 @@
     {
       "contains_agreement": false,
       "contains_threat": false,
-      "message": "Where are you? I've been waiting.",
-      "message_id": "MSG-00760",
+      "message": "Can you take the coastal road instead?",
+      "message_id": "MSG-00640",
       "sender": "rider",
-      "sentiment": -0.47,
-      "timestamp": "2025-02-11T07:10:08Z"
+      "sentiment": 0.38,
+      "timestamp": "2025-02-11T07:04:50Z"
     },
     {
       "contains_agreement": false,
       "contains_threat": false,
-      "message": "I'm at the pin, I don't see you.",
-      "message_id": "MSG-00761",
+      "message": "Sure, no problem.",
+      "message_id": "MSG-00641",
       "sender": "driver",
-      "sentiment": -0.24,
-      "timestamp": "2025-02-11T07:11:08Z"
+      "sentiment": 0.36,
+      "timestamp": "2025-02-11T07:05:31Z"
     },
     {
       "contains_agreement": false,
       "contains_threat": false,
-      "message": "I'm standing right here at the entrance.",
-      "message_id": "MSG-00762",
+      "message": "Thanks, appreciate it.",
+      "message_id": "MSG-00642",
       "sender": "rider",
-      "sentiment": -0.48,
-      "timestamp": "2025-02-11T07:12:45Z"
-    },
-    {
-      "contains_agreement": false,
-      "contains_threat": false,
-      "message": "This is the address the app gave me.",
-      "message_id": "MSG-00763",
-      "sender": "driver",
-      "sentiment": -0.11,
-      "timestamp": "2025-02-11T07:13:15Z"
+      "sentiment": 0.67,
+      "timestamp": "2025-02-11T07:06:35Z"
     }
   ],
   "dispute": {
-    "category": "no_show",
-    "claimed_amount": 4.0,
+    "category": "route_deviation",
+    "claimed_amount": 8.35,
     "dispute_id": "DSP-9020",
-    "driver_statement": "I was at the pickup point and waited.",
+    "driver_statement": "The rider asked me to take the coastal road.",
     "filed_at": "2025-02-11T08:02:00Z",
     "filed_by": "rider",
     "priority": "medium",
-    "rider_statement": "The driver never showed up but I was still charged a no-show fee.",
-    "trip_id": "TRP-1066"
+    "rider_statement": "I asked for a different route but I shouldn't be charged extra for it.",
+    "trip_id": "TRP-1054"
   },
   "driver": {
-    "account_age_days": 652,
-    "avg_rating": 3.89,
-    "cancellation_rate": 0.103,
-    "dispute_count_90d": 2,
-    "dispute_win_rate": 0.43,
+    "account_age_days": 1702,
+    "avg_rating": 4.09,
+    "cancellation_rate": 0.149,
+    "dispute_count_90d": 1,
+    "dispute_win_rate": 0.26,
     "is_flagged_abuse": false,
-    "name": "Daniel Ortiz",
-    "party_id": "DRV-0018",
+    "name": "Kwame Mensah",
+    "party_id": "DRV-0010",
     "role": "driver",
-    "total_trips": 2400
+    "total_trips": 3820
   },
   "fare": {
-    "base_fare": 0.0,
-    "booking_fee": 0.0,
+    "base_fare": 2.89,
+    "booking_fee": 2.0,
     "currency": "USD",
-    "distance_fare": 0.0,
-    "estimated_fare_at_booking": 4.0,
+    "distance_fare": 21.99,
+    "estimated_fare_at_booking": 23.66,
     "promo_code": null,
     "promo_discount": 0.0,
     "surge_amount": 0.0,
     "surge_at_booking": 1.0,
     "surge_multiplier": 1.0,
-    "time_fare": 0.0,
-    "tolls": 0.0,
-    "total_charged": 4.0,
-    "trip_id": "TRP-1066"
+    "time_fare": 7.9,
+    "tolls": 6.25,
+    "total_charged": 41.03,
+    "trip_id": "TRP-1054"
   },
   "fraud": {
-    "collusion_score": 0.14,
+    "collusion_score": 0.02,
     "device_fingerprint_shared": false,
-    "dispute_id": "DSP-1066",
-    "driver_claims_30d": 2,
+    "dispute_id": "DSP-1054",
+    "driver_claims_30d": 1,
     "photo_authenticity_score": null,
     "rider_claims_30d": 0,
     "rider_repeat_claimer": false,
     "risk_level": "low"
   },
-  "no_show": {
-    "driver_min_distance_to_pickup_m": 317.5,
-    "no_show_fee_charged": 4.0,
-    "rider_gps_approaching": false,
-    "wait_time_min": 10.7
-  },
+  "no_show": null,
   "policies": [
     {
-      "category": "no_show",
+      "category": "route_deviation",
       "conditions": {
-        "min_distance_m_gt": 100
+        "deviation_pct_gt": 0.15,
+        "rider_requested_detour": false,
+        "traffic_justified": false
       },
-      "policy_id": "POL-2.1a",
-      "remedy_formula": "no_show_fee_charged",
-      "remedy_type": "full_refund",
-      "rule_text": "Where the driver did not come within 100 metres of the pickup pin, the no-show fee is refunded in full.",
-      "title": "Driver Non-Arrival",
-      "version": "v2.0"
+      "policy_id": "POL-4.3",
+      "remedy_formula": "distance_fare * (deviation_km / actual_distance_km)",
+      "remedy_type": "partial_refund",
+      "rule_text": "If the actual route exceeds the optimal route by more than 15%, and the excess is not attributable to traffic or a rider-requested detour, the rider is refunded the distance-fare proportional to the unjustified deviation.",
+      "title": "Route Deviation - Refund Eligibility",
+      "version": "v2.1"
     },
     {
-      "category": "no_show",
+      "category": "route_deviation",
       "conditions": {
-        "min_distance_m_lte": 50,
-        "wait_time_min_gte": 5
+        "traffic_share_gte": 0.8
       },
-      "policy_id": "POL-2.1b",
+      "policy_id": "POL-4.4",
       "remedy_formula": null,
       "remedy_type": "no_action",
-      "rule_text": "Where the driver came within 50 metres of the pickup pin, waited at least 5 minutes, and rider telemetry shows no movement toward the vehicle, the no-show fee stands.",
-      "title": "Driver Arrival - Fee Stands",
-      "version": "v2.0"
+      "rule_text": "Where the excess duration is wholly or substantially attributable to documented traffic conditions, the deviation is excused and no refund is due under Policy 4.3.",
+      "title": "Traffic-Attributable Deviation",
+      "version": "v1.9"
     },
     {
-      "category": "no_show",
-      "conditions": {},
-      "policy_id": "POL-2.2",
+      "category": "route_deviation",
+      "conditions": {
+        "rider_requested_detour": true
+      },
+      "policy_id": "POL-4.5",
       "remedy_formula": null,
       "remedy_type": "no_action",
-      "rule_text": "Where the facts fall between the Policy 2.1a and 2.1b thresholds, the matter is not determinable on the record and is referred to human review.",
-      "title": "Grey-Band Referral",
-      "version": "v1.1"
+      "rule_text": "A detour requested or expressly assented to by the rider is not an unjustified deviation, irrespective of the resulting distance.",
+      "title": "Rider-Requested Detour",
+      "version": "v1.2"
     },
     {
-      "category": "no_show",
+      "category": "route_deviation",
       "conditions": {
-        "wait_time_min_lte": 2
+        "deviation_pct_lt": 0.05
       },
-      "policy_id": "POL-2.3",
-      "remedy_formula": "no_show_fee_charged",
-      "remedy_type": "full_refund",
-      "rule_text": "A rider who cancels within 2 minutes of acceptance without moving toward the pickup is not charged a no-show fee.",
-      "title": "Rider Cancellation Window",
-      "version": "v1.3"
+      "policy_id": "POL-4.6",
+      "remedy_formula": null,
+      "remedy_type": "no_action",
+      "rule_text": "A deviation of less than 5% does not engage Policy 4.3 and the claim is dismissed without hearing.",
+      "title": "De Minimis Deviation",
+      "version": "v1.0"
+    },
+    {
+      "category": "route_deviation",
+      "conditions": {
+        "longest_stop_sec_gt": 120
+      },
+      "policy_id": "POL-4.7",
+      "remedy_formula": "distance_fare * (deviation_km / actual_distance_km)",
+      "remedy_type": "partial_refund",
+      "rule_text": "An unscheduled stop exceeding 120 seconds that is not rider-requested is treated as unjustified deviation for the purposes of Policy 4.3.",
+      "title": "Unscheduled Stops",
+      "version": "v1.4"
     }
   ],
   "precedents": [],
   "rider": {
-    "account_age_days": 437,
-    "avg_rating": 4.12,
-    "cancellation_rate": 0.174,
+    "account_age_days": 1912,
+    "avg_rating": 4.34,
+    "cancellation_rate": 0.027,
     "dispute_count_90d": 0,
-    "dispute_win_rate": 0.48,
+    "dispute_win_rate": 0.77,
     "is_flagged_abuse": false,
-    "name": "Tomoko Sato",
-    "party_id": "RDR-0018",
+    "name": "Ingrid Larsson",
+    "party_id": "RDR-0034",
     "role": "rider",
-    "total_trips": 161
+    "total_trips": 878
   },
-  "route": null,
+  "route": {
+    "actual_distance_km": 19.37,
+    "delay_attributable_to_traffic": false,
+    "deviation_justified_by": "rider_request",
+    "deviation_km": 5.39,
+    "deviation_pct": 0.3856,
+    "duration_delta_min": 18.1,
+    "longest_stop_sec": 0,
+    "num_stops": 0,
+    "optimal_distance_km": 13.98,
+    "rider_requested_detour": true,
+    "route_efficiency_score": 0.725,
+    "traffic_delay_min": 2.4,
+    "trip_id": "TRP-1054",
+    "unexpected_stops": []
+  },
   "trip": {
-    "actual_distance_km": 0.0,
-    "actual_duration_min": 10.7,
+    "actual_distance_km": 19.29,
+    "actual_duration_min": 28.2,
     "city": "San Francisco",
-    "driver_id": "DRV-0018",
-    "dropoff_address": null,
-    "ended_at": "2025-02-11T07:14:00Z",
-    "estimated_distance_km": 4.17,
-    "estimated_duration_min": 9.2,
-    "pickup_address": "Pike Place",
+    "driver_id": "DRV-0010",
+    "dropoff_address": "101 California St",
+    "ended_at": "2025-02-11T07:32:00Z",
+    "estimated_distance_km": 13.98,
+    "estimated_duration_min": 10.1,
+    "pickup_address": "Rainey St",
     "requested_at": "2025-02-11T07:00:00Z",
-    "rider_id": "RDR-0018",
+    "rider_id": "RDR-0034",
     "started_at": "2025-02-11T07:04:00Z",
-    "status": "no_show",
+    "status": "completed",
     "traffic_conditions": "light",
-    "trip_id": "TRP-1066"
+    "trip_id": "TRP-1054"
   }
 }

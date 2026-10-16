@@ -1,0 +1,193 @@
+{
+  "chat": [
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "I'm at the Ferry Building entrance, near the clock tower. I don't see you.",
+      "message_id": "MSG-02011",
+      "sender": "driver",
+      "sentiment": 0.0,
+      "timestamp": "2025-02-11T07:04:00Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "I'm at the entrance too, where are you? I don't see your car.",
+      "message_id": "MSG-02012",
+      "sender": "rider",
+      "sentiment": -0.3,
+      "timestamp": "2025-02-11T07:05:00Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "I'm at the pin location. It says Ferry Building but I'm on the Embarcadero side. Are you on the Market Street side?",
+      "message_id": "MSG-02013",
+      "sender": "driver",
+      "sentiment": -0.1,
+      "timestamp": "2025-02-11T07:06:00Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "Oh. I think I may have dropped the pin at the wrong entrance. I'm near Market, not Embarcadero. Can you come over here?",
+      "message_id": "MSG-02014",
+      "sender": "rider",
+      "sentiment": -0.4,
+      "timestamp": "2025-02-11T07:10:00Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "I waited 8 minutes at the pin. I have to move on, I have another pickup. The fee is going to stand.",
+      "message_id": "MSG-02015",
+      "sender": "driver",
+      "sentiment": -0.2,
+      "timestamp": "2025-02-11T07:11:00Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "That's not fair. You never came to where I actually was. I'm disputing this charge.",
+      "message_id": "MSG-02016",
+      "sender": "rider",
+      "sentiment": -0.6,
+      "timestamp": "2025-02-11T07:12:00Z"
+    }
+  ],
+  "dispute": {
+    "category": "no_show",
+    "claimed_amount": 7.0,
+    "dispute_id": "DSP-2001",
+    "driver_statement": "I arrived at the pin location on the Embarcadero side of the Ferry Building at 7:04. The rider was not there. I sent three messages over 8 minutes. At 7:10 she finally said she was at the wrong entrance \u2014 180 meters away. I had already waited the full window and had another pickup. The no-show fee is standard. She's filed 6 disputes in the last 3 months.",
+    "filed_at": "2025-02-11T08:00:00Z",
+    "filed_by": "rider",
+    "priority": "medium",
+    "rider_statement": "The driver never showed up at my location. He was 180 meters away on the other side of the Ferry Building and refused to come to where I was standing. I waited 8 minutes in the cold. He then drove off and I was charged a $7 no-show fee. Yes, I may have dropped the pin at the wrong entrance, but the driver should have come to me when I told him where I was. I have dashcam footage from my Uber dashcam that shows I was at the Market Street entrance the entire time.",
+    "trip_id": "TRP-2001"
+  },
+  "driver": {
+    "account_age_days": 800,
+    "avg_rating": 4.7,
+    "cancellation_rate": 0.03,
+    "dispute_count_90d": 2,
+    "dispute_win_rate": 0.65,
+    "is_flagged_abuse": false,
+    "name": "Sarah Lindqvist",
+    "party_id": "DRV-9002",
+    "role": "driver",
+    "total_trips": 1800
+  },
+  "fare": {
+    "base_fare": 0.0,
+    "booking_fee": 0.0,
+    "currency": "USD",
+    "distance_fare": 0.0,
+    "estimated_fare_at_booking": 7.0,
+    "promo_code": null,
+    "promo_discount": 0.0,
+    "surge_amount": 0.0,
+    "surge_at_booking": 1.0,
+    "surge_multiplier": 1.0,
+    "time_fare": 0.0,
+    "tolls": 0.0,
+    "total_charged": 7.0,
+    "trip_id": "TRP-2001"
+  },
+  "fraud": {
+    "collusion_score": 0.02,
+    "device_fingerprint_shared": false,
+    "dispute_id": "DSP-2001",
+    "driver_claims_30d": 2,
+    "photo_authenticity_score": null,
+    "rider_claims_30d": 6,
+    "rider_repeat_claimer": true,
+    "risk_level": "medium"
+  },
+  "no_show": {
+    "driver_min_distance_to_pickup_m": 180.0,
+    "no_show_fee_charged": 7.0,
+    "rider_gps_approaching": true,
+    "wait_time_min": 8.0
+  },
+  "policies": [
+    {
+      "category": "no_show",
+      "conditions": {
+        "min_distance_m_gt": 100
+      },
+      "policy_id": "POL-2.1a",
+      "remedy_formula": "no_show_fee_charged",
+      "remedy_type": "full_refund",
+      "rule_text": "Where the driver did not come within 100 metres of the pickup pin, the no-show fee is refunded in full.",
+      "title": "Driver Non-Arrival",
+      "version": "v2.0"
+    },
+    {
+      "category": "no_show",
+      "conditions": {
+        "min_distance_m_lte": 50,
+        "wait_time_min_gte": 5
+      },
+      "policy_id": "POL-2.1b",
+      "remedy_formula": null,
+      "remedy_type": "no_action",
+      "rule_text": "Where the driver came within 50 metres of the pickup pin, waited at least 5 minutes, and rider telemetry shows no movement toward the vehicle, the no-show fee stands.",
+      "title": "Driver Arrival - Fee Stands",
+      "version": "v2.0"
+    },
+    {
+      "category": "no_show",
+      "conditions": {},
+      "policy_id": "POL-2.2",
+      "remedy_formula": null,
+      "remedy_type": "no_action",
+      "rule_text": "Where the facts fall between the Policy 2.1a and 2.1b thresholds, the matter is not determinable on the record and is referred to human review.",
+      "title": "Grey-Band Referral",
+      "version": "v1.1"
+    },
+    {
+      "category": "no_show",
+      "conditions": {
+        "wait_time_min_lte": 2
+      },
+      "policy_id": "POL-2.3",
+      "remedy_formula": "no_show_fee_charged",
+      "remedy_type": "full_refund",
+      "rule_text": "A rider who cancels within 2 minutes of acceptance without moving toward the pickup is not charged a no-show fee.",
+      "title": "Rider Cancellation Window",
+      "version": "v1.3"
+    }
+  ],
+  "precedents": [],
+  "rider": {
+    "account_age_days": 320,
+    "avg_rating": 3.8,
+    "cancellation_rate": 0.15,
+    "dispute_count_90d": 6,
+    "dispute_win_rate": 0.5,
+    "is_flagged_abuse": false,
+    "name": "Marcus Tan",
+    "party_id": "RDR-9002",
+    "role": "rider",
+    "total_trips": 145
+  },
+  "route": null,
+  "trip": {
+    "actual_distance_km": 0.0,
+    "actual_duration_min": 8.0,
+    "city": "Seattle",
+    "driver_id": "DRV-9002",
+    "dropoff_address": null,
+    "ended_at": "2025-02-11T07:12:00Z",
+    "estimated_distance_km": 6.0,
+    "estimated_duration_min": 13.2,
+    "pickup_address": " Ferry Building, San Francisco",
+    "requested_at": "2025-02-11T07:00:00Z",
+    "rider_id": "RDR-9002",
+    "started_at": "2025-02-11T07:04:00Z",
+    "status": "no_show",
+    "traffic_conditions": "light",
+    "trip_id": "TRP-2001"
+  }
+}

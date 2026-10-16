@@ -41,11 +41,11 @@
     "category": "no_show",
     "claimed_amount": 6.5,
     "dispute_id": "DSP-9217",
-    "driver_statement": "I was at the pickup point and waited.",
+    "driver_statement": "The driver never showed up but I was still charged a no-show fee.",
     "filed_at": "2025-02-11T08:02:00Z",
-    "filed_by": "rider",
+    "filed_by": "driver",
     "priority": "medium",
-    "rider_statement": "The driver never showed up but I was still charged a no-show fee.",
+    "rider_statement": "I was at the pickup point and waited.",
     "trip_id": "TRP-1070"
   },
   "driver": {

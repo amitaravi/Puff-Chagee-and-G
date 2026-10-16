@@ -2,33 +2,33 @@
   "chat": [],
   "dispute": {
     "category": "no_show",
-    "claimed_amount": 4.0,
+    "claimed_amount": 5.0,
     "dispute_id": "DSP-9201",
     "driver_statement": "The driver never showed up but I was still charged a no-show fee.",
     "filed_at": "2025-02-11T08:02:00Z",
     "filed_by": "driver",
     "priority": "medium",
     "rider_statement": "I was at the pickup point and waited.",
-    "trip_id": "TRP-1064"
+    "trip_id": "TRP-1098"
   },
   "driver": {
-    "account_age_days": 576,
-    "avg_rating": 4.7,
-    "cancellation_rate": 0.018,
-    "dispute_count_90d": 0,
-    "dispute_win_rate": 0.37,
+    "account_age_days": 419,
+    "avg_rating": 3.66,
+    "cancellation_rate": 0.204,
+    "dispute_count_90d": 3,
+    "dispute_win_rate": 0.1,
     "is_flagged_abuse": false,
-    "name": "Kwame Mensah",
-    "party_id": "DRV-0009",
+    "name": "Tomoko Sato",
+    "party_id": "DRV-0014",
     "role": "driver",
-    "total_trips": 1354
+    "total_trips": 2136
   },
   "fare": {
     "base_fare": 0.0,
     "booking_fee": 0.0,
     "currency": "USD",
     "distance_fare": 0.0,
-    "estimated_fare_at_booking": 4.0,
+    "estimated_fare_at_booking": 5.0,
     "promo_code": null,
     "promo_discount": 0.0,
     "surge_amount": 0.0,
@@ -36,22 +36,22 @@
     "surge_multiplier": 1.0,
     "time_fare": 0.0,
     "tolls": 0.0,
-    "total_charged": 4.0,
-    "trip_id": "TRP-1064"
+    "total_charged": 5.0,
+    "trip_id": "TRP-1098"
   },
   "fraud": {
-    "collusion_score": 0.17,
+    "collusion_score": 0.1,
     "device_fingerprint_shared": false,
-    "dispute_id": "DSP-1064",
-    "driver_claims_30d": 0,
+    "dispute_id": "DSP-1098",
+    "driver_claims_30d": 3,
     "photo_authenticity_score": null,
     "rider_claims_30d": 0,
     "rider_repeat_claimer": false,
     "risk_level": "low"
   },
   "no_show": {
-    "driver_min_distance_to_pickup_m": 800.5,
-    "no_show_fee_charged": 4.0,
+    "driver_min_distance_to_pickup_m": 63.9,
+    "no_show_fee_charged": 5.0,
     "rider_gps_approaching": true,
     "wait_time_min": 3.3
   },
@@ -106,33 +106,33 @@
   ],
   "precedents": [],
   "rider": {
-    "account_age_days": 1113,
-    "avg_rating": 4.96,
-    "cancellation_rate": 0.034,
+    "account_age_days": 1521,
+    "avg_rating": 4.72,
+    "cancellation_rate": 0.05,
     "dispute_count_90d": 0,
-    "dispute_win_rate": 0.58,
+    "dispute_win_rate": 0.27,
     "is_flagged_abuse": false,
-    "name": "Fatima El-Amin",
-    "party_id": "RDR-0015",
+    "name": "Wei Zhang",
+    "party_id": "RDR-0028",
     "role": "rider",
-    "total_trips": 262
+    "total_trips": 352
   },
   "route": null,
   "trip": {
     "actual_distance_km": 0.0,
     "actual_duration_min": 3.3,
-    "city": "Austin",
-    "driver_id": "DRV-0009",
+    "city": "Seattle",
+    "driver_id": "DRV-0014",
     "dropoff_address": null,
     "ended_at": "2025-02-11T07:07:00Z",
-    "estimated_distance_km": 9.03,
-    "estimated_duration_min": 19.9,
-    "pickup_address": "Mission & 16th",
+    "estimated_distance_km": 14.93,
+    "estimated_duration_min": 32.8,
+    "pickup_address": "Pike Place",
     "requested_at": "2025-02-11T07:00:00Z",
-    "rider_id": "RDR-0015",
+    "rider_id": "RDR-0028",
     "started_at": "2025-02-11T07:04:00Z",
     "status": "no_show",
     "traffic_conditions": "light",
-    "trip_id": "TRP-1064"
+    "trip_id": "TRP-1098"
   }
 }

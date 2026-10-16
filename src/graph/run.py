@@ -15,6 +15,10 @@ import argparse
 import json
 import sys
 
+from dotenv import load_dotenv
+
+load_dotenv()  # pick up .env (OPENAI_API_KEY, ARBITRA_TOOLS, etc.)
+
 from ..core import config
 from ..tools.interface import get_tools
 from .workflow import run_case

@@ -1,0 +1,227 @@
+{
+  "chat": [
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "Road closure detected on Mission St between 16th and 22nd.",
+      "message_id": "MSG-02001",
+      "sender": "system",
+      "sentiment": 0.0,
+      "timestamp": "2025-02-11T07:08:00Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "There's a road closure ahead, I'll have to go around via Valencia. Is that OK?",
+      "message_id": "MSG-02002",
+      "sender": "driver",
+      "sentiment": 0.1,
+      "timestamp": "2025-02-11T07:08:30Z"
+    },
+    {
+      "contains_agreement": true,
+      "contains_threat": false,
+      "message": "Can you go around? I don't want to be late.",
+      "message_id": "MSG-02003",
+      "sender": "rider",
+      "sentiment": -0.2,
+      "timestamp": "2025-02-11T07:09:00Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "Taking Valencia now, it'll add a few minutes but it's the only open road.",
+      "message_id": "MSG-02004",
+      "sender": "driver",
+      "sentiment": 0.05,
+      "timestamp": "2025-02-11T07:09:15Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "This is taking way too long. Why are we on Valencia? This isn't what the app showed.",
+      "message_id": "MSG-02005",
+      "sender": "rider",
+      "sentiment": -0.6,
+      "timestamp": "2025-02-11T07:15:00Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "You asked me to go around. Mission is closed, this is the detour.",
+      "message_id": "MSG-02006",
+      "sender": "driver",
+      "sentiment": -0.1,
+      "timestamp": "2025-02-11T07:15:30Z"
+    },
+    {
+      "contains_agreement": false,
+      "contains_threat": false,
+      "message": "I only agreed because you said there was no other way. I'm being charged extra for a detour I didn't want.",
+      "message_id": "MSG-02007",
+      "sender": "rider",
+      "sentiment": -0.7,
+      "timestamp": "2025-02-11T07:16:00Z"
+    }
+  ],
+  "dispute": {
+    "category": "route_deviation",
+    "claimed_amount": 4.68,
+    "dispute_id": "DSP-2000",
+    "driver_statement": "Mission Street was closed between 16th and 22nd \u2014 the city had construction barriers up. I asked the rider if I could go around and she said yes. I took Valencia, which is the official detour route. She changed her mind halfway through and started complaining about the fare. I have 3100 trips and a 4.9 rating. I did exactly what I was supposed to.",
+    "filed_at": "2025-02-11T08:30:00Z",
+    "filed_by": "rider",
+    "priority": "medium",
+    "rider_statement": "The driver took a 28% longer route via Valencia Street claiming a road closure on Mission. I said 'go around' because he told me there was no other way, but I didn't agree to pay for a detour. The app showed a direct route down Mission and that's what I should be charged for.",
+    "trip_id": "TRP-2000"
+  },
+  "driver": {
+    "account_age_days": 1200,
+    "avg_rating": 4.9,
+    "cancellation_rate": 0.02,
+    "dispute_count_90d": 1,
+    "dispute_win_rate": 0.8,
+    "is_flagged_abuse": false,
+    "name": "James Okafor",
+    "party_id": "DRV-9001",
+    "role": "driver",
+    "total_trips": 3100
+  },
+  "fare": {
+    "base_fare": 2.22,
+    "booking_fee": 2.0,
+    "currency": "USD",
+    "distance_fare": 18.59,
+    "estimated_fare_at_booking": 24.9,
+    "promo_code": null,
+    "promo_discount": 0.0,
+    "surge_amount": 0.0,
+    "surge_at_booking": 1.0,
+    "surge_multiplier": 1.0,
+    "time_fare": 9.52,
+    "tolls": 0,
+    "total_charged": 32.33,
+    "trip_id": "TRP-2000"
+  },
+  "fraud": {
+    "collusion_score": 0.05,
+    "device_fingerprint_shared": false,
+    "dispute_id": "DSP-2000",
+    "driver_claims_30d": 1,
+    "photo_authenticity_score": null,
+    "rider_claims_30d": 3,
+    "rider_repeat_claimer": false,
+    "risk_level": "low"
+  },
+  "no_show": null,
+  "policies": [
+    {
+      "category": "route_deviation",
+      "conditions": {
+        "deviation_pct_gt": 0.15,
+        "rider_requested_detour": false,
+        "traffic_justified": false
+      },
+      "policy_id": "POL-4.3",
+      "remedy_formula": "distance_fare * (deviation_km / actual_distance_km)",
+      "remedy_type": "partial_refund",
+      "rule_text": "If the actual route exceeds the optimal route by more than 15%, and the excess is not attributable to traffic or a rider-requested detour, the rider is refunded the distance-fare proportional to the unjustified deviation.",
+      "title": "Route Deviation - Refund Eligibility",
+      "version": "v2.1"
+    },
+    {
+      "category": "route_deviation",
+      "conditions": {
+        "traffic_share_gte": 0.8
+      },
+      "policy_id": "POL-4.4",
+      "remedy_formula": null,
+      "remedy_type": "no_action",
+      "rule_text": "Where the excess duration is wholly or substantially attributable to documented traffic conditions, the deviation is excused and no refund is due under Policy 4.3.",
+      "title": "Traffic-Attributable Deviation",
+      "version": "v1.9"
+    },
+    {
+      "category": "route_deviation",
+      "conditions": {
+        "rider_requested_detour": true
+      },
+      "policy_id": "POL-4.5",
+      "remedy_formula": null,
+      "remedy_type": "no_action",
+      "rule_text": "A detour requested or expressly assented to by the rider is not an unjustified deviation, irrespective of the resulting distance.",
+      "title": "Rider-Requested Detour",
+      "version": "v1.2"
+    },
+    {
+      "category": "route_deviation",
+      "conditions": {
+        "deviation_pct_lt": 0.05
+      },
+      "policy_id": "POL-4.6",
+      "remedy_formula": null,
+      "remedy_type": "no_action",
+      "rule_text": "A deviation of less than 5% does not engage Policy 4.3 and the claim is dismissed without hearing.",
+      "title": "De Minimis Deviation",
+      "version": "v1.0"
+    },
+    {
+      "category": "route_deviation",
+      "conditions": {
+        "longest_stop_sec_gt": 120
+      },
+      "policy_id": "POL-4.7",
+      "remedy_formula": "distance_fare * (deviation_km / actual_distance_km)",
+      "remedy_type": "partial_refund",
+      "rule_text": "An unscheduled stop exceeding 120 seconds that is not rider-requested is treated as unjustified deviation for the purposes of Policy 4.3.",
+      "title": "Unscheduled Stops",
+      "version": "v1.4"
+    }
+  ],
+  "precedents": [],
+  "rider": {
+    "account_age_days": 540,
+    "avg_rating": 4.2,
+    "cancellation_rate": 0.08,
+    "dispute_count_90d": 3,
+    "dispute_win_rate": 0.33,
+    "is_flagged_abuse": false,
+    "name": "Elena Vasquez",
+    "party_id": "RDR-9001",
+    "role": "rider",
+    "total_trips": 87
+  },
+  "route": {
+    "actual_distance_km": 15.36,
+    "delay_attributable_to_traffic": false,
+    "deviation_justified_by": "road_closure",
+    "deviation_km": 3.36,
+    "deviation_pct": 0.28,
+    "duration_delta_min": 12.0,
+    "longest_stop_sec": 0,
+    "num_stops": 0,
+    "optimal_distance_km": 12.0,
+    "rider_requested_detour": true,
+    "route_efficiency_score": 0.781,
+    "traffic_delay_min": 3.0,
+    "trip_id": "TRP-2000",
+    "unexpected_stops": []
+  },
+  "trip": {
+    "actual_distance_km": 15.36,
+    "actual_duration_min": 34.0,
+    "city": "New York",
+    "driver_id": "DRV-9001",
+    "dropoff_address": "Wrigley Field",
+    "ended_at": "2025-02-11T07:38:00Z",
+    "estimated_distance_km": 12.0,
+    "estimated_duration_min": 22.0,
+    "pickup_address": "Pike Place",
+    "requested_at": "2025-02-11T07:00:00Z",
+    "rider_id": "RDR-9001",
+    "started_at": "2025-02-11T07:04:00Z",
+    "status": "completed",
+    "traffic_conditions": "moderate",
+    "trip_id": "TRP-2000"
+  }
+}

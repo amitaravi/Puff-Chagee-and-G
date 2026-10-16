@@ -174,11 +174,11 @@
     "total_trips": 161
   },
   "route": {
-    "actual_distance_km": 17.77,
+    "actual_distance_km": 17.69,
     "delay_attributable_to_traffic": false,
     "deviation_justified_by": null,
-    "deviation_km": 0.71,
-    "deviation_pct": 0.0419,
+    "deviation_km": 0.63,
+    "deviation_pct": 0.0367,
     "duration_delta_min": 20.1,
     "longest_stop_sec": 198,
     "num_stops": 1,

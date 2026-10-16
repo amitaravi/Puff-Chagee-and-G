@@ -152,7 +152,7 @@ def run_advocate(state: CaseState, side: str) -> tuple[CaseBrief, int, int]:
     elif not model_ready() or config.flags_for(state["config"]).use_advocates is False:
         brief = deterministic_brief(pack, side)
     else:
-        llm = get_llm("advocate").with_structured_output(CaseBrief)
+        llm = get_llm("advocate").with_structured_output(CaseBrief, method="function_calling")
         try:
             brief: CaseBrief = llm.invoke([SystemMessage(content=system), HumanMessage(content=user)])
         except (OpenAIInvalidRequestError, OpenAIRateLimitError):

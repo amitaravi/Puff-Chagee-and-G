@@ -3,88 +3,88 @@
     {
       "contains_agreement": false,
       "contains_threat": false,
-      "message": "You're scamming me with this route.",
-      "message_id": "MSG-00700",
+      "message": "Why are we going this way? This isn't the route the app showed.",
+      "message_id": "MSG-00290",
       "sender": "rider",
-      "sentiment": -0.74,
-      "timestamp": "2025-02-11T07:01:51Z"
+      "sentiment": -0.4,
+      "timestamp": "2025-02-11T07:04:29Z"
     },
     {
       "contains_agreement": false,
       "contains_threat": false,
-      "message": "It's the fastest way right now.",
-      "message_id": "MSG-00701",
+      "message": "Shortcut, trust me. Avoids the lights.",
+      "message_id": "MSG-00291",
       "sender": "driver",
-      "sentiment": -0.22,
-      "timestamp": "2025-02-11T07:02:11Z"
+      "sentiment": -0.01,
+      "timestamp": "2025-02-11T07:05:27Z"
     },
     {
       "contains_agreement": false,
       "contains_threat": false,
-      "message": "I'm reporting this. You'll hear from support.",
-      "message_id": "MSG-00702",
+      "message": "This is adding several kilometres to my trip.",
+      "message_id": "MSG-00292",
       "sender": "rider",
-      "sentiment": -0.71,
-      "timestamp": "2025-02-11T07:03:12Z"
+      "sentiment": -0.61,
+      "timestamp": "2025-02-11T07:06:44Z"
     },
     {
       "contains_agreement": false,
       "contains_threat": false,
-      "message": "Report whatever you want.",
-      "message_id": "MSG-00703",
+      "message": "Traffic was bad back there.",
+      "message_id": "MSG-00293",
       "sender": "driver",
-      "sentiment": -0.27,
-      "timestamp": "2025-02-11T07:04:16Z"
+      "sentiment": -0.08,
+      "timestamp": "2025-02-11T07:07:41Z"
     }
   ],
   "dispute": {
     "category": "route_deviation",
-    "claimed_amount": 2.34,
+    "claimed_amount": 14.87,
     "dispute_id": "DSP-9132",
-    "driver_statement": "There was traffic, but I also chose a faster road.",
+    "driver_statement": "I took the route I always take.",
     "filed_at": "2025-02-11T08:02:00Z",
     "filed_by": "rider",
     "priority": "medium",
-    "rider_statement": "The driver took a longer route, though there was some traffic.",
-    "trip_id": "TRP-1060"
+    "rider_statement": "The driver took a much longer route than necessary and I was charged for it.",
+    "trip_id": "TRP-1019"
   },
   "driver": {
-    "account_age_days": 1407,
-    "avg_rating": 3.91,
-    "cancellation_rate": 0.02,
-    "dispute_count_90d": 1,
-    "dispute_win_rate": 0.2,
+    "account_age_days": 571,
+    "avg_rating": 4.85,
+    "cancellation_rate": 0.069,
+    "dispute_count_90d": 9,
+    "dispute_win_rate": 0.21,
     "is_flagged_abuse": false,
-    "name": "Kwame Mensah",
-    "party_id": "DRV-0020",
+    "name": "Dmitri Volkov",
+    "party_id": "DRV-0001",
     "role": "driver",
-    "total_trips": 2592
+    "total_trips": 995
   },
   "fare": {
-    "base_fare": 2.37,
+    "base_fare": 2.76,
     "booking_fee": 2.0,
     "currency": "USD",
-    "distance_fare": 10.3,
-    "estimated_fare_at_booking": 18.37,
-    "promo_code": null,
-    "promo_discount": 0.0,
+    "distance_fare": 45.44,
+    "estimated_fare_at_booking": 49.68,
+    "promo_code": "RIDE10",
+    "promo_discount": 4.0,
     "surge_amount": 0.0,
-    "surge_at_booking": 1.0,
+    "surge_at_booking": 1.2,
     "surge_multiplier": 1.0,
-    "time_fare": 9.6,
-    "tolls": 3.5,
-    "total_charged": 27.77,
-    "trip_id": "TRP-1060"
+    "time_fare": 10.08,
+    "tolls": 6.25,
+    "total_charged": 62.53,
+    "trip_id": "TRP-1019"
   },
   "fraud": {
-    "collusion_score": 0.1,
+    "collusion_score": 0.11,
     "device_fingerprint_shared": false,
-    "dispute_id": "DSP-1060",
-    "driver_claims_30d": 1,
+    "dispute_id": "DSP-1019",
+    "driver_claims_30d": 9,
     "photo_authenticity_score": null,
-    "rider_claims_30d": 5,
+    "rider_claims_30d": 0,
     "rider_repeat_claimer": false,
-    "risk_level": "low"
+    "risk_level": "medium"
   },
   "no_show": null,
   "policies": [
@@ -153,61 +153,48 @@
   ],
   "precedents": [],
   "rider": {
-    "account_age_days": 1598,
-    "avg_rating": 3.78,
-    "cancellation_rate": 0.045,
-    "dispute_count_90d": 5,
-    "dispute_win_rate": 0.76,
+    "account_age_days": 208,
+    "avg_rating": 4.19,
+    "cancellation_rate": 0.059,
+    "dispute_count_90d": 0,
+    "dispute_win_rate": 0.17,
     "is_flagged_abuse": false,
     "name": "Ingrid Larsson",
-    "party_id": "RDR-0021",
+    "party_id": "RDR-0001",
     "role": "rider",
-    "total_trips": 133
+    "total_trips": 609
   },
   "route": {
-    "actual_distance_km": 7.8,
+    "actual_distance_km": 34.15,
     "delay_attributable_to_traffic": false,
     "deviation_justified_by": null,
-    "deviation_km": 0.96,
+    "deviation_km": 4.19,
     "deviation_pct": 0.14,
-    "duration_delta_min": 12.4,
-    "longest_stop_sec": 405,
-    "num_stops": 2,
-    "optimal_distance_km": 6.84,
+    "duration_delta_min": 8.8,
+    "longest_stop_sec": 0,
+    "num_stops": 0,
+    "optimal_distance_km": 29.96,
     "rider_requested_detour": false,
-    "route_efficiency_score": 0.763,
+    "route_efficiency_score": 0.712,
     "traffic_delay_min": 0.0,
-    "trip_id": "TRP-1060",
-    "unexpected_stops": [
-      {
-        "at_km": 5.27,
-        "duration_sec": 244,
-        "lat": 37.6395,
-        "lng": -122.3816
-      },
-      {
-        "at_km": 6.29,
-        "duration_sec": 405,
-        "lat": 37.643,
-        "lng": -122.4443
-      }
-    ]
+    "trip_id": "TRP-1019",
+    "unexpected_stops": []
   },
   "trip": {
-    "actual_distance_km": 8.96,
-    "actual_duration_min": 34.3,
-    "city": "Seattle",
-    "driver_id": "DRV-0020",
-    "dropoff_address": "Rainey St",
-    "ended_at": "2025-02-11T07:38:00Z",
-    "estimated_distance_km": 6.84,
-    "estimated_duration_min": 21.9,
-    "pickup_address": "SFO Terminal 2",
+    "actual_distance_km": 42.07,
+    "actual_duration_min": 36.0,
+    "city": "San Francisco",
+    "driver_id": "DRV-0001",
+    "dropoff_address": "Mission & 16th",
+    "ended_at": "2025-02-11T07:40:00Z",
+    "estimated_distance_km": 29.96,
+    "estimated_duration_min": 27.2,
+    "pickup_address": "Ferry Building",
     "requested_at": "2025-02-11T07:00:00Z",
-    "rider_id": "RDR-0021",
+    "rider_id": "RDR-0001",
     "started_at": "2025-02-11T07:04:00Z",
     "status": "completed",
-    "traffic_conditions": "heavy",
-    "trip_id": "TRP-1060"
+    "traffic_conditions": "light",
+    "trip_id": "TRP-1019"
   }
 }
